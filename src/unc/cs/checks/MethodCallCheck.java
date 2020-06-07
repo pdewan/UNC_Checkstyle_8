@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.event.TreeSelectionEvent;
 
 import com.puppycrawl.tools.checkstyle.AstTreeStringPrinter;
-import com.puppycrawl.tools.checkstyle.DelegatingAstTreeStringPrinter;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 import unc.cs.symbolTable.CallInfo;
@@ -14,6 +13,7 @@ import unc.cs.symbolTable.NoMethod;
 import unc.cs.symbolTable.STMethod;
 import unc.cs.symbolTable.STType;
 import unc.cs.symbolTable.SymbolTableFactory;
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 	public static final String MSG_KEY = "expectedMethodCall";
@@ -124,7 +124,7 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 //		String aCallerFormal = aCallerFormals.get(aCallerIndex);
 		DetailAST aCalledActual = aCalledActuals.get(anActualIndex);
 //		String aCalledActualText = aCalledActual.toStringTree();
-		String aCalledActualText = DelegatingAstTreeStringPrinter.printTree(aCalledActual);
+		String aCalledActualText = UNCAstTreeStringPrinter.printConcreteTree(aCalledActual);
 //		String aCalledActualList = aCalledActual.toStringList();
 		
 		return aCalledActualText.matches(aRegex); // basically called is dome function of caller parameter
@@ -140,7 +140,7 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 		treeText.setLength(0);
 		for (int actualIndex = 0; actualIndex < aCalledActuals.size(); actualIndex++) {
 //			treeText.append(aCalledActuals.get(actualIndex).toStringTree());
-			 treeText.append(DelegatingAstTreeStringPrinter.printTree(aCalledActuals.get(actualIndex)));
+			 treeText.append(UNCAstTreeStringPrinter.printConcreteTree(aCalledActuals.get(actualIndex)));
 		}
 		return treeText.toString().matches(aSpecifiedParameters);
 	}

@@ -4,6 +4,8 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
+
 public class MethodLimitCheck extends AbstractCheck {
 
   private int max = 30;
@@ -34,6 +36,7 @@ public class MethodLimitCheck extends AbstractCheck {
     // count the number of direct children of the OBJBLOCK
     // that are METHOD_DEFS
     int methodDefs = objBlock.getChildCount(TokenTypes.METHOD_DEF);
+    String aString = UNCAstTreeStringPrinter.printConcreteTree(ast);
     // report error if limit is reached
     if (methodDefs > max) {
       log(ast.getLineNo(), "methodlimit", max);

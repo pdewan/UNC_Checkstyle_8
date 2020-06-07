@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
 public interface STType extends STNameable{
@@ -165,4 +166,5 @@ public interface STType extends STNameable{
 	int getNumberOfNonPublicMethods();
 	long getTimeOfEntry();
 	boolean isAnnotation();
+	FileContents getFileContents();
 }

@@ -1,8 +1,9 @@
 package unc.cs.checks;
 
-import com.puppycrawl.tools.checkstyle.DelegatingAstTreeStringPrinter;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 public class BulkierThenCheck extends ComprehensiveVisitCheck{
 	public static final String MSG_KEY = "bulkierThen";
@@ -65,8 +66,8 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 		   DetailAST aThenPart = getThenPart(anIfAST);
 //		   String aThenString = aThenPart.toStringTree();
 //		   String anElseString = anElsePart.toStringTree();
-	       String aThenString = DelegatingAstTreeStringPrinter.printTree(aThenPart);
-	       String anElseString = DelegatingAstTreeStringPrinter.printTree(anElsePart);
+	       String aThenString = UNCAstTreeStringPrinter.printConcreteTree(aThenPart);
+	       String anElseString = UNCAstTreeStringPrinter.printConcreteTree(anElsePart);
 //		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length - 1; // no semiucolon means length of 1
 //		   double numStatementsInElsePart = anElseString.split(STATEMENT_SEPARATOR).length - 1;
 		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length; // no semiucolon means length of 1

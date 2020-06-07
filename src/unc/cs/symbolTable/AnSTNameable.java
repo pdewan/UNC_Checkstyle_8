@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.puppycrawl.tools.checkstyle.DelegatingAstTreeStringPrinter;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
 import unc.cs.checks.BulkierThenCheck;
 import unc.cs.checks.ComprehensiveVisitCheck;
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 
 public  class AnSTNameable implements STNameable {
@@ -103,7 +103,7 @@ public  class AnSTNameable implements STNameable {
 	public String getStringTree() {
 		if (stringTree == null) {
 //			stringTree = ast.toStringTree();
-	     stringTree = DelegatingAstTreeStringPrinter.printTree(ast);
+	     stringTree = UNCAstTreeStringPrinter.printConcreteTree(ast);
 
 		}
 		return stringTree;

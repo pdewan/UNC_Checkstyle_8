@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
 import unc.cs.checks.ComprehensiveVisitCheck;
@@ -451,6 +452,11 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 		return reflectedClass.isAnnotation();
 		// TODO Auto-generated method stub
 	}
+  @Override
+  public FileContents getFileContents() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
 //

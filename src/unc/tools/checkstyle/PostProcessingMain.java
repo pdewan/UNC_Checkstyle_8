@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.puppycrawl.tools.checkstyle.NonExitingMain;
 import com.puppycrawl.tools.checkstyle.XMLLogger;
 import com.puppycrawl.tools.checkstyle.Main;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;

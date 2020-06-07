@@ -1,0 +1,22 @@
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\AReferencedClass.java,duplicateShortTypeName,AReferencedClass,[test.AReferencedClass, test.version1.AReferencedClass]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\AReferencedClass.java,methodAccessModifierUnmatched,AReferencedClass,aNecessaryPublicMethod:->void,public,None,4,No Referencing Method,No Access Modifiers
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\AReferencedClass.java,classDoesNotHaveAtLeastOneInterface,AReferencedClass,test.AReferencedClass
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\MnemonicNameTest.java,duplicateShortTypeName,MnemonicNameTest,[test.MnemonicNameTest, test.version1.MnemonicNameTest]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\MnemonicNameTest.java,methodAccessModifierUnmatched,MnemonicNameTest,aMnemonicMethod:int;int->void,public,None,4,No Referencing Method,No Access Modifiers
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\MnemonicNameTest.java,methodAccessModifierUnmatched,MnemonicNameTest,aNtMnemonicMethod:->void,public,None,4,No Referencing Method,No Access Modifiers
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\MnemonicNameTest.java,classDoesNotHaveAtLeastOneInterface,MnemonicNameTest,test.MnemonicNameTest
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,duplicateShortTypeName,TestSubClass,[test.version1.TestSubClass, test.TestSubClass]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,methodAccessModifierUnmatched,TestSubClass,getOut:->PrintStream,public,private,3,[test.TestSubClass],[private]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,liberalMagicNumber,TestSubClass,3,3
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,liberalMagicNumber,TestSubClass,4.5,EXPR 4.5
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,methodAccessModifierUnmatched,TestSubClass,propertyChange:java.beans.PropertyChangeEvent->void,public,None,4,No Referencing Method,No Access Modifiers
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,peerCommonProperties,TestSubClass,readonly  p-v:5 access:public Out:java.io.PrintStream(public , null),TestSubClass,System
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSubClass.java,classHasAtLeastOneInterface,TestSubClass,test.TestSubClass
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSuperClass.java,duplicateShortTypeName,TestSuperClass,[test.version1.TestSuperClass, test.TestSuperClass]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSuperClass.java,methodAccessModifierUnmatched,TestSuperClass,superMethod:->void,protected,None,3,No Referencing Method,No Access Modifiers
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\TestSuperClass.java,classHasAtLeastOneInterface,TestSuperClass,test.TestSuperClass
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\version1\AReferencedClass.java,classDoesNotHaveAtLeastOneInterface,AReferencedClass,test.version1.AReferencedClass
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\version1\MnemonicNameTest.java,classDoesNotHaveAtLeastOneInterface,MnemonicNameTest,test.version1.MnemonicNameTest
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\version1\TestSubClass.java,methodAccessModifierUnmatched,TestSubClass,getOut:->PrintStream,public,private,3,[test.version1.TestSubClass],[private]
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\version1\TestSubClass.java,classHasAtLeastOneInterface,TestSubClass,test.version1.TestSubClass
+-1,Sun Jun 07 12:26:43 EDT 2020,true,test\version1\TestSuperClass.java,classHasAtLeastOneInterface,TestSuperClass,test.version1.TestSuperClass

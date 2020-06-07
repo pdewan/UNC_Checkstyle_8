@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import unc.cs.checks.ComprehensiveVisitCheck;
@@ -42,6 +43,8 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	protected Map<String, List<DetailAST>> globalIdentToLHS ;
 	protected Set<Integer> modifiers;
 	protected String fileName;
+	
+	protected FileContents fileContents;
 //	protected AccessModifier accessModifier;
 //	protected boolean isAbstract; 
 
@@ -180,6 +183,7 @@ public class AnSTType extends AnAbstractSTType implements STType {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			fileContents = STBuilderCheck.getLatestInstance().getFileContents();
 		} 
 	}
 //	public static STNameable toShortPatternName(STNameable aLongName) {
@@ -1179,5 +1183,12 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	public List<String> getTypeParameterNames() {
 		return typeParameterNames;
 	}
+
+
+
+  @Override
+  public FileContents getFileContents() {
+    return fileContents;
+  }
 
 }
