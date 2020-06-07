@@ -1,0 +1,29 @@
+Reacted to changes to Checkstyle 6.0
+
+AnExtensibleTreeWalker no longer reflects on Treewalker as that is not robust.
+It is simply a copy of Treewalker with all code duplicated.
+
+
+AnExtensibleTreeWalker no longer changes file date as new checkstyle no longer prevents unmodified files from being rechecked.
+CachingTreewalker really not needed now.
+
+DetailAST is no longer a class, it is an interface that removes some of the antlr methods: toStringTree() and toStringList()
+
+Found a similar private method in an ASTStringTreePrinter printTree.
+Created UNCStringTreePrinter that calls the method through reflection.
+Also removes line numbers from printTree to implement printAbstractTree.
+
+Some class names changed from Utility and Utils to Util.
+Some method names changed from in??? to isIn???
+one method name changes from filename to fileName.
+
+Added to STType a method that gives fileContents() from which comments can be extracted.
+
+Main class can no longer be copied to create non exiting main. It uses a different library which is not exported to an extension.
+Added security manager to prevent exits from main to be honored.
+No longer need to duplicate 1.8 checks
+
+Added checstlye 8.3 jar and update site to: https://drive.google.com/drive/folders/0B_HEzJVvzKTVaHdkRHZnQUpGOUk?usp=sharing
+
+Recreated hermes plugin with checkstyle 8.3 and this project.
+
