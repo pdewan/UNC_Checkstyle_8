@@ -3,7 +3,7 @@ package unc.tools.checkstyle;
 import java.util.HashMap;
 import java.util.Map;
 
-import unc.cs.checks.STBuilderCheck;
+import unc.checks.STBuilderCheck;
 import unc.tools.checkstyle.ProjectDirectoryHolder;
 
 

@@ -9,7 +9,7 @@
       Define the Java packages where your custom Checkstyle module classes (checks, filters) reside here.
       See http://checkstyle.sourceforge.net/config.html#Packages for more info.
       -->
-    <package name="unc.cs.checks">
+    <package name="unc.checks">
         <package name="dummysubpackage"/>
     </package>
 </checkstyle-packages>

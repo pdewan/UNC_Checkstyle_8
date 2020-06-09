@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 
-import unc.cs.checks.STBuilderCheck;
-import unc.cs.checks.UNCCheck;
-import unc.cs.symbolTable.SymbolTableFactory;
+import unc.checks.STBuilderCheck;
+import unc.checks.UNCCheck;
+import unc.symbolTable.SymbolTableFactory;
 
 public class CreateMultipleSymbolTables {
 	static final String[] myArgs = {"", "", ""};

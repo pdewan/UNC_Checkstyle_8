@@ -23,24 +23,24 @@ import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
 import com.puppycrawl.tools.checkstyle.api.AutomaticBean.OutputStreamOptions;
 
-import unc.cs.checks.ClassDefinedCheck;
-import unc.cs.checks.ComprehensiveVisitCheck;
-import unc.cs.checks.MethodCallCheck;
-import unc.cs.checks.MissingMethodTextCheck;
-import unc.cs.checks.STBuilderCheck;
-import unc.cs.checks.TagBasedCheck;
-import unc.cs.checks.UNCCheck;
-import unc.cs.parseTree.AnIFStatement;
-import unc.cs.symbolTable.AccessModifierUsage;
-import unc.cs.symbolTable.AnAbstractSTMethod;
-import unc.cs.symbolTable.CallInfo;
-import unc.cs.symbolTable.PropertyInfo;
-import unc.cs.symbolTable.STMethod;
-import unc.cs.symbolTable.STNameable;
-import unc.cs.symbolTable.STType;
-import unc.cs.symbolTable.STVariable;
-import unc.cs.symbolTable.SymbolTable;
-import unc.cs.symbolTable.SymbolTableFactory;
+import unc.checks.ClassDefinedCheck;
+import unc.checks.ComprehensiveVisitCheck;
+import unc.checks.MethodCallCheck;
+import unc.checks.MissingMethodTextCheck;
+import unc.checks.STBuilderCheck;
+import unc.checks.TagBasedCheck;
+import unc.checks.UNCCheck;
+import unc.parseTree.AnIFStatement;
+import unc.symbolTable.AccessModifierUsage;
+import unc.symbolTable.AnAbstractSTMethod;
+import unc.symbolTable.CallInfo;
+import unc.symbolTable.PropertyInfo;
+import unc.symbolTable.STMethod;
+import unc.symbolTable.STNameable;
+import unc.symbolTable.STType;
+import unc.symbolTable.STVariable;
+import unc.symbolTable.SymbolTable;
+import unc.symbolTable.SymbolTableFactory;
 
 public class PostProcessingMain {
 	//// static final String SOURCE =

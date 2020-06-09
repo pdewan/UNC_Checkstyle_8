@@ -2,9 +2,9 @@ package unc.tools.checkstyle;
 
 import java.util.Map;
 
-import unc.cs.symbolTable.STType;
-import unc.cs.symbolTable.SymbolTable;
-import unc.cs.symbolTable.SymbolTableFactory;
+import unc.symbolTable.STType;
+import unc.symbolTable.SymbolTable;
+import unc.symbolTable.SymbolTableFactory;
 
 public class TestCreateMultipleSymbolTables {
 	static final String SOURCE1 = "src/test";
