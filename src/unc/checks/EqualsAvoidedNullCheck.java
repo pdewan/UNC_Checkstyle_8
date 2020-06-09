@@ -356,14 +356,18 @@ public class EqualsAvoidedNullCheck extends UNCCheck {
         }
         final DetailAST expr = methodCall.findFirstToken(TokenTypes.ELIST).getFirstChild();
         if (containsOneArgument(methodCall)
-                && expressionIsStringVariable(expr)
+//                && expressionIsStringVariable(expr)
                 && isCalledOnStringConstant(objCalledOn)) {
+          DetailAST anExpression = getStringVariableInExpression(expr);
+          if (anExpression == null) {
+            return false;
+          }
             final String methodName = methodCall.getFirstChild().getLastChild().getText();
             if (EQUALS.equals(methodName)) {
-                log(methodCall, MSG_KEY_INFO, objCalledOn.getText());
+                log(methodCall, MSG_KEY_INFO, objCalledOn.getText(), anExpression.getText());
             }
             else {
-                log(methodCall, MSG_KEY_INFO, objCalledOn.getText());
+                log(methodCall, MSG_KEY_INFO, objCalledOn.getText(), anExpression.getText());
             }
             return true;
         }
@@ -376,15 +380,19 @@ public class EqualsAvoidedNullCheck extends UNCCheck {
       }
       final DetailAST expr = methodCall.findFirstToken(TokenTypes.ELIST).getFirstChild();
       if (containsOneArgument(methodCall)
-              && expressionIsStringConstant(expr)
+//              && expressionIsStringConstant(expr)
               && isCalledOnStringVariable(objCalledOn)) {
+          DetailAST anExpression = getStringConstantInExpression(expr);
+          if (anExpression == null) {
+            return false;
+          }
           final String methodName = methodCall.getFirstChild().getLastChild().getText();
           
           if (EQUALS.equals(methodName)) {
-              log(methodCall, MSG_KEY_WARNING, objCalledOn.getText());
+              log(methodCall, MSG_KEY_WARNING, objCalledOn.getText(), anExpression.getText());
           }
           else {
-              log(methodCall, MSG_KEY_WARNING, objCalledOn.getText());
+              log(methodCall, MSG_KEY_WARNING, objCalledOn.getText(), anExpression.getText());
           }
           return true;
       }
@@ -452,6 +460,33 @@ public class EqualsAvoidedNullCheck extends UNCCheck {
 
       return argIsNotNull;
   }
+    private  DetailAST getStringConstantInExpression(final DetailAST expr) {
+      DetailAST arg = expr.getFirstChild();
+      arg = skipVariableAssign(arg);
+
+      boolean argIsNotNull = false;
+      if (arg.getType() == TokenTypes.PLUS) {
+          DetailAST child = arg.getFirstChild();
+          while (child != null
+                  && !argIsNotNull) {
+              argIsNotNull = child.getType() == TokenTypes.STRING_LITERAL
+                      || child.getType() == TokenTypes.IDENT;
+              child = child.getNextSibling();
+          }
+      }
+      else {
+          argIsNotNull = (arg.getType() == TokenTypes.STRING_LITERAL ||
+                  (arg.getType() == TokenTypes.IDENT &&              
+                  
+                  getCalledOnStringFieldOrVariable(arg) == IdentifierType.CONSTANT));
+      }
+      
+      if (argIsNotNull) {
+        return arg;
+      } 
+      return null;
+
+  }
     private  boolean expressionIsStringVariable(final DetailAST expr) {
       DetailAST arg = expr.getFirstChild();
       arg = skipVariableAssign(arg);
@@ -474,6 +509,32 @@ public class EqualsAvoidedNullCheck extends UNCCheck {
       }
 
       return argIsNotNull;
+  }
+    private  DetailAST getStringVariableInExpression(final DetailAST expr) {
+      DetailAST arg = expr.getFirstChild();
+      arg = skipVariableAssign(arg);
+
+      boolean argIsNotNull = false;
+      if (arg.getType() == TokenTypes.PLUS) {
+          DetailAST child = arg.getFirstChild();
+          while (child != null
+                  && !argIsNotNull) {
+              argIsNotNull = child.getType() == TokenTypes.STRING_LITERAL
+                      || child.getType() == TokenTypes.IDENT;
+              child = child.getNextSibling();
+          }
+      }
+      else {
+//          argIsNotNull = arg.getType() == TokenTypes.STRING_LITERAL;
+          argIsNotNull = (arg.getType() == TokenTypes.IDENT &&              
+                  
+                 getCalledOnStringFieldOrVariable(arg) == IdentifierType.VARIABLE);
+      }
+      if (argIsNotNull) {
+        return arg;
+      }
+
+      return null;
   }
 
 
