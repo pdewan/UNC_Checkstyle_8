@@ -2,6 +2,7 @@ package unc.checks;
 
 import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
+import unc.symbolTable.SymbolTableFactory;
 
 public class ClassHasOneInterfaceCheck extends STClassVisitedComprehensively {
 
@@ -55,10 +56,35 @@ public class ClassHasOneInterfaceCheck extends STClassVisitedComprehensively {
 //			System.out.println ("found oval");
 //		}
 		STNameable[] anInterfaces = anSTClass.getDeclaredInterfaces();
-		if (anInterfaces == null)
-			return null;
-
-		return anInterfaces.length <= 1; // 0 will be flagged by at least one interface check
+		
+		if (!isInfo()) {
+		  return anInterfaces.length <= 1;
+		} else {
+		  if (anInterfaces.length != 1) {
+		    return false;
+		  }
+		  String anInterfaceName = anInterfaces[0].getName();
+		  STType anInterfaceSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(anInterfaceName);
+		  if (anInterfaceSTType == null) {
+		    return null;
+		  }
+		  return anInterfaceSTType.getDeclaredInterfaces().length > 0;
+		}
+		
+//		String anInterfaceName
+//		if (anInterfaces.length == 1) {
+//		  String anInterfaceName = anInterfaces[0].getName();
+//		}
+//		if (anInterfaces == null)
+//			return null;
+//		if (anInterfaces.length <= 1) {
+//      return true;
+//    }
+//		if (anInterfaces.length <= 1) {
+//		  return true;
+//		}
+//
+//		return anInterfaces.length <= 1; // 0 will be flagged by at least one interface check
 
 	}
 	

@@ -2,9 +2,9 @@ package unc.testables;
 
 public class IfTestable {
   static boolean someCondition;
-  int someInteger;
+  static int someInteger;
 
-  public void bulkierThen() {
+  public static void bulkierThen() {
     if (someCondition) {
       someInteger++;
       someInteger++;
@@ -15,7 +15,7 @@ public class IfTestable {
     }
   }
 
-  public void bulkierElse() {
+  public static void bulkierElse() {
     if (someCondition) {
       someInteger++;
     } else {
@@ -26,7 +26,7 @@ public class IfTestable {
     }
   }
 
-  public void equalThenElse() {
+  public static void equalThenElse() {
     if (someCondition) {
       someInteger++;
       someInteger++;
@@ -40,7 +40,7 @@ public class IfTestable {
     }
   }
 
-  public void moreOrLessEqualThenElse() {
+  public static void moreOrLessEqualThenElse() {
     if (someCondition) {
       someInteger++;
       someInteger++;
@@ -53,7 +53,7 @@ public class IfTestable {
     }
   }
 
-  public void thenBranching() {
+  public static void thenBranching() {
     if (someCondition) {
       if (someCondition) {
         if (someCondition) {
@@ -70,7 +70,7 @@ public class IfTestable {
     
   }
 
-  public void elseBranching() {
+  public static void elseBranching() {
     if (!someCondition) {
       someInteger++;
     } else if (!someCondition) {

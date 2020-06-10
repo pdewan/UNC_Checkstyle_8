@@ -45,33 +45,19 @@
 
 
 	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
-		<property name="severity" value="warning" />		
-		
-		
-		<module name="ThenBranching">
+		<property name="severity" value="warning" />	
+		<module name="ClassHasOneInterface">
 			<property name="severity" value="warning" />					
-				
 		</module>
-		
-		<module name="BulkierThen">
-			<property name="severity" value="warning" />	
-			<property name="maxThenElseRatio" value="1" />
-					
+		<module name="ClassHasOneInterface">
+			<property name="severity" value="info" />					
 		</module>
-		<module name="BulkierThen">
-			<property name="severity" value="info" />	
-			<property name="minThenElseRatio" value="1" />
+		<module name="ClassHasAtLeastOneInterface">
+		<property name="severity" value="warning" />		
 		</module>
-		
-		 <module name="ElseBranching">
-			<property name="severity" value="info" />	
+		<module name="ClassHasAtLeastOneInterface">
+		<property name="severity" value="info" />		
 		</module>
-		
-		 <module name="NestedBlockDepth">
-			<property name="severity" value="warning" />		
-			<property name="max" value="1" />
-		</module>
-		
 	
 	 
 </module>
