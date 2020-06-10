@@ -119,7 +119,7 @@ public abstract class ConstructsCheck extends MethodCallCheck{
 		DetailAST anOperand = aMatchingNode.getNextSibling();
 		
 //		String anOperandText = anOperand.toStringTree();
-    String anOperandText = UNCAstTreeStringPrinter.printAbstractTree(anOperand);
+    String anOperandText = UNCAstTreeStringPrinter.printTree(anOperand, false);
 
 		return anOperandText.matches(aTransitiveOperation.getOperand());
 		
@@ -170,7 +170,7 @@ public abstract class ConstructsCheck extends MethodCallCheck{
 		Body aBody) {
 		String aNormalizedBody = substituteParameters(aBody.getOperand(), aMethod);
 //		String aBodyText = anAST.toStringTree();
-    String aBodyText = UNCAstTreeStringPrinter.printAbstractTree(anAST);
+    String aBodyText = UNCAstTreeStringPrinter.printTree(anAST, false);
 
 		return aBodyText.matches(aNormalizedBody);
 		

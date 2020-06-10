@@ -153,7 +153,7 @@ public class ExpectedParseTreeCheck extends MethodCallCheck{
 		DetailAST anOperand = aMatchingNode.getNextSibling();
 		
 //		String anOperandText = anOperand.toStringTree();
-    String anOperandText =UNCAstTreeStringPrinter.printAbstractTree(anOperand);
+    String anOperandText =UNCAstTreeStringPrinter.printTree(anOperand, false);
 
 		boolean retVal = anOperandText.matches(aTransitiveOperation.getOperand());
 		processMatchResult(retVal, aTransitiveOperation.getOperand());
@@ -186,7 +186,7 @@ public class ExpectedParseTreeCheck extends MethodCallCheck{
 		}	
 		DetailAST anExpression = aMatchingNode.getFirstChild().getNextSibling();
 //		String anExpressionText = anExpression.toStringTree();
-    String anExpressionText = UNCAstTreeStringPrinter.printAbstractTree(anExpression);
+    String anExpressionText = UNCAstTreeStringPrinter.printTree(anExpression, false);
 
 		String aSpecification = anIFStatement.getExpression();
 		if (aMethod != null) {
@@ -282,7 +282,7 @@ public class ExpectedParseTreeCheck extends MethodCallCheck{
 		Body aBody) {
 		String aNormalizedBody = substituteParameters(aBody.getOperand(), aMethod);
 //		String aBodyText = anAST.toStringTree();
-    String aBodyText = UNCAstTreeStringPrinter.printAbstractTree(anAST);
+    String aBodyText = UNCAstTreeStringPrinter.printTree(anAST, false);
 
 		boolean retVal = aBodyText.matches(aNormalizedBody);
 		processMatchResult(retVal, aBody.toString());
