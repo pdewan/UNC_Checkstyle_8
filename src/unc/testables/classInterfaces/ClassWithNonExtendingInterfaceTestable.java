@@ -1,4 +1,4 @@
-package unc.testables.classHasOneInterface;
+package unc.testables.classInterfaces;
 
 public class ClassWithNonExtendingInterfaceTestable implements InterfaceNotExtendingTestable{
 
