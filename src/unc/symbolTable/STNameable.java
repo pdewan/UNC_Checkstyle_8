@@ -18,11 +18,12 @@ public interface STNameable extends STElement {
 	AccessModifier getAccessModifier();
 	List<AccessModifierUsage> getAccessModifiersUsed();
 
-	String getStringTree();
+	String getStringTree(boolean showLineInfo);
 
 	Integer getSize();
 
-	String[] getStatements();
+
+  String[] getStatements(boolean showLineInfo);
 
 //	String[] getComponents();
 

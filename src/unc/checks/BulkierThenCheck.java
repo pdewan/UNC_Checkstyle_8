@@ -74,8 +74,8 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 		   DetailAST aThenPart = getThenPart(anIfAST);
 //		   String aThenString = aThenPart.toStringTree();
 //		   String anElseString = anElsePart.toStringTree();
-	       String aThenString = UNCAstTreeStringPrinter.printAbstractTree(aThenPart);
-	       String anElseString = UNCAstTreeStringPrinter.printAbstractTree(anElsePart);
+	       String aThenString = UNCAstTreeStringPrinter.printTree(aThenPart, false);
+	       String anElseString = UNCAstTreeStringPrinter.printTree(anElsePart, false);
 //		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length - 1; // no semiucolon means length of 1
 //		   double numStatementsInElsePart = anElseString.split(STATEMENT_SEPARATOR).length - 1;
 		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length; // no semiucolon means length of 1

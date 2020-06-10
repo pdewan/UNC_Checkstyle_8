@@ -100,25 +100,25 @@ public  class AnSTNameable implements STNameable {
 		return null;
 	}
 	@Override
-	public String getStringTree() {
+	public String getStringTree(boolean showLineInfo) {
 		if (stringTree == null) {
 //			stringTree = ast.toStringTree();
-	     stringTree = UNCAstTreeStringPrinter.printConcreteTree(ast);
+	     stringTree = UNCAstTreeStringPrinter.printTree(ast, showLineInfo);
 
 		}
 		return stringTree;
 	}
 	@Override
-	public String[] getStatements() {
+	public String[] getStatements(boolean showLineInfo) {
 		if (statements == null) {
-			String aStringTree = getStringTree();			
+			String aStringTree = getStringTree(showLineInfo);			
 			statements = aStringTree.split(BulkierThenCheck.STATEMENT_SEPARATOR);
 		}
 		return statements;
 	}
 	@Override
 	public Integer getSize() {
-		return getStatements().length;
+		return getStatements(false).length;
 	}
 	
 //	public static void main (String[] args) {
