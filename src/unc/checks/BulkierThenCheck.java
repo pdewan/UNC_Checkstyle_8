@@ -10,7 +10,9 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 	public static final String MSG_KEY_INFO = "bulkierElse";
 
 	protected int maxElsePartSize = 4;
-	protected double minThenElseRatio = 3;
+	protected double maxThenElseRatio = 3;
+	 protected double minThenElseRatio = 0.33;
+
 
 //	@Override
 //	protected String msgKey() {
@@ -38,9 +40,15 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 	public void setMaxElsePartSize (int anElsePartSize) {
 		maxElsePartSize =  anElsePartSize;
 	}
-	public void setMinThenElseRatio (double aRatio) {
-		minThenElseRatio =  aRatio;
+	public void setMaxThenElseRatio (double aRatio) {
+		maxThenElseRatio =  aRatio;
 	}
+	 public void setMinElsePartSize (int anElsePartSize) {
+	    maxElsePartSize =  anElsePartSize;
+	  }
+	  public void setMinThenElseRatio (double aRatio) {
+	    minThenElseRatio =  aRatio;
+	  }
 //	  @Override
 //	    public void visitToken(DetailAST ast)
 //	    {
@@ -66,8 +74,8 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 		   DetailAST aThenPart = getThenPart(anIfAST);
 //		   String aThenString = aThenPart.toStringTree();
 //		   String anElseString = anElsePart.toStringTree();
-	       String aThenString = UNCAstTreeStringPrinter.printConcreteTree(aThenPart);
-	       String anElseString = UNCAstTreeStringPrinter.printConcreteTree(anElsePart);
+	       String aThenString = UNCAstTreeStringPrinter.printAbstractTree(aThenPart);
+	       String anElseString = UNCAstTreeStringPrinter.printAbstractTree(anElsePart);
 //		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length - 1; // no semiucolon means length of 1
 //		   double numStatementsInElsePart = anElseString.split(STATEMENT_SEPARATOR).length - 1;
 		   double numStatementsInThenPart = aThenString.split(STATEMENT_SEPARATOR).length; // no semiucolon means length of 1
@@ -85,18 +93,28 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 //				log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
 //
 //		   }
-		   if (!isInfo() && numStatementsInElsePart <= maxElsePartSize &&
-				   (numStatementsInElsePart == 0) ||
-				   numStatementsInThenPart/numStatementsInElsePart >= minThenElseRatio) {
-//			   logBulkierThen(aThenPart);
-//				log(aThenPart, "Then#:" + numStatementsInThenPart + " Else#: " +numStatementsInElsePart );
-				log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
-
-		   } else if (isInfo() && numStatementsInThenPart/numStatementsInElsePart <= minThenElseRatio) {
-				log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
-
-		   }
+//		   if (!isInfo() && numStatementsInElsePart <= maxElsePartSize &&
+//				   (numStatementsInElsePart == 0) ||
+//				   numStatementsInThenPart/numStatementsInElsePart >= minThenElseRatio) {
+////			   logBulkierThen(aThenPart);
+////				log(aThenPart, "Then#:" + numStatementsInThenPart + " Else#: " +numStatementsInElsePart );
+//				log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
+//
+//		   } else if (isInfo() && numStatementsInThenPart/numStatementsInElsePart <= minThenElseRatio) {
+//				log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
+//
+//		   }
+		   double aThenElseRatio = numStatementsInThenPart/numStatementsInElsePart ;
 			   
+		   if (!isInfo() && aThenElseRatio > maxThenElseRatio) {
+//		         logBulkierThen(aThenPart);
+//		        log(aThenPart, "Then#:" + numStatementsInThenPart + " Else#: " +numStatementsInElsePart );
+		        log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
+
+		    } else if (isInfo() && aThenElseRatio < minThenElseRatio ) {
+		        log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
+
+		       }
 		   
 		   
 	        

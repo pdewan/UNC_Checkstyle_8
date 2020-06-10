@@ -65,16 +65,36 @@ public class UNCAstTreeStringPrinter {
    */
   public static String printAbstractTree(DetailAST ast) {
       final StringBuilder messageBuilder = new StringBuilder(1024);
-      DetailAST node = ast;
-      while (node != null) {
-          messageBuilder.append(getIndentation(node))
-                  .append(getAbstractNodeInfo(node))
-                  .append(LINE_SEPARATOR)
-                  .append(printAbstractTree(node.getFirstChild()));
-          node = node.getNextSibling();
-      }
+      addAbstractNodeInfo(messageBuilder, ast);
+      addAbstractDescendents(messageBuilder, ast.getFirstChild());
       return messageBuilder.toString();
   }
+      
+      
+  public static void addConcreteNodeInfo(StringBuilder messageBuilder, DetailAST node) {
+    messageBuilder.append(getIndentation(node))
+    .append(getConcreteNodeInfo(node))
+    .append(LINE_SEPARATOR);
+  }
+  public static void addAbstractNodeInfo(StringBuilder messageBuilder, DetailAST node) {
+    messageBuilder.append(getIndentation(node))
+    .append(getAbstractNodeInfo(node))
+    .append(LINE_SEPARATOR);
+  }
+  private static String getConcreteNodeInfo(DetailAST node) {
+    return TokenUtil.getTokenName(node.getType())
+            + " -> " + escapeAllControlChars(node.getText())
+            + " [" + node.getLineNo() + ':' + node.getColumnNo() + ']';
+}
+  public static void addAbstractDescendents(StringBuilder messageBuilder, DetailAST ast) {
+    DetailAST node = ast;
+    while (node != null) {
+        addAbstractNodeInfo(messageBuilder, node);
+        addAbstractDescendents(messageBuilder, node.getFirstChild());
+       
+        node = node.getNextSibling();
+    }
+}
   /**
    * Get indentation for an AST node.
    *
