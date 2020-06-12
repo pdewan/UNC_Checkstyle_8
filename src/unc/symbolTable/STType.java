@@ -167,4 +167,6 @@ public interface STType extends STNameable{
 	long getTimeOfEntry();
 	boolean isAnnotation();
 	FileContents getFileContents();
+  List<STNameable> typesInCommonWith(String anOtherType);
+  List<String> namesOfTypesInCommonWith(String anOtherType);
 }

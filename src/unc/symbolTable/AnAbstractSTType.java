@@ -176,8 +176,10 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 			if (aSuperType == null || aSuperType.getName() == null) {
 				return null;
 			}
-			if (TagBasedCheck.isExternalType(aSuperType.getName()) &&
-					!STBuilderCheck.getImportsAsExistingClasses()) {
+//			if (TagBasedCheck.isExternalType(aSuperType.getName()) &&
+//					!STBuilderCheck.getImportsAsExistingClasses()) {
+			  if (!STBuilderCheck.getImportsAsExistingClasses() && TagBasedCheck.isExternalType(aSuperType.getName())
+			          ) {
 				continue;
 			}
 			Object aSuperTypeMethods = addMethodsOfSuperType(retVal, aSuperType);
@@ -997,12 +999,14 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 	 *
 	 */
 	public static List<STNameable> getAllTypes(STType anSTType) {
-		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
-				.toShortTypeName(anSTType.getName())) && !STBuilderCheck.getImportsAsExistingClasses())
+//		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
+//				.toShortTypeName(anSTType.getName())) && !STBuilderCheck.getImportsAsExistingClasses())
+		  if (TagBasedCheck.isExternalClass(anSTType.getName()) && !STBuilderCheck.getImportsAsExistingClasses())
 			return emptyList;
 		List<STNameable> result = new ArrayList();
 		result.add(anSTType);
 		List<STNameable> aSuperTypes = getAllSuperTypes(anSTType);
+		
 		if (aSuperTypes == null) {
 			return computeMissingNameableList();
 		}
@@ -1018,8 +1022,9 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 	}
 
 	public static List<STNameable> getAllInterfaces(STType anSTType) {
-		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
-				.toShortTypeName(anSTType.getName())))
+//		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
+//				.toShortTypeName(anSTType.getName())))
+		   if (TagBasedCheck.isExternalClass(anSTType.getName()))
 			return emptyList;
 		List<STNameable> result = new ArrayList();
 //		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
@@ -1109,15 +1114,23 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		}
 		return emptySet;
 	}
-
+	public static List<STNameable> getAllSuperTypes(STNameable aType) {
+	  List<STNameable> aSuperTypes = getAllSuperTypesExceptObject(aType);
+	  STType anObjectType = SymbolTableFactory.getOrCreateSymbolTable().getObjectType();
+    if (aSuperTypes != null && anObjectType != null && aType != anObjectType && !aSuperTypes.contains(anObjectType)) {
+      aSuperTypes.add(anObjectType);
+    }
+    return aSuperTypes;
+	}
 	/**
 	 * Go up the extends chain, do not look at the implements chain
 	 *
 	 */
 	
-	public static List<STNameable> getAllSuperTypes(STNameable aType) {
-		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
-				.toShortTypeName(aType.getName())) && !STBuilderCheck.getImportsAsExistingClasses())
+	public static List<STNameable> getAllSuperTypesExceptObject(STNameable aType) {
+//		if (TagBasedCheck.isExternalClass(TypeVisitedCheck
+//				.toShortTypeName(aType.getName())) && !STBuilderCheck.getImportsAsExistingClasses())
+		  if (TagBasedCheck.isExternalClass(aType.getName()) && !STBuilderCheck.getImportsAsExistingClasses())
 			return emptyList;
 		List<STNameable> result = new ArrayList();
 //		result.add(aType);
@@ -1249,9 +1262,14 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 //	List<STNameable> superTypes;
 	@Override
 	public List<STNameable> getAllSuperTypes() {
-		if (superTypes == null)
+		if (superTypes == null) {
 			superTypes = getAllSuperTypes(this);
 //		superTypes = getAllSuperTypes(this);
+//		STType anObjectType = SymbolTableFactory.getOrCreateSymbolTable().getObjectType();
+//		if (superTypes != null && anObjectType != null && this != anObjectType && !superTypes.contains(anObjectType)) {
+//		  superTypes.add(anObjectType);
+//		}
+		}
 		return superTypes;
 		// List<STNameable> result = new ArrayList();
 //		return getAllSuperTypes(this);
@@ -1323,11 +1341,13 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 	 * remove delegates non super types
 	 */
 
-	public List<String> computeSubTypes() {
+	public List<String> computeImmediateSubTypes() {
 	
 		List<String> aNonSuperTypes = getNonSuperTypes();
 		List<String> result = new ArrayList();
-		String myShortName = TypeVisitedCheck.toShortTypeName(name);
+//		String myShortName = TypeVisitedCheck.toShortTypeName(name);
+//    String myName = TypeVisitedCheck.toShortTypeName(name);
+
 //		String myShortName = name;
 
 		for (String aNonSuperType : aNonSuperTypes) {
@@ -1344,17 +1364,55 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 			// makes sense to move it up
 //			if (anSTType == null)
 //				return null;
-			List<String> aSuperTypes = toNormalizedList(anSTType
-					.getSuperTypeNames());
+//			List<String> aSuperTypes = toNormalizedList(anSTType
+//					.getSuperTypeNames());
+		   List<String> aSuperTypes =anSTType
+		           .getSuperTypeNames();
 			if (aSuperTypes == null)
 //				return null;
 				return computeMissingNameableList();
-			if (aSuperTypes.contains(myShortName))
+			if (aSuperTypes.contains(name))
 				result.add(aNonSuperType);
 		}
 //		result.remove(getShortName());
 		return result;
 	}
+	 public List<String> computeSubTypes() {
+	   
+	    List<String> aNonSuperTypes = getNonSuperTypes();
+	    List<String> result = new ArrayList();
+//	    String myShortName = TypeVisitedCheck.toShortTypeName(name);
+//	    String myName = TypeVisitedCheck.toShortTypeName(name);
+
+//	    String myShortName = name;
+
+	    for (String aNonSuperType : aNonSuperTypes) {
+	      STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
+	          .getSTClassByShortName(aNonSuperType);
+//	      if (anSTType == null) {
+//	        System.err.println("nul st type");
+//	      }
+	      if (anSTType == null)
+//	        return null;
+	        return computeMissingNameableList();
+	      if (!anSTType.waitForSuperTypeToBeBuilt())
+	        continue;
+	      // makes sense to move it up
+//	      if (anSTType == null)
+//	        return null;
+//	      List<String> aSuperTypes = toNormalizedList(anSTType
+//	          .getSuperTypeNames());
+	       List<String> aSuperTypes = toNameList(anSTType.getAllTypes());
+	              
+	      if (aSuperTypes == null)
+//	        return null;
+	        return computeMissingNameableList();
+	      if (aSuperTypes.contains(name))
+	        result.add(aNonSuperType);
+	    }
+//	    result.remove(getShortName());
+	    return result;
+	  }
 //	List<String> subTypes;
 	public List<String> getSubTypes() {
 		if (subTypes == null)
@@ -1387,7 +1445,9 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 	}
 //	@Override
 	public List<String> computePeerTypes() {
-		List<String> aNonSuperTypes = toNormalizedList(getNonSuperTypes());
+//		List<String> aNonSuperTypes = toNormalizedList(getNonSuperTypes());
+    List<String> aNonSuperTypes = getNonSuperTypes();
+
 		if (aNonSuperTypes == null) {
 			if (waitForSuperTypeToBeBuilt())
 //				return null;
@@ -1395,7 +1455,8 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 			else
 				return emptyList;
 		}
-		List<String> aSubTypes = toNormalizedList(getSubTypes());
+//		List<String> aSubTypes = toNormalizedList(getSubTypes());
+		List<String> aSubTypes = getSubTypes();
 		if (aSubTypes == null) {
 			if (waitForSuperTypeToBeBuilt())
 				return computeMissingNameableList();
@@ -1404,37 +1465,39 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		}
 		List<String> aResult = difference(aNonSuperTypes, aSubTypes);
 		if (aResult != null) {
-			aResult.remove(getShortName());
+//			aResult.remove(getShortName());
+			 aResult.remove(getName());
 		}
 		if (isInterface() || aResult == null)
 			return aResult;
 		// find delegates
-		if (getDelegates().size() == 0)
-			return aResult;
+//		if (getDelegates().size() == 0)
+//			return aResult;
 		List<String> aFinalResult = new ArrayList();
 		for (String aType : aResult) {
 			STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 					.getSTClassByShortName(aType);
 			if (anSTType == null)
 				return computeMissingNameableList();
-			Boolean isDelegate = isDelegate(aType);
-			if (isDelegate == null) {
-				if (waitForSuperTypeToBeBuilt())
-					return computeMissingNameableList();
-				else
-					return emptyList;
-			}
-			Boolean isDelegator = anSTType.isDelegate(getShortName());
-			if (isDelegator == null) {
-				if (waitForSuperTypeToBeBuilt())
-					return computeMissingNameableList();
-				else
-					return emptyList;
-			}
-			if (!isDelegator && !isDelegate) {
-				// if (!delegates.contains(aType))
-				aFinalResult.add(aType);
-			}
+//			Boolean isDelegate = isDelegate(aType);
+//			if (isDelegate == null) {
+//				if (waitForSuperTypeToBeBuilt())
+//					return computeMissingNameableList();
+//				else
+//					return emptyList;
+//			}
+//			Boolean isDelegator = anSTType.isDelegate(getShortName());
+//			if (isDelegator == null) {
+//				if (waitForSuperTypeToBeBuilt())
+//					return computeMissingNameableList();
+//				else
+//					return emptyList;
+//			}
+//			if (!isDelegator && !isDelegate) {
+//				// if (!delegates.contains(aType))
+//				aFinalResult.add(aType);
+//			}
+			aFinalResult.add(aType);
 		}
 		return aFinalResult;
 	}
@@ -1586,6 +1649,25 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		// return intersect (aSuperTypes1, aSuperTypes2);
 		return commonSuperTypes(anSTType1, anSTType2);
 	}
+	public static List<STNameable> commonTypes(String aType1, String aType2) {
+    // List<STNameable> result = new ArrayList();
+    STType anSTType1 = SymbolTableFactory.getOrCreateSymbolTable()
+        .getSTClassByShortName(aType1);
+    if (anSTType1 == null)
+      return computeMissingNameableList();
+    STType anSTType2 = SymbolTableFactory.getOrCreateSymbolTable()
+        .getSTClassByShortName(aType2);
+    if (anSTType2 == null)
+      return computeMissingNameableList();
+    // List<STNameable> aSuperTypes1 = anSTType1.getSuperTypes();
+    // if (aSuperTypes1 == null)
+    // return null;
+    // List<STNameable> aSuperTypes2 = anSTType2.getSuperTypes();
+    // if (aSuperTypes2 == null)
+    // return null;
+    // return intersect (aSuperTypes1, aSuperTypes2);
+    return commonTypes(anSTType1, anSTType2);
+  }
 
 	public static List<STNameable> commonSuperTypes(STType anSTType1,
 			STType anSTType2) {
@@ -1598,16 +1680,36 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 			return computeMissingNameableList();
 		return intersect(aSuperTypes1, aSuperTypes2);
 	}
+	 public static List<STNameable> commonTypes(STType anSTType1,
+	         STType anSTType2) {
+	       //
+	       List<STNameable> aSuperTypes1 = anSTType1.getAllTypes();
+	       if (aSuperTypes1 == null)
+	         return computeMissingNameableList();
+	       List<STNameable> aSuperTypes2 = anSTType2.getAllTypes();
+	       if (aSuperTypes2 == null)
+	         return computeMissingNameableList();
+	       return intersect(aSuperTypes1, aSuperTypes2);
+	     }
 
 	@Override
-	public List<STNameable> superTypesInCommonWith(String anOtherType) {
-		return commonSuperTypes(this.getName(), anOtherType);
+	public List<STNameable> typesInCommonWith(String anOtherType) {
+		return commonTypes(this.getName(), anOtherType);
 	}
+	@Override
+  public List<STNameable> superTypesInCommonWith(String anOtherType) {
+    return commonSuperTypes(this.getName(), anOtherType);
+  }
+
 
 	@Override
 	public List<String> namesOfSuperTypesInCommonWith(String anOtherType) {
 		return toNameList(superTypesInCommonWith(anOtherType));
 	}
+	 @Override
+	  public List<String> namesOfTypesInCommonWith(String anOtherType) {
+	    return toNameList(typesInCommonWith(anOtherType));
+	  }
 
 	@Override
 	public List<STNameable> superTypesInCommonWith(STType anOtherType) {
@@ -1741,6 +1843,16 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		return intersect(Arrays.asList(aMethods1), Arrays.asList(aMethods2));
 		//
 	}
+	public static List<STMethod> commonDeclaredMethods(STType aType1, STType aType2) {
+    STMethod[] aMethods1 = aType1.getDeclaredMethods();
+    if (aMethods1 == null)
+      return computeMissingNameableList();
+    STMethod[] aMethods2 = aType2.getDeclaredMethods();
+    if (aMethods2 == null)
+      return computeMissingNameableList();
+    return intersect(Arrays.asList(aMethods1), Arrays.asList(aMethods2));
+    //
+  }
 	public static List<PropertyInfo> commonProperties(String aType1, String aType2) {
 		STType anSTType1 = SymbolTableFactory.getOrCreateSymbolTable()
 				.getSTClassByShortName(aType1);
@@ -1772,9 +1884,27 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		return commonSignatures(this, aType);
 	}
 	
+	protected Map<STType, List<STMethod>> typeToCommonMethods = new HashMap();
+	
 	@Override
 	public List<STMethod> methodsCommonWith(STType aType) {
-		return commonMethods(this, aType);
+	  if (aType == null) {
+	    return null;
+	  }
+	  
+	  if (System.identityHashCode(this) > System.identityHashCode(aType)) {
+	    return aType.methodsCommonWith(this);
+	  }
+	  List<STMethod> aResult = typeToCommonMethods.get(aType);
+	  if (aResult == null) {
+//	    aResult = commonMethods(this, aType);
+	     aResult = commonDeclaredMethods(this, aType);
+
+	    typeToCommonMethods.put(aType, aResult);
+	  }
+	  return aResult;
+	          
+//		return commonMethods(this, aType);
 	}
 	
 	@Override
@@ -1821,6 +1951,17 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 			return null;
 		return containsMethod(anSTType, aMethod);
 	}
+	public static STType containsDeclaredMethod(String aTypeName, STMethod aMethod) {
+    STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
+        .getSTClassByShortName(aTypeName);
+    if (anSTType == null)
+      return null;
+//    return containsDeclaredMethod(anSTType, aMethod);
+    if  (containsDeclaredMethod(anSTType, aMethod)) {
+      return anSTType;
+    }
+    return null;
+  }
 	public static Boolean containsProperty(String aTypeName, PropertyInfo aProperty) {
 		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 				.getSTClassByShortName(aTypeName);
@@ -1835,12 +1976,26 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 			return null;
 		return aSignatures.contains(aSignature);
 	}
-	public static Boolean containsMethod(STType aType, STMethod aMethod) {
-		List<STMethod> aMethods = Arrays.asList(aType.getMethods());
-		if (aMethods == null)
-			return null;
-		return aMethods.contains(aMethod);
-	}
+//	public static Boolean containsMethod(STType aType, STMethod aMethod) {
+//		List<STMethod> aMethods = Arrays.asList(aType.getMethods());
+//		if (aMethods == null)
+//			return null;
+//		return aMethods.contains(aMethod);
+//	}
+	public static Boolean containsDeclaredMethod(STType aType, STMethod aMethod) {
+    List<STMethod> aMethods = Arrays.asList(aType.getDeclaredMethods());
+    if (aMethods == null)
+      return null;
+//    return aMethods.contains(aMethod);
+    return aMethods.contains(aMethod);
+
+  }
+	 public static Boolean containsMethod(STType aType, STMethod aMethod) {
+	    List<STMethod> aMethods = Arrays.asList(aType.getDeclaredMethods());
+	    if (aMethods == null)
+	      return null;
+	    return aMethods.contains(aMethod);
+	  }
 	public static Boolean containsProperty(STType aType, PropertyInfo aProperty) {
 		Collection<PropertyInfo> aProperties = aType.getPropertyInfos().values();
 		if (aProperties == null)
@@ -1900,6 +2055,30 @@ public List<STMethod>  addMethodsOfSuperType(List<STMethod> retVal, STNameable a
 		}
 		return retVal;
 	}
+	public static STType containsDeclaredMethod(List<String> aList,
+	        STMethod aMethod) {
+//	      Boolean retVal = false;
+	       STType retVal = null;
+
+	      for (String aType : aList) {
+	        STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
+	            .getSTClassByShortName(aType);
+	        if (anSTType == null) {
+//	          retVal = null;
+	          continue;
+	        }
+	        if (anSTType == SymbolTableFactory.getOrCreateSymbolTable().getObjectType()) {
+	          continue;
+	        }
+	        retVal = containsDeclaredMethod(aType, aMethod);
+	        if (retVal != null) {
+	          return retVal;
+	        }
+	       
+
+	      }
+	      return retVal;
+	    }
 	public static Boolean containsProperty(List<String> aList,
 			PropertyInfo aSignature) {
 		Boolean retVal = false;

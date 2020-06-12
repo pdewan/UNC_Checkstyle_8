@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import unc.symbolTable.AnAbstractSTType;
 import unc.symbolTable.AnSTType;
 import unc.symbolTable.STMethod;
 import unc.symbolTable.STNameable;
@@ -15,10 +17,15 @@ import unc.symbolTable.STType;
 import unc.symbolTable.SymbolTableFactory;
 // not really using methods of superclass
 public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
-	public static final String MSG_KEY = "peerCommonSignatures";
+//	public static final String MSG_KEY = "peerCommonSignatures";
+	 public static final String MSG_KEY_DUPLICATED_SIGNATURES = "peerDuplicatedSignatures";
+   public static final String MSG_KEY_OVERRIDDEN_SIGNATURES = "peerOverriddingSignatures";
+
+
 	
 	List<STMethod> includeSignatures = new ArrayList();
 	List<STMethod> excludeSignatures = new ArrayList();
+	protected boolean includeStaticMethods = false;
 	
 //	public void doVisitToken(DetailAST ast) {
 //		// System.out.println("Check called:" + MSG_KEY);
@@ -41,10 +48,18 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 		return new int[] { 
 				TokenTypes.PACKAGE_DEF,
 				TokenTypes.CLASS_DEF,
-				TokenTypes.INTERFACE_DEF
+//				TokenTypes.INTERFACE_DEF
 				
 		};
 	}
+	
+	 public void setIncludeStaticMethods(boolean aFlag) {
+	   includeStaticMethods = aFlag;
+	 }
+	 public boolean isIncludeStaticMethods() {
+	   return includeStaticMethods;
+	 }
+
 	
 	public void setIncludeSignatures(String[] aSignatures) {
 		for (String aSignature:aSignatures) {
@@ -63,7 +78,7 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 	}
     public void doFinishTree(DetailAST ast) {
 		
-		maybeAddToPendingTypeChecks(ast);
+//		maybeAddToPendingTypeChecks(ast);
 		super.doFinishTree(ast);
 
 	}
@@ -128,24 +143,61 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
     }
     public Boolean compareCommonMethods(STType anSTType, String aPeerType, DetailAST aTree) {
     	Boolean result = true;
-    	List<STMethod> aCommonMethods = filterByIncludeAndExcludeSignatures(anSTType.methodsCommonWith(aPeerType));
+    	 STType aPeerSTType = SymbolTableFactory.getOrCreateSymbolTable()
+    	         .getSTClassByShortName(aPeerType);
+    	     if (aPeerType == null)
+    	       return null;
+    	 if (System.identityHashCode(anSTType) > System.identityHashCode(aPeerSTType)) {
+    	   return true;
+    	 }
+    	
+//    	List<STMethod> aCommonMethods = filterByIncludeAndExcludeSignatures(anSTType.methodsCommonWith(aPeerType));
+      List<STMethod> aCommonMethods = filterByIncludeAndExcludeSignatures(anSTType.methodsCommonWith(aPeerSTType));
+
 		if (aCommonMethods == null)
 			return null;
 //		System.out.println (anSTType.getName() + " common methods " + aPeerType + " = " + aCommonMethods);
-		List<String> aCommonSuperTypes = anSTType.namesOfSuperTypesInCommonWith(aPeerType);
+//		List<String> aCommonSuperTypes = anSTType.namesOfSuperTypesInCommonWith(aPeerType);
+    List<String> aCommonSuperTypes = anSTType.namesOfTypesInCommonWith(aPeerType);
+
 		if (aCommonSuperTypes == null)
 			return null;
 //		System.out.println (anSTType.getName() + " common supertypes with " + aPeerType + " =" + aCommonSuperTypes);
-		
+		List<STMethod> anOverriddenMethods = new ArrayList();
+		List<STMethod> aDuplicatedMethods = new ArrayList();
+		Set<STType> anOverriddenTypes = new HashSet();
 		for (STMethod aMethod:aCommonMethods) {
-			Boolean aHasSignature =  AnSTType.containsMethod(aCommonSuperTypes, aMethod);
-			if (aHasSignature == null)
-				return null;
-			if (aHasSignature)
-				continue;
-			result = false;
-			logPeerSignatureNotMatched(aTree, aMethod.getSignature(), aPeerType);			
+		  if (!aMethod.isInstance() && !isIncludeStaticMethods()) {
+		    break;
+		  }
+//			Boolean aHasSignature =  AnSTType.containsMethod(aCommonSuperTypes, aMethod);
+//	     Boolean aHasSignature =  AnSTType.containsDeclaredMethod(aCommonSuperTypes, aMethod);
+       STType aHasSignature =  AnSTType.containsDeclaredMethod(aCommonSuperTypes, aMethod);
+       if (aHasSignature == null) {
+         aDuplicatedMethods.add(aMethod);
+       } else {
+         anOverriddenMethods.add(aMethod);
+         anOverriddenTypes.add(aHasSignature);
+       }
+
+//
+//			if (aHasSignature == null) {
+//				return null;
+//			}
+////			if (aHasSignature)
+//				continue;
+//			result = false;
+//			logPeerSignatureNotMatched(aTree, aMethod.getSignature(), aPeerType);			
 		}	
+		if (aDuplicatedMethods.size() > 0) {
+		  
+	    log(MSG_KEY_DUPLICATED_SIGNATURES, aDuplicatedMethods.get(0).getAST(), aTree, aPeerType, aDuplicatedMethods.toString());
+
+		}
+		if (anOverriddenMethods.size() > 0) {
+      log(MSG_KEY_OVERRIDDEN_SIGNATURES, anOverriddenMethods.get(0).getAST(), aTree, aPeerType, anOverriddenMethods, anOverriddenTypes );
+
+		}
 		return result;    	
     }
     
@@ -169,15 +221,17 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 //    	
 //    }
     public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
-		String aTypeName = getName(getEnclosingTypeDeclaration(aTree));
+//		String aTypeName = getName(getEnclosingTypeDeclaration(aTree));
 		
 //		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aTypeName);
 		STType anSTType = getSTType(aTree);
 
-		if (anSTType.isEnum() || anSTType.isAnnotation())
+		if (anSTType.isEnum() || anSTType.isAnnotation() || anSTType.isInterface()) // wen default tokens do not include this why is this executed
 			return true;
 
-		List<String> aPeerTypes = filterTypes(anSTType.getPeerTypes(), aTypeName);
+//		List<String> aPeerTypes = filterTypes(anSTType.getPeerTypes(), aTypeName);
+    List<String> aPeerTypes = filterTypes(anSTType.getPeerTypes(), anSTType.getName());
+
 		if (aPeerTypes == null) 
 			return null;
 //		System.out.println("Peer Types" + aPeerTypes);
@@ -188,8 +242,10 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 //				return null;
 			if (anSTType.getName().contains(aPeerType))
 				continue;
-			if (compareCommonMethods(anSTType, aPeerType, aTree) == null)
-				return null;
+//			if (compareCommonMethods(anSTType, aPeerType, aTree) == null)
+//				return null;
+			 compareCommonMethods(anSTType, aPeerType, aTree) ;
+	      
 			
 		}
 		return true;

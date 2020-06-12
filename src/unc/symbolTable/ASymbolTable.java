@@ -18,7 +18,9 @@ public class ASymbolTable implements SymbolTable{
 //	Map<String, DetailAST> classNameToAST = new HashMap<>();
 //	Map<String, DetailAST> interfaceNameToAST = new HashMap<>();
 //	Map<String, DetailAST> packageNameToAST = new HashMap();
-	Set<String> packageNames =  new HashSet<>();
+  STType objectType;
+
+  Set<String> packageNames =  new HashSet<>();
 	Map<String, DetailAST> methodCallToAST = new HashMap();
 //	Map<String, DetailAST> methodDeclarationToAST = new HashMap();
 	Map<String, STType>   typeNameToSTClass = new HashMap<>();	
@@ -183,6 +185,9 @@ public class ASymbolTable implements SymbolTable{
 	@Override
 	public STType putSTType(String aName, STType anSTType) {
 		packageNames.add(aName);
+		if (aName.equals("java.lang.Object")) {
+		  objectType = anSTType;
+		}
 		return typeNameToSTClass.put(aName, anSTType);
 	}
 	@Override
@@ -233,4 +238,8 @@ public class ASymbolTable implements SymbolTable{
 	public int size() {
 		return typeNameToSTClass.size();
 	}
+	@Override
+	 public STType getObjectType() {
+	    return objectType;
+	  }
 }

@@ -615,7 +615,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
 		if (!checkExcludeRegularExpressionsOfCurrentType()) {
 			return;
 		}
+		if (!isFirstPass()) {
 		checkTags(ast); // want to check tags after symbol table built
+		}
 		super.doFinishTree(ast);
 //		super.log(ast, "testing st builder");
 

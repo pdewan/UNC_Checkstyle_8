@@ -76,7 +76,6 @@
 	 
 </module>
 <module name="TreeWalker">
-		<module name="EqualsAvoidNull" />
 
 </module>
 </module>

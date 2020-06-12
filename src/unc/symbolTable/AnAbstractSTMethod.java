@@ -217,11 +217,13 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		 String aStatic = isInstance()?"":"static ";
 //		 String aPublic = isPublic()?"public":"";
 		 result.append(aStatic);
-		 String aSynchronized = isSynchronized()?"":"synchronized ";
+		 String aSynchronized = isSynchronized()?"synchronized ": "";
 		 result.append(aSynchronized);
 
 
 		 result.append(ComprehensiveVisitCheck.toAccessString(getAccessToken()));
+	    result.append(" ");
+
 
 		 result.append(name);
 		 result.append(NAME_PARAMETER_SEPARATOR);
@@ -297,7 +299,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		public boolean equals (Object anotherObject) {
 			if (anotherObject instanceof STMethod) {
 				STMethod anotherSTMethod = (STMethod) anotherObject;
-				return getSignature().equals(anotherSTMethod.getSignature());
+//				return getSignature().equals(anotherSTMethod.getSignature());
+        return getSimpleChecksSignature().equals(anotherSTMethod.getSimpleChecksSignature());
+
 			}
 			return super.equals(anotherObject);
 		}

@@ -480,16 +480,19 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
  }
  
  
- public static boolean isExternalClass(String aShortClassName) {
-	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aShortClassName);
+ public static boolean isExternalClass(String aFullClassName) {
+	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullClassName);
 	if (anSTType != null // what if we create existing classes, we may not have the external class in our path
 			)
 //			&& !STBuilderCheck.getImportsAsExistingClasses()) 
 //		return false;
 		return anSTType.isExternal();
+	String aShortClassName = toShortTypeOrVariableName(aFullClassName);
 	return aShortClassName.equals("Object") ||
 			isExternalImportCacheCheckingShortName(aShortClassName) || 
-			isExternalImportCacheChecking(aShortClassName) || // not really short name
+//			isExternalImportCacheChecking(aShortClassName) || // not really short name
+	     isExternalImportCacheChecking(aFullClassName) || // not really short name
+
 			isJavaLangClass(aShortClassName);
  }
  public static List<STNameable> asListOrNull(STNameable[] anArray) {
@@ -1325,7 +1328,9 @@ public static boolean isExternalTypeElement(String aFullName) {
 //	if (TagBasedCheck.isProjectImport(aFullName)) {
 //		return false;
 //	}
-	if (isExternalClass(toShortTypeOrVariableName(aFullName))) return true;
+//	if (isExternalClass(toShortTypeOrVariableName(aFullName))) return true;
+	 if (isExternalClass(aFullName)) return true;
+
 	
 	for (String aString:STBuilderCheck.getExternalTypeRegularExpressions()) {
 		if (aFullName.matches(aString)) {

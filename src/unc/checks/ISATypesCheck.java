@@ -82,7 +82,9 @@ public class ISATypesCheck extends ComprehensiveVisitCheck{
 			if (aCommonSignatures == null)
 				return null;
 			System.err.println (anSTType.getName() + " common signaures " + aPeerType + " = " + aCommonSignatures);
-			List<String> aCommonSuperTypes = anSTType.namesOfSuperTypesInCommonWith(aPeerType);
+//			List<String> aCommonSuperTypes = anSTType.namesOfSuperTypesInCommonWith(aPeerType);
+	     List<String> aCommonSuperTypes = anSTType.namesOfSuperTypesInCommonWith(aPeerType);
+
 			if (aCommonSuperTypes == null)
 				return null;
 			System.err.println (anSTType.getName() + " common supertypes with " + aPeerType + " =" + aCommonSuperTypes);

@@ -46,22 +46,12 @@
 
 	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
 		<property name="severity" value="warning" />	
-		<module name="ClassHasOneInterface">
+		<module name="ClassDecomposition">
 			<property name="severity" value="warning" />					
 		</module>
-		<module name="ClassHasOneInterface">
-			<property name="severity" value="info" />					
-		</module>
-		<module name="ClassHasAtLeastOneInterface">
-		<property name="severity" value="warning" />		
-		</module>
-		<module name="ClassHasAtLeastOneInterface">
-		<property name="severity" value="info" />		
-		</module>
+		
 	
 	 
 </module>
-<module name="TreeWalker">
 
-</module>
 </module>

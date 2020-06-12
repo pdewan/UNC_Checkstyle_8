@@ -32,5 +32,6 @@ public interface SymbolTable {
 	STType putSTType(String aName, STType anSTType);
 	Set<String> getPackageNames();
 	int size();
+  STType getObjectType();
 
 }
