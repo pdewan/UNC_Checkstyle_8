@@ -61,7 +61,7 @@ public class MinCalledMethodsCheck extends ComprehensiveVisitCheck {
 //    			System.err.println("Found inner class:");
 //    		}
 //          log(ast.getLineNo(), msgKey(), min);
-          log(ast, currentTree, aMaxMethods, minCalledMethods);
+          log(ast, currentTree, Integer.toString(aMaxMethods), Integer.toString(minCalledMethods));
         }
     
 

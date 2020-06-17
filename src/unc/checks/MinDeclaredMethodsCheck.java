@@ -31,7 +31,7 @@ public class MinDeclaredMethodsCheck extends ComprehensiveVisitCheck {
         // report error if limit is reached
         if (methodDefs < min) {
 //            log(ast.getLineNo(), msgKey(), min);
-            log(ast, currentTree, methodDefs, min);
+            log(ast, currentTree, Integer.toString(methodDefs), Integer.toString(min));
         }
     }
     @Override

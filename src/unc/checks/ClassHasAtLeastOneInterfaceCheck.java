@@ -23,8 +23,9 @@ public  class ClassHasAtLeastOneInterfaceCheck extends STClassVisitedComprehensi
 		
 	}
 
-
+	@Override
 	protected Boolean typeCheck(STType anSTClass) {
+	  anSTClass.getDeclaredMethods();
 
 //		List<String> aSignatures = anSTClass.getPublicInstanceSignatures();
 		List<String> aSignatures = anSTClass.getDeclaredPublicInstanceSignatures();
@@ -44,7 +45,7 @@ public  class ClassHasAtLeastOneInterfaceCheck extends STClassVisitedComprehensi
 		STNameable aSuperTypename = anSTClass.getSuperClass();
 		if (aSuperTypename == null)
 			return false; // no super type that implements interfaces
-		STType aSuperSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aSuperTypename.getName());
+		STType aSuperSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aSuperTypename.getName());
 		if (aSuperSTType == null) {
 			return null; // later
 		}

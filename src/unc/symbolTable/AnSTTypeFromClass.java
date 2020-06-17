@@ -66,7 +66,7 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 		Class[] anInterfaces = aClass.getInterfaces();
 		declaredInterfaces = new AnSTNameable[anInterfaces.length];
 		for (int i = 0; i < declaredInterfaces.length; i++) {
-			declaredInterfaces[i] = new AnSTNameable(anInterfaces[i].getSimpleName());
+			declaredInterfaces[i] = new AnSTNameable(anInterfaces[i].getName());
 		}
 		Field[] aFields = aClass.getFields();
 		declaredFields = new STNameable[aFields.length];
@@ -271,9 +271,9 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 	public boolean isParsedClass() {
 		return false;
 	}
-	static Set<String> emptySet = new HashSet();
+	static Set emptySet = new HashSet();
 	@Override
-	public Set<String> getDelegates() {
+	public Set<STType> getDelegates() {
 		// TODO Auto-generated method stub
 		return emptySet;
 	}
@@ -455,6 +455,25 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
   @Override
   public FileContents getFileContents() {
     // TODO Auto-generated method stub
+    return null;
+  }
+//  @Override
+  public void checkIfDelegate(STType aPeerType, List<STMethod> anOverriddenMethods) {
+    // TODO Auto-generated method stub
+    
+  }
+  @Override
+  public String getMatchedTags() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  @Override
+  public void setMatchedTags(String matchedTags) {
+    // TODO Auto-generated method stub
+    
+  }
+  @Override
+  public TypeType getTypeType() {
     return null;
   }
 

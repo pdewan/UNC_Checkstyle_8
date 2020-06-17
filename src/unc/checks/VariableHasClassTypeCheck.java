@@ -52,7 +52,8 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 				TokenTypes.VARIABLE_DEF, TokenTypes.PARAMETER_DEF, 
 				TokenTypes.PACKAGE_DEF, 
 				TokenTypes.CLASS_DEF,
-				TokenTypes.METHOD_DEF 
+				TokenTypes.METHOD_DEF,
+				TokenTypes.IMPORT
 				};
 	}
 	
@@ -251,8 +252,11 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 		final DetailAST anIdentifier = ast.findFirstToken(TokenTypes.IDENT);
 		final FullIdent anIdentifierType = CheckUtil.createFullType(aType);
 		String aTypeName = anIdentifierType.getText();
+		String aLongTypeName = toLongTypeName(aTypeName);
+//		STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
+//				getSTClassByShortName(aLongTypeName);
 		STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
-				getSTClassByShortName(aTypeName);
+		        getSTClassByFullName(aLongTypeName);
 		
 	
 		if (anSTClass instanceof AnSTTypeFromClass)

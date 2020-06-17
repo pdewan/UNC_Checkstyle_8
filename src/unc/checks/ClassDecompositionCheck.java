@@ -169,14 +169,18 @@ public  class ClassDecompositionCheck extends ComprehensiveVisitCheck {
 	
 
 	public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
+	  
 //		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 //				.getSTClassByShortName(
 //						getName(getEnclosingTypeDeclaration(aTree)));
 		STType anSTType = getSTType(aTree);
+//		if (typeType == null) {
+//		  return true; // annotation or enum that was not visited
+//		}
 		if (anSTType == null) {
-			System.err.println("ST Type is null!");
-			System.err.println("Symboltable names" + SymbolTableFactory.getOrCreateSymbolTable().getAllTypeNames());
-//			return true;
+			System.err.println("ST Type is null! for file" + currentFullFileName);
+//			System.err.println("Symboltable names" + SymbolTableFactory.getOrCreateSymbolTable().getAllTypeNames());
+			return true;
 		}
 		if (anSTType.isEnum() ||
 				anSTType.isInterface() ||

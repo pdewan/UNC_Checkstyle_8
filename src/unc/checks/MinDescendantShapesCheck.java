@@ -149,7 +149,7 @@ public class MinDescendantShapesCheck extends DescendentPropertiesCheck {
 //		} else {
 //			log (0, msgKey(), aNumDescendents, aMinDescendents, aSourceName );
 //		}
-		super.log(anAST, aTree,  aNumDescendents, aMinDescendents);		
+		super.log(anAST, aTree,  Integer.toString(aNumDescendents), Integer.toString(aMinDescendents));		
 		return false;		
 		
 	}

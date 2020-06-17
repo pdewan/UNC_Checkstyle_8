@@ -284,7 +284,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 
 	@Override
 	public CallInfo[] getCallInfoOfMethodsCalled() {
-		refreshUnknowns();
+//		refreshUnknowns();
 		return methodsCalled;
 	}
 	

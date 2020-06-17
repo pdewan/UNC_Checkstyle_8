@@ -24,7 +24,7 @@ public interface SymbolTable {
 	List<String> matchingFullSTTypeNames(String aTypeName);
 	STType getSTClassByFullName(String aTypeName);
 	List<String> getAllTypeNames();
-	List<STType> getAllSTTypes();
+	Collection<STType> getAllSTTypes();
 	List<String> getAllInterfaceNames();
 	List<String> getAllClassNames();
 	void clear();
@@ -33,5 +33,7 @@ public interface SymbolTable {
 	Set<String> getPackageNames();
 	int size();
   STType getObjectType();
+  SymbolTable getPreviousSymbolTable();
+  void setPreviousSymbolTable(SymbolTable newVal);
 
 }

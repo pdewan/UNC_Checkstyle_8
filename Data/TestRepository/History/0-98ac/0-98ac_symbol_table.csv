@@ -1,0 +1,8 @@
+File Name,# Methods,# Variables,Super Class,Interfaces
+src/beans/Int2Bean.java,2,1,null,[]
+src/beans/Bool2Bean.java,2,1,null,[]
+src/beans/Int1Bean.java,2,1,null,[]
+src/tests/BoolBeanTest.java,1,0,null,[]
+src/tests/IntBeanTest.java,1,0,null,[]
+src/tests/StringBeanTest.java,1,0,null,[]
+src/beans/Bool1Bean.java,2,1,null,[]

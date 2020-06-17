@@ -166,7 +166,7 @@ public  class MethodBlockLimitCheck extends ComprehensiveVisitCheck {
 
         if (blocksInCurrentMethod > max) {
 //            log(ast, messageId, depth, max);
-            log(messageId, ast, currentTree, getEnclosingShortTypeName(ast), currentMethodAST, blocksInCurrentMethod, max);
+            log(messageId, ast, currentTree, getEnclosingShortTypeName(ast), currentMethodAST.toString(), Integer.toString(blocksInCurrentMethod), Integer.toString(max));
         }
     }
 

@@ -48,18 +48,32 @@ public abstract class STTypeVisitedComprehensively extends ComprehensiveVisitChe
 		}
 		if (!doCheck(anSTType))
 			return true;		
-		Boolean aTypeCheck = typeCheck(anSTType);
-		if (aTypeCheck == null)
-			return null;
-		boolean aDoLog = 
-				isInfo()?
-						aTypeCheck:
-						!aTypeCheck;
-//		if (!aTypeCheck)
-		if (aDoLog)
-    		log(ast, aTreeAST, anSTType.getName());
-		return aTypeCheck;
+//		Boolean aTypeCheck = typeCheck(anSTType);
+//		if (aTypeCheck == null)
+//			return null;
+//		boolean aDoLog = 
+//				isInfo()?
+//						aTypeCheck:
+//						!aTypeCheck;
+////		if (!aTypeCheck)
+//		if (aDoLog)
+//    		log(ast, aTreeAST, anSTType.getName());
+//		return aTypeCheck;
+		return callTypeCheck(ast, aTreeAST, anSTType);
 		
+	}
+	protected Boolean callTypeCheck(DetailAST ast, DetailAST aTreeAST, STType anSTType) {
+	  Boolean aTypeCheck = typeCheck(anSTType);
+    if (aTypeCheck == null)
+      return null;
+    boolean aDoLog = 
+        isInfo()?
+            aTypeCheck:
+            !aTypeCheck;
+//    if (!aTypeCheck)
+    if (aDoLog)
+        log(ast, aTreeAST, anSTType.getName());
+    return aTypeCheck;
 	}
 	@Override
 	public void leaveType(DetailAST ast) {

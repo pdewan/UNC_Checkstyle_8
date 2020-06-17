@@ -64,9 +64,13 @@ public interface STType extends STNameable{
 	void findDelegateTypes();
 	List<STNameable> getAllInterfaces();
 	Boolean isSubtypeOf(String aName);
-	Boolean isDelegate(String aName);
+//	Boolean isDelegate(String aName);
+	
 	boolean isParsedClass();
-	Set<String> getDelegates();
+	Set<STType> getDelegates();
+	Set<STType> getDelegators();
+	void addDelegate(STType aDelegate);
+	void addDelegator(STType aDelegator);
 	Boolean hasActualProperty(String aName);
 	Boolean hasActualEditableProperty(String aName);
 	List<PropertyInfo> propertiesCommonWith(STType aType);
@@ -109,8 +113,8 @@ public interface STType extends STNameable{
 	int getNumberOfTernaryConditionals();
 	int getNumberOfFunctions();
 	int getNumberOfNonGetterFunctions();
-	int getNumberOfGettersAndSetters();
-	int getNumberOfMethods();
+	int getNumberOfDeclaredGettersAndSetters();
+	int getNumberOfDeclaredMethods();
 //	STVariable toSTVariable(String aName);
 	int getNumberOfNonGettersAndSetters();
 	STNameable[] getDeclaredFields();
@@ -167,6 +171,11 @@ public interface STType extends STNameable{
 	long getTimeOfEntry();
 	boolean isAnnotation();
 	FileContents getFileContents();
-  List<STNameable> typesInCommonWith(String anOtherType);
+  List<STType> typesInCommonWith(String anOtherType);
   List<String> namesOfTypesInCommonWith(String anOtherType);
+  List<STType> typesInCommonWith(STType anOtherType);
+//  void checkIfDelegate(STType aPeerType, List<STMethod> anOverriddenMethods);
+  String getMatchedTags();
+  void setMatchedTags(String matchedTags);
+  TypeType getTypeType();
 }

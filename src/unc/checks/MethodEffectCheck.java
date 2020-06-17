@@ -149,9 +149,11 @@ public abstract class MethodEffectCheck extends ComprehensiveVisitCheck{
 				String[] aCalledMethod = aCallInfo.getNormalizedCall();
 				String aCalledMethodName = aCalledMethod[1];
 				String aCalledMethodClassName = aCalledMethod[0];
-				if (aCalledMethod.length > 2 || aCalledMethodClassName == null || isExternalClass(aCalledMethodClassName))
+				String aLongCalledMethodClassName = toLongTypeName(aCalledMethodClassName);
+				
+				if (aCalledMethod.length > 2 || aCalledMethodClassName == null || isExternalClass(aLongCalledMethodClassName))
 					continue;
-				STType aCalledMethodClass = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aCalledMethodClassName);
+				STType aCalledMethodClass = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aLongCalledMethodClassName);
 				
 				if (aCalledMethodClass == null) {
 //					System.err.println("Null called method class:" + aCalledMethodClassName);

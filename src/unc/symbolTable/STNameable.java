@@ -25,6 +25,10 @@ public interface STNameable extends STElement {
 
   String[] getStatements(boolean showLineInfo);
 
+  boolean hasAnnotation(String anAnnotationName);
+
+  boolean hasAnnotation(List<String> anAnnotationNames);
+
 //	String[] getComponents();
 
 

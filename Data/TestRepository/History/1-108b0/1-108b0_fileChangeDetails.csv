@@ -1,0 +1,6 @@
+Files Added:
+[src/beans/Int1Bean.java, src/beans/Int2Bean.java, src/beans/Bool1Bean.java, src/beans/Bool2Bean.java]
+Files Modified:
+[src/tests/BoolBeanTest.java, src/tests/IntBeanTest.java]
+Files Deleted:
+[src/beans/IntsBean.java, src/beans/BoolsBean.java]

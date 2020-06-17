@@ -102,6 +102,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //			propertyNames = emptyArrayList; //no properties
 //			isEnum = true;
 			typeType = TypeType.ENUM;
+//			System.err.println ("Setting type to enum");
 			typeNameAST = getEnumNameAST(anEnumDef);
 			// shortTypeName = getEnumName(anEnumDef);
 			shortTypeName = typeNameAST.getText();

@@ -22,6 +22,7 @@ import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
 import unc.symbolTable.SymbolTableFactory;
 import unc.tools.checkstyle.ProjectSTBuilderHolder;
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 public abstract class TagBasedCheck extends TypeVisitedCheck{
 	public static final String COMMENT_START = "//";
@@ -370,7 +371,8 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
  }
  
  public  boolean matchesPatternEfficient (String aPatternName, String aTypeName) {
-	 STNameable aStructurePattern = getPattern(aTypeName);
+//	 STNameable aStructurePattern = getPattern(aTypeName);
+	 STNameable aStructurePattern = getPattern(toLongTypeNameNoArray(aTypeName));
 		if (aStructurePattern == null)
 			return false;
 		return aStructurePattern.getName().equals(aPatternName) || 
@@ -481,7 +483,9 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
  
  
  public static boolean isExternalClass(String aFullClassName) {
-	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullClassName);
+//	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullClassName);
+	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullClassName);
+
 	if (anSTType != null // what if we create existing classes, we may not have the external class in our path
 			)
 //			&& !STBuilderCheck.getImportsAsExistingClasses()) 
@@ -501,11 +505,13 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			Arrays.asList(anArray);
 	 
  }
- public List<STNameable> lookupTags(String aShortClassName)  {
+ public List<STNameable> lookupTags(String aClassName)  {
+//	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
+//				.getSTClassByShortName(aShortClassName);
 	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
-				.getSTClassByShortName(aShortClassName);
+	         .getSTClassByFullName(aClassName);
 		if (anSTType == null) {
-			if (isExternalImportCacheCheckingShortName(aShortClassName)) // check last as we are not really sure about external
+			if (isExternalImportCacheCheckingShortName(aClassName)) // check last as we are not really sure about external
 				return emptyList;			
 			return null;
 		}		
@@ -513,8 +519,24 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 		return asListOrNull(anSTType.getComputedTags());
 
  }
- 
  public List<STNameable> lookupTagsOfCurrentTree()  {
+   STType anSTType = null;
+   if (!isFirstPass()) {
+     anSTType =  getSTType(currentTree);
+ }
+   if (anSTType == null) {
+     
+     return computedTypeTags(); // STBuilder
+   } else {
+//     return Arrays.asList(anSTType.getComputedTags());
+     return asListOrNull(anSTType.getComputedTags());
+
+   }
+       
+   
+  }
+ 
+ public List<STNameable> oldLookupTagsOfCurrentTree()  {
 	STType anSTType = getSTType(currentTree);
 	if (anSTType == null) {
 		
@@ -1107,6 +1129,7 @@ private Map<String, String> importShortToLongName = new HashMap();
 public static boolean hasVariableNameSyntax(String aName) {
 	return !aName.contains(".") && aName.length() > 0 && !Character.isUpperCase(aName.charAt(0));
 }
+
 protected String toLongTypeNameNoArray (String aShortOrLongName) {
 //	String retVal = aShortName;
 	if (aShortOrLongName == null || aShortOrLongName.isEmpty()) {
@@ -1299,12 +1322,13 @@ public static String toShortTypeOrVariableName (String aTypeName) {
 	return aShortTypeName;
 }
 
-public static STType fromVariableToSTType(String aVariableName) {
+public static  STType fromVariableToSTType(String aVariableName) {
 	String aTypeName = fromVariableToTypeName(aVariableName);
 	if (aTypeName == null) {
 		return null;
 	}
-	STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aTypeName);
+//	STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aTypeName);
+	 STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aTypeName);
 	return retVal;
 }
 
@@ -1368,7 +1392,9 @@ public static STType findTaggedSubtype (STType anSTType) {
 	return null;
 }
 public static Boolean isExplicitlyTagged (String aFullName) {
-	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullName);
+//	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullName);
+	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullName);
+
 	if (anSTType == null) {
 		return false;
 	}
@@ -1740,6 +1766,9 @@ public static DetailAST getEnclosingAnnotationDeclaration(DetailAST anAST) {
 }
 public static String getFullTypeName(DetailAST aTree) {
 	String aTypeName = getName(getEnclosingTypeDeclaration(aTree));
+	if (aTypeName == null) {
+    System.err.println("Could not get class name from ast");
+  }
 //	int i = 1;
 	DetailAST aPackageAST = getEnclosingPackageDeclaration(aTree);
 	String aPackageName = DEFAULT_PACKAGE;
@@ -1753,6 +1782,9 @@ public  STType getSTType(DetailAST aTreeAST) {
 	String aFullName = getFullTypeName();
 	if (aFullName == null) {
 		aFullName = getFullTypeName(aTreeAST);
+	}
+	if (aFullName == null) {
+	  System.err.println("Could not get class name for file:" + currentFullFileName);
 	}
 //	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullName);
 //	if (anSTType == null) {
@@ -1891,6 +1923,9 @@ public static DetailAST getFirstLeftSiblingTokenType(DetailAST anAST, int aToken
 	
 }
 public static DetailAST getFirstRightSiblingTokenType(DetailAST anAST, int aTokenType) {
+  if (anAST != null && anAST.getType() != TokenTypes.IMPORT) {
+//    System.err.println ("found non import of type:" + anAST.getType());
+  }
 	if (anAST == null) return null;
 	if (anAST.getType() == aTokenType) return anAST;
 	return getFirstRightSiblingTokenType(anAST.getNextSibling(), aTokenType);
@@ -2005,7 +2040,7 @@ protected  String[] getStringArrayToBeChecked(DetailAST anAST, DetailAST aTree){
 	STType anSTType = getSTType(aTree);
 	if (anSTType == null) {
 		System.err.println("ST Type is null!");
-		System.err.println("Symboltable names" + SymbolTableFactory.getOrCreateSymbolTable().getAllTypeNames());
+//		System.err.println("Symboltable names" + SymbolTableFactory.getOrCreateSymbolTable().getAllTypeNames());
 		 return null; // this was commented out
 	}
 	if (anSTType.isEnum() || anSTType.isInterface() || anSTType.isAnnotation()) // why duplicate

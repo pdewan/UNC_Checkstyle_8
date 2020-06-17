@@ -230,7 +230,9 @@ public class MnemonicNameCheck extends STTypeVisited {
 		if (!isCheckNumLetters())
 			return;
 		if (aMetrics.numLetters < minimumLettersInNameComponent) {
-			log(anIdentifierAST, MIN_NAME_LENGTH_CHECK, "Class " + getFullTypeName(), aVariable, aComponent, minimumLettersInNameComponent);
+//			log(anIdentifierAST, MIN_NAME_LENGTH_CHECK, "Class " + getFullTypeName(), aVariable, aComponent, minimumLettersInNameComponent);
+	     log(anIdentifierAST, MIN_NAME_LENGTH_CHECK,  aVariable, aComponent, minimumLettersInNameComponent);
+
 
 //			log(MIN_NAME_LENGTH_CHECK, anIdentifierAST, aTreeAST, aVariable, aComponent, MIN_NAME_LENGTH_CHECK);
 		}
@@ -240,7 +242,9 @@ public class MnemonicNameCheck extends STTypeVisited {
 		if (!isCheckNumVowels())
 			return;
 		if (aMetrics.numVowels < minimumVowelsInNameComponent) {
-			log(anIdentifierAST, MIN_VOWEL_LENGTH_MSG_KEY, "Class " + getFullTypeName(), aVariable, aComponent, minimumVowelsInNameComponent);
+//			log(anIdentifierAST, MIN_VOWEL_LENGTH_MSG_KEY, "Class " + getFullTypeName(), aVariable, aComponent, minimumVowelsInNameComponent);
+	     log(anIdentifierAST, MIN_VOWEL_LENGTH_MSG_KEY, aVariable, aComponent, minimumVowelsInNameComponent);
+
 
 //			log(MIN_VOWEL_LENGTH_MSG_KEY, anIdentifierAST,aTreeAST, MIN_VOWEL_LENGTH_MSG_KEY, aVariable, aComponent, MIN_VOWEL_LENGTH_MSG_KEY);
 		}

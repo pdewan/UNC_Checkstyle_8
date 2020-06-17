@@ -7,7 +7,7 @@ public class EqualAvoidsNullTestMain extends PostProcessingMain {
 
 static final String SOURCE = "src/unc/testables/EqualAvoidNullTestable.java";
 
-static final String CHECKSTYLE_CONFIGURATION = "testChecks/equal_avoided_null_checks.xml";
+static final String CHECKSTYLE_CONFIGURATION = "checks/testChecks/equal_avoided_null_checks.xml";
 
 //static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, "-f", "xml", SOURCE};
 static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION,  SOURCE};

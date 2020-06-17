@@ -73,7 +73,7 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 //		} else {
 //			log(0, msgKey(), aPropertyInfo, aTypeName, aRemoteTypeName, aSourceName);
 //		}
-		super.log (aTreeAST, aTreeAST, aPropertyInfo, aTypeName, aRemoteTypeName);
+		super.log (aTreeAST, aTreeAST, aPropertyInfo.toString(), aTypeName, aRemoteTypeName);
 
 	}
     public Boolean compareCommonProperties(STType anSTType, String aPeerType, DetailAST aTree) {

@@ -43,8 +43,11 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	protected Map<String, List<DetailAST>> globalIdentToLHS ;
 	protected Set<Integer> modifiers;
 	protected String fileName;
+	protected String matchedTags;
 	
-	protected FileContents fileContents;
+	
+
+  protected FileContents fileContents;
 //	protected AccessModifier accessModifier;
 //	protected boolean isAbstract; 
 
@@ -207,7 +210,7 @@ public class AnSTType extends AnAbstractSTType implements STType {
 //			aComputedList.add(toShortPatternName(structurePatternName));
 ////			String aShortName = TypeVisitedCheck.toShortTypeName(structurePatternName.getName());
 ////			STNameable aShortStructurePatternName = new AnSTNameable(structurePatternName.getAST(), aShortName);
-////			aComputedList.add(aShortStructurePatternName);
+////			ahdList.add(aShortStructurePatternName);
 //			result = aComputedList.toArray(new STNameable[0]);
 //		}
 //		return result;
@@ -435,14 +438,14 @@ public class AnSTType extends AnAbstractSTType implements STType {
 //			maybeProcessSetter(anSTMethod);			
 //		}
 //	}
-	@Override
+//	@Override
 	public void findDelegateTypes() {
 		Collection<List<CallInfo>> aCalls = 
 				globalVariableToCall.values();
 		for (List<CallInfo> aCallList:aCalls){
 			for (CallInfo aCall:aCallList) {
 				if (aCall.getCallee().equals(aCall.getCaller())) {
-					delegates.add(aCall.getCalledType());
+					stringDelegates.add(aCall.getCalledType());
 				}
 			}
 		}
@@ -886,10 +889,51 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	public boolean isParsedClass() {
 		return true;
 	}
-	@Override
-	public Set<String> getDelegates() {
-		return delegates;
+//  static List<STMethod> aResult = new ArrayList();
+
+	public static List<STMethod> extractPublicMethods (List<STMethod> anAllMethods) {
+	  List<STMethod> aResult = new ArrayList();
+	  for (STMethod aMethod:anAllMethods) {
+	    if (aMethod.isPublic()) {
+	      aResult.add(aMethod);
+	    }
+	  }
+	  return aResult;
 	}
+	 public static List<STMethod> extractPublicMethods (STMethod[] anAllMethods) {
+	    List<STMethod> aResult = new ArrayList();
+	    for (STMethod aMethod:anAllMethods) {
+	      if (aMethod.isPublic()) {
+	        aResult.add(aMethod);
+	      }
+	    }
+	    return aResult;
+	  }
+//	@Override
+//	public void checkIfDelegate (STType aPeerType, List<STMethod> anOverriddenMethods ) {
+//	  if (anOverriddenMethods == null || anOverriddenMethods.size() == 0) {
+//	    return;
+//	  }
+//	  if (aPeerType.getReferenceTypes().contains(this)) { // assuming overridden method is referenced
+//	    aPeerType.addDelegator(this);
+//	    this.addDelegate(aPeerType);
+//	  }
+//	  if (this.getReferenceTypes().contains(aPeerType)) {
+//	    this.addDelegator(aPeerType);
+//	    aPeerType.addDelegate(this);
+//	  }
+//	
+//	  
+////	  if ()
+////	  aPeerType.getReferenceTypes();
+////	  List<STMethod> anOverriddenPublicMethods = extractPublicMethods(anOverriddenMethods);
+////	  List<STMethod> aMyPublicMethods = extractPublicMethods(getDeclaredMethods());
+////	  List<STMethod> aPeerPublicMethods = extractPublicMethods(aPeerType.getDeclaredMethods());
+////	  if (anOverriddenPublicMethods.size() == aMyPublicMethods.size()) {
+////	    
+////	  }
+//	}
+	
 	@Override
 	public boolean isEnum() {
 		return typeType == TypeType.ENUM;
@@ -1190,5 +1234,20 @@ public class AnSTType extends AnAbstractSTType implements STType {
   public FileContents getFileContents() {
     return fileContents;
   }
+  @Override
+  public String getMatchedTags() {
+    return matchedTags;
+  }
+
+
+  @Override
+  public void setMatchedTags(String matchedTags) {
+    this.matchedTags = matchedTags;
+  }
+  @Override
+  public TypeType getTypeType() {
+    return typeType;
+  }
+  
 
 }

@@ -7,7 +7,7 @@ public class IfTestMain extends PostProcessingMain {
 
 static final String SOURCE = "src/unc/testables/IfTestable.java";
 
-static final String CHECKSTYLE_CONFIGURATION = "testChecks/if_checks.xml";
+static final String CHECKSTYLE_CONFIGURATION = "checks/testChecks/if_checks.xml";
 
 //static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, "-f", "xml", SOURCE};
 static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION,  SOURCE};

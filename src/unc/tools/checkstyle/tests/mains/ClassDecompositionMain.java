@@ -7,7 +7,7 @@ public class ClassDecompositionMain extends PostProcessingMain {
 
 static final String SOURCE = "src/unc/testables/classDecomposition";
 
-static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_decomposition_checks.xml";
+static final String CHECKSTYLE_CONFIGURATION = "checks/testChecks/class_decomposition_checks.xml";
 
 //static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, "-f", "xml", SOURCE};
 static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION,  SOURCE};

@@ -5,9 +5,9 @@ import unc.tools.checkstyle.PostProcessingMain;
 public class ClassIntefacesMain extends PostProcessingMain {
 
 
-static final String SOURCE = "src/unc/testables/classHasOneInterface";
+static final String SOURCE = "src/unc/testables/classInterfaces";
 
-static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_interfaces_checks.xml";
+static final String CHECKSTYLE_CONFIGURATION = "checks/testChecks/class_interfaces_checks.xml";
 
 //static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, "-f", "xml", SOURCE};
 static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION,  SOURCE};

@@ -20,6 +20,10 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 //	public static final String MSG_KEY = "peerCommonSignatures";
 	 public static final String MSG_KEY_DUPLICATED_SIGNATURES = "peerDuplicatedSignatures";
    public static final String MSG_KEY_OVERRIDDEN_SIGNATURES = "peerOverriddingSignatures";
+   public static final String MSG_KEY_DELEGATOR = "peerIsDelegator";
+   public static final String MSG_KEY_NON_INHERITING_DELEGATOR = "peerIsNonInheritingDelegator";
+
+
 
 
 	
@@ -141,10 +145,49 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
     	return result;
     	
     }
+    
+    public void checkIfNonInheritingDelegator(DetailAST aTree, STType aDelegator, STType aDelegate) {
+      STNameable aSuperClass = aDelegator.getSuperClass();
+    if (aSuperClass == null || aSuperClass.getName().equals("java.lang.Object") || aSuperClass.getName().equals("Object")) {
+    log (MSG_KEY_NON_INHERITING_DELEGATOR, aTree, aTree, aDelegator.getName(), aDelegate.getName() );
+    }
+
+  
+    }
+    
+//    public void checkIfDelegate (DetailAST aTree, STType anSTType, STType aPeerType, List<STMethod> anOverriddenMethods ) {
+//      if (anOverriddenMethods == null || anOverriddenMethods.size() == 0) {
+//        return;
+//      }
+//      if (aPeerType.getReferenceTypes().contains(this)) { // assuming overridden method is referenced
+//        aPeerType.addDelegator(anSTType);
+//        anSTType.addDelegate(aPeerType);
+//        log (MSG_KEY_DELEGATOR, aTree, aTree, anSTType.getName(), aPeerType.getName() );
+//        checkIfNonInheritingDelegator(aTree, anSTType, aPeerType);
+//
+//      }
+//      if (anSTType.getReferenceTypes().contains(aPeerType)) {
+//        anSTType.addDelegator(aPeerType);
+//        aPeerType.addDelegate(anSTType);
+//        log (MSG_KEY_DELEGATOR, aTree, aTree, aPeerType.getName(), anSTType.getName() );
+//        checkIfNonInheritingDelegator(aTree, aPeerType,  anSTType);
+//
+//      }
+//    
+//      
+////      if ()
+////      aPeerType.getReferenceTypes();
+////      List<STMethod> anOverriddenPublicMethods = extractPublicMethods(anOverriddenMethods);
+////      List<STMethod> aMyPublicMethods = extractPublicMethods(getDeclaredMethods());
+////      List<STMethod> aPeerPublicMethods = extractPublicMethods(aPeerType.getDeclaredMethods());
+////      if (anOverriddenPublicMethods.size() == aMyPublicMethods.size()) {
+////        
+////      }
+//    }
     public Boolean compareCommonMethods(STType anSTType, String aPeerType, DetailAST aTree) {
     	Boolean result = true;
     	 STType aPeerSTType = SymbolTableFactory.getOrCreateSymbolTable()
-    	         .getSTClassByShortName(aPeerType);
+    	         .getSTClassByFullName(aPeerType);
     	     if (aPeerType == null)
     	       return null;
     	 if (System.identityHashCode(anSTType) > System.identityHashCode(aPeerSTType)) {
@@ -195,9 +238,40 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck{
 
 		}
 		if (anOverriddenMethods.size() > 0) {
-      log(MSG_KEY_OVERRIDDEN_SIGNATURES, anOverriddenMethods.get(0).getAST(), aTree, aPeerType, anOverriddenMethods, anOverriddenTypes );
+//		  int anSTTypeMethodsSize = anSTType.getDeclaredMethods().length;
+//		  int aPeerTypeMethodsSize = aPeerSTType.getDeclaredMethods().length;
+		  
+//		  STType aDelegator = null;
+//		  STType aDelegate = null;
+//		  if (anOverriddenMethods.size() == anSTTypeMethodsSize) {
+////		    STNameable anSTType.getReferenceTypes();
+//		    aDelegate = anSTType;
+//		    aDelegator = aPeerSTType;
+//		    
+////		    anSTType.addDelegator(aPeerSTType);
+////		    aPeerSTType.addDelegate(anSTType);
+//		  } 
+//		   if (aPeerTypeMethodsSize == anOverriddenMethods.size() ) {
+//		    aDelegate = aPeerSTType;
+//		    aDelegator = anSTType;
+//		
+      log(MSG_KEY_OVERRIDDEN_SIGNATURES, anOverriddenMethods.get(0).getAST(), aTree, aPeerType, anOverriddenMethods.toString(), anOverriddenTypes.toString() );
 
-		}
+		  }
+//      log(MSG_KEY_OVERRIDDEN_SIGNATURES, anOverriddenMethods.get(0).getAST(), aTree, aPeerType, anOverriddenMethods, anOverriddenTypes );
+//      STType aPeerSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aPeerType);
+//      checkIfDelegate(aTree, anSTType, aPeerSTType, anOverriddenMethods);
+//      if (aDelegate!= null && aDelegator != null) {
+////        STType anObjectType = SymbolTableFactory.getSymbolTable().getObjectType();
+//        log (MSG_KEY_DELEGATOR, aTree, aTree, aDelegator.getName(), aDelegate.getName() );
+//        STNameable aSuperClass = aDelegator.getSuperClass();
+//        if (aSuperClass == null || aSuperClass.getName().equals("java.lang.Object") || aSuperClass.getName().equals("Object")) {
+//          log (MSG_KEY_NON_INHERITING_DELEGATOR, aTree, aTree, aDelegator.getName(), aDelegate.getName() );
+//
+//        }
+//        
+//      }
+//		}
 		return result;    	
     }
     

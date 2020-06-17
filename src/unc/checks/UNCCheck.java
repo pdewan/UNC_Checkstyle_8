@@ -55,8 +55,10 @@ public abstract class UNCCheck extends AbstractCheck {
 	boolean visitedTree = true;
 	boolean newSequenceNumber;
 	protected String currentFullFileName;
+	static protected boolean doAutoPassChange = true;
 
-	public UNCCheck() {
+
+  public UNCCheck() {
 		initCheck();
 	}
 	protected void initCheck() {
@@ -314,13 +316,22 @@ public abstract class UNCCheck extends AbstractCheck {
 	/**
 	 * Build symbol table before visiting
 	 */
+	 protected static boolean doNotVisit = false;
+	static boolean isFirstPass = true;
+
 	protected boolean isDoNotVisit() {
 		return doNotVisit;
 	}
 	public static void setDoNotVisit(boolean doNotVisit) {
 		UNCCheck.doNotVisit = doNotVisit;
 	}
-	protected static boolean doNotVisit = false;
+	public static boolean isFirstPass() {
+    return isFirstPass;
+  }
+
+  public static void setFirstPass(boolean isFirstPass) {
+    STBuilderCheck.isFirstPass = isFirstPass;
+  }
 	public void beginTree(DetailAST ast) {
 		if (isDoNotVisit()) {
 			return;
@@ -678,6 +689,11 @@ public abstract class UNCCheck extends AbstractCheck {
    public int[] getRequiredTokens() {
      return new int[0];
    }
-
+   public static boolean isDoAutoPassChange() {
+     return doAutoPassChange;
+   }
+   public static void setDoAutoPassChange(boolean newVal) {
+     doAutoPassChange = newVal;
+   }
    
 }

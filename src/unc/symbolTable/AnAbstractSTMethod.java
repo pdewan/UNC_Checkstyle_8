@@ -341,7 +341,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 				if (aCalledMethodClassName == null) {
 					return null;
 				}
-				 aCalledMethodClass = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aCalledMethodClassName);
+				 aCalledMethodClass = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aCalledMethodClassName);
 				 if (aCalledMethodClass == null) {
 					 return null;
 				 }

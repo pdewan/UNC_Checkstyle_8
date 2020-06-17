@@ -148,7 +148,7 @@ public class MinComponentObjectsCheck extends ComprehensiveVisitCheck {
 //		} else {
 //			log (0, msgKey(), aNumObjectComponents, aMinComponents, aSourceName );
 //		}
-		log(anAST, aTree, aNumObjectComponents, aMinComponents);
+		log(anAST, aTree, Integer.toString(aNumObjectComponents), Integer.toString(aMinComponents));
 		
 		return false;
 		

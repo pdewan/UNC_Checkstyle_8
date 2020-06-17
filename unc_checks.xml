@@ -179,7 +179,9 @@
 		  <module name="EqualsAvoidedNullCheck">
 		 	<property name="severity" value="warning" />				
 		 </module>
-	
+		<module name="ClassDecomposition">
+			<property name="severity" value="warning" />					
+		</module>
 	
 	
 	

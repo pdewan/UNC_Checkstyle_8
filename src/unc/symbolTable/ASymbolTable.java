@@ -15,31 +15,19 @@ import unc.checks.STBuilderCheck;
 import unc.checks.TagBasedCheck;
 
 public class ASymbolTable implements SymbolTable{
-//	Map<String, DetailAST> classNameToAST = new HashMap<>();
-//	Map<String, DetailAST> interfaceNameToAST = new HashMap<>();
-//	Map<String, DetailAST> packageNameToAST = new HashMap();
+  protected SymbolTable previousSymbolTable;
+
   STType objectType;
 
   Set<String> packageNames =  new HashSet<>();
 	Map<String, DetailAST> methodCallToAST = new HashMap();
-//	Map<String, DetailAST> methodDeclarationToAST = new HashMap();
 	Map<String, STType>   typeNameToSTClass = new HashMap<>();	
 	@Override
-//	public Map<String, DetailAST> getClassNameToAST() {
-//		return classNameToAST;
-//	}
-//	public Map<String, DetailAST> getInterfaceNameToAST() {
-//		return interfaceNameToAST;
-//	}
-//	public Map<String, DetailAST> getPackageNameToAST() {
-//		return packageNameToAST;
-//	}
+
 	public Map<String, DetailAST> getMethodCallToAST() {
 		return methodCallToAST;
 	}
-//	public Map<String, DetailAST> getMethodDeclarationToAST() {
-//		return methodDeclarationToAST;
-//	}
+
 	public static boolean typeMatches(String aFullName, String aShortOrFullName) {
 		return aFullName.equals(aShortOrFullName) || aFullName.endsWith("." + aShortOrFullName);
 	}
@@ -48,15 +36,12 @@ public class ASymbolTable implements SymbolTable{
 		STType aClass = getSTClassByShortName(aTypeName);
 		return aClass != null;
 	}
-//	@Override
-//	public boolean isType(String aTypeName) {
-//		return isInterface(aTypeName) || isClass(aTypeName);
-//	}
+
 	@Override
 	public boolean isInterface (String aTypeName) {
 		STType aClass = getSTClassByShortName(aTypeName);
 		return aClass != null && aClass.isInterface();
-//		return matchingFullInterfaceNames(aTypeName).size() >= 1;
+
 	}
 	@Override
 	public boolean isClass (String aTypeName) {
@@ -64,17 +49,7 @@ public class ASymbolTable implements SymbolTable{
 		return aClass != null && !aClass.isInterface() && !aClass.isEnum() && !aClass.isAnnotation();
 //		return matchingFullClassNames(aTypeName).size() >= 1;
 	}
-//	@Override
-//	public List<String> matchingFullClassNames (String aTypeName) {
-//		List<String> result = new ArrayList();
-//		Set<String> aClassNames = classNameToAST.keySet();
-//		for (String aFullName:aClassNames) {
-//			if (typeMatches(aFullName, aTypeName)) {
-//				result.add(aFullName);
-//			}
-//		}
-//		return result;
-//	}
+
 	@Override
 	public List<String> matchingFullSTTypeNames (String aTypeName) {
 		List<String> result = new ArrayList();
@@ -86,23 +61,7 @@ public class ASymbolTable implements SymbolTable{
 		}
 		return result;
 	}
-//	@Override
-//	public List<String> matchingFullInterfaceNames (String aTypeName) {
-//		List<String> result = new ArrayList();
-//		Set<String> aClassNames = interfaceNameToAST.keySet();
-//		for (String aFullName:aClassNames) {
-//			if (typeMatches(aFullName, aTypeName)) {
-//				result.add(aFullName);
-//			}
-//		}
-//		return result;
-//	}
-//	@Override
-//	public List<String> matchingFullTypeNames (String aTypeName) {
-//		List<String> result = matchingFullClassNames(aTypeName);
-//		result.addAll(matchingFullInterfaceNames(aTypeName));
-//		return result;
-//	}
+
 	@Override
 	public STType getSTClassByShortName(String aTypeName) {
 		STType retVal = getSTClassByFullName(aTypeName);
@@ -122,29 +81,22 @@ public class ASymbolTable implements SymbolTable{
 	}
 	@Override
 	public STType getSTClassByFullName(String aTypeName) {
+//	  if (aTypeName.equals("System")) {
+//	    System.err.println("Found system");
+//	  }
 		if (aTypeName == null) {
 			System.err.println("Null type name");
 			return null;
 		}
 		
-//		boolean isExternalClass = aTypeName.startsWith("java.lang") || STBuilderCheck.isExternalImportCacheChecking(aTypeName);
-//		if (STBuilderCheck.isJavaLangClass(aTypeName)) {
-//			if (Character.isUpperCase(aTypeName.charAt(0))) {
-//				aTypeName = "java.lang." + aTypeName;
-//				isExternalClass = true;
-//			}
-//		
-//		}
+
 		STType anSTType = typeNameToSTClass.get(aTypeName);
-//		if (anSTType == null) {
-//			System.out.println("Null ST Type:" + aTypeName);
-//			System.out.println(" STable:" + typeNameToSTClass.keySet());
-//			for (String aKey:typeNameToSTClass.keySet()) {
-//				System.out.println("Type:" + aKey);
-//			}
-//
-//		}
+
 		if (anSTType == null) {
+		  if (getPreviousSymbolTable() != null) {
+		    anSTType = getPreviousSymbolTable().getSTClassByFullName(aTypeName);
+		  }
+		  if (anSTType == null) {
 			boolean isExternalClass = aTypeName.startsWith("java.lang") || 
 					STBuilderCheck.isExternalImportCacheChecking(aTypeName) ;
 					
@@ -160,10 +112,7 @@ public class ASymbolTable implements SymbolTable{
 				}
 			
 			}
-			// why are we checking this again
-//			if (!isExternalClass) {
-//				isExternalClass = STBuilderCheck.isExternalImportCacheChecking(aTypeName);
-//			}
+			
 			if (isExternalClass && STBuilderCheck.getImportsAsExistingClasses()) {
 				try {
 					Class aClass = Class.forName(aTypeName);
@@ -174,17 +123,17 @@ public class ASymbolTable implements SymbolTable{
 				}
 			}
 		}
+		}
 		return anSTType;
-//		return anSTType;
 
 	}
-//	@Override
-//	public Map<String, STType> getTypeNameToSTClass() {
-//		return typeNameToSTClass;
-//	}
+
 	@Override
 	public STType putSTType(String aName, STType anSTType) {
 		packageNames.add(aName);
+//		if (aName.equals("io.reactivex.rxjava3.internal.util.NotificationLite")) {
+//		  System.err.println("Found target type");
+//		}
 		if (aName.equals("java.lang.Object")) {
 		  objectType = anSTType;
 		}
@@ -216,9 +165,13 @@ public class ASymbolTable implements SymbolTable{
 		return aResult;
 		
 	}
+	
 	@Override
-	public List<STType> getAllSTTypes() {
-		return new ArrayList(typeNameToSTClass.values());
+	public Collection<STType> getAllSTTypes() {
+//		return new ArrayList(typeNameToSTClass.values());
+//    return new ArrayList(typeNameToSTClass.values());
+	  return typeNameToSTClass.values();
+
 	}
 	@Override
 	public void clear() {
@@ -242,4 +195,14 @@ public class ASymbolTable implements SymbolTable{
 	 public STType getObjectType() {
 	    return objectType;
 	  }
+	@Override
+  public SymbolTable getPreviousSymbolTable() {
+    return previousSymbolTable;
+  }
+	@Override
+  public void setPreviousSymbolTable(SymbolTable newVal) {
+    this.previousSymbolTable = newVal;
+  }
+
+ 
 }

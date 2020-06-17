@@ -121,7 +121,9 @@ public class ACallInfo implements CallInfo {
 			if (calledType.startsWith(ComprehensiveVisitCheck.VARIABLE_PREFIX)) { // we screwed up with variable identification perhaps
 				aNameUsed = calledType.substring(ComprehensiveVisitCheck.VARIABLE_PREFIX.length());
 			}
-			calledSTType = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aNameUsed);
+//			calledSTType = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aNameUsed);
+	     calledSTType = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aNameUsed);
+
 		}
 		return calledSTType;
 	}
@@ -288,4 +290,11 @@ public class ACallInfo implements CallInfo {
 	public boolean isConstructor() {
 		return constructor;
 	}
+	 public static CallInfo[] emptyCallInfoArray = {};
+	  public static CallInfo[] toCallInfoArray (List<CallInfo> anOriginal) {
+	    if (anOriginal == null || anOriginal.isEmpty()) {
+	      return emptyCallInfoArray;
+	    }
+	    return anOriginal.toArray(emptyCallInfoArray);
+	  }
 }

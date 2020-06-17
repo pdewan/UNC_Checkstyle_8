@@ -62,8 +62,10 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 		if (STBuilderCheck.isFirstPass) {
 			return;
 		}
-		super.leaveMethod(methodDef); // should probably do this at the end
+//		super.leaveMethod(methodDef); // should probably do this at the end
 		if (getFullTypeName() == null) { // interface so return
+	    super.leaveMethod(methodDef); // should probably do this at the end
+
 			return;
 		}
 		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(getFullTypeName());
@@ -73,6 +75,8 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 		}
 		if (currentMethodName == null) {
 			System.err.println("Null method name");
+		   super.leaveMethod(methodDef); // should probably do this at the end
+
 			return;
 		}
 		String[] aParameterTypes = currentMethodParameterTypes
@@ -86,6 +90,8 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 
 		if (anSTMethod == null) {
 			System.err.println("null st method for" + currentMethodName);
+		   super.leaveMethod(methodDef); // should probably do this at the end
+
 			return;
 		}
 		List<AccessModifierUsage> aUsages = anSTMethod.getAccessModifiersUsed();
@@ -98,7 +104,8 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 				log (methodDef, anSTMethod.getSimpleChecksSignature(), anSTMethod.getAccessModifier().toString(), "None", "" + (AccessModifier.PRIVATE.ordinal() + 1 - anSTMethod.getAccessModifier().ordinal()),
 						"No Referencing Method", "No Access Modifiers" );
 			}
-				
+		    super.leaveMethod(methodDef); // should probably do this at the end
+
 			
 			return;
 		}

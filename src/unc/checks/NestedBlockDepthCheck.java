@@ -152,7 +152,9 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
 
         if (depth > max) {
 //            log(ast, messageId, depth, max);
-            log(messageId, ast, currentTree, getEnclosingShortTypeName(ast), depth, max);
+//            log(messageId, ast, currentTree, getEnclosingShortTypeName(ast), depth, max);
+            log(messageId, ast, currentTree, Integer.toString(depth), Integer.toString(max));
+
         }
     }
 

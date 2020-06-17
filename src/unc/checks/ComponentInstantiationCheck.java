@@ -36,7 +36,8 @@ public abstract class ComponentInstantiationCheck extends ComprehensiveVisitChec
 				TokenTypes.TYPE_ARGUMENTS,
 				// TokenTypes.TYPE_PARAMETERS,
 				TokenTypes.METHOD_DEF, TokenTypes.CTOR_DEF,
-				TokenTypes.LITERAL_NEW
+				TokenTypes.LITERAL_NEW,
+				TokenTypes.IMPORT,
 		// TokenTypes.METHOD_CALL
 		// TokenTypes.IMPORT, TokenTypes.STATIC_IMPORT,
 		// TokenTypes.PARAMETER_DEF
@@ -75,8 +76,10 @@ public abstract class ComponentInstantiationCheck extends ComprehensiveVisitChec
 		DetailAST aTypeAST = aClassDefAST.findFirstToken(TokenTypes.IDENT);
 		String aTypeName = FullIdent.createFullIdent(aTypeAST).getText();
 		
-		STType anInstantiatingSTClass = SymbolTableFactory
-				.getOrCreateSymbolTable().getSTClassByShortName(aTypeName);
+//		STType anInstantiatingSTClass = SymbolTableFactory
+//				.getOrCreateSymbolTable().getSTClassByShortName(aTypeName);
+	  STType anInstantiatingSTClass = SymbolTableFactory
+	          .getOrCreateSymbolTable().getSTClassByFullName(toLongTypeName(aTypeName));
 		if (anInstantiatingSTClass == null)
 			return false; // multiple classes with short name, just give up
 		if (anInstantiatingSTClass.isEnum() || anInstantiatingSTClass.isInterface() || anInstantiatingSTClass.isAnnotation())
@@ -88,7 +91,7 @@ public abstract class ComponentInstantiationCheck extends ComprehensiveVisitChec
 		if (aPropertyInfos == null)
 			return null; // our superclass has not been populated
 		STType anInstantiatedSTClass = SymbolTableFactory
-				.getOrCreateSymbolTable().getSTClassByShortName(anInstantiatedTypeName);
+				.getOrCreateSymbolTable().getSTClassByShortName(aTypeName);
 		if (anInstantiatedSTClass == null)
 			return null; // have not built Symbol table for it
 		if (checkInstantiatedClass(anInstantiatedSTClass)) // this should be in an abstract class
@@ -223,7 +226,7 @@ public abstract class ComponentInstantiationCheck extends ComprehensiveVisitChec
 	protected void visitInstantiation(DetailAST ast) {
 		if (!checkIncludeExcludeTagsOfCurrentType())
 			return;
-		if (doPendingCheck(ast, currentTree) == null) {
+		if (doPendingCheck(ast, currentTree) == null && !isFirstPass()) {
 //			System.err.println ("Component instantiation check returned null");
 				pendingChecks().add(ast);
 		}
