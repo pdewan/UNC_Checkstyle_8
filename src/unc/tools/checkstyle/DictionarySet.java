@@ -34,6 +34,10 @@ import unc.tools.checkstyle.dictionary.DictionaryZ;
 
 public class DictionarySet {
   static Set<String> dictionarySet;
+  static String[] extraWords = {
+      "io", 
+      "cpu"
+  };
   public static Set<String> getDictionary() {
 	  if (dictionarySet == null) {
 		  dictionarySet = new HashSet();
@@ -64,6 +68,7 @@ public class DictionarySet {
 		  dictionarySet.addAll(Arrays.asList(DictionaryX.dictionary));
 		  dictionarySet.addAll(Arrays.asList(DictionaryY.dictionary));
 		  dictionarySet.addAll(Arrays.asList(DictionaryZ.dictionary));		  
+		  dictionarySet.addAll(Arrays.asList(extraWords));  
 	  }
 	  return dictionarySet;
   }

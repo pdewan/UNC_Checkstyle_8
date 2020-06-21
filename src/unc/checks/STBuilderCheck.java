@@ -1127,6 +1127,7 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
 
   public static void setNonInteractive(boolean nonInteractive) {
     STBuilderCheck.nonInteractive = nonInteractive;
+      UNCCheck.notInPlugIn = nonInteractive;
   }
  
   protected STType getUsableExistingEntryAndSetPass() {
@@ -1418,6 +1419,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
 
   protected boolean processSecondPass(DetailAST ast) {
     if (!isFirstPass()) {
+       if (!checkExcludeRegularExpressionsOfCurrentType()) {
+       return true;
+       }
       currentSTType = SymbolTableFactory.getOrCreateSymbolTable()
               .getSTClassByFullName(getFullTypeName());
       if (currentSTType == null) {
@@ -1595,6 +1599,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   }
 
   protected void outputLog(DetailAST ast) {
+    if (currentSTType instanceof AnSTTypeFromClass) {
+      return;
+    }
     String aTags = currentSTType.getMatchedTags();
     boolean aFoundMatch = aTags != null;
 

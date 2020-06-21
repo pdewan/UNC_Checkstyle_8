@@ -408,5 +408,68 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 	public void setShortTypeName(String shortTypeName) {
 		this.shortTypeName = shortTypeName;
 	}
+	protected boolean foundSupuriousInnerClass = false; // should be an int
+  protected boolean foundInnerClassToBeNotVisited() {
+   boolean retVal = (!getVisitInnerClasses() && getFullTypeName() != null);
+//   if (retVal) {
+     foundSupuriousInnerClass = retVal;
+//   }
+   return retVal;
+  }
+  protected boolean inMethodOrConstructor;
+  protected int methodOrConstructorNesting = 0;
+  protected boolean incrementMethodOrConstructorNesting() {
+    if (inMethodOrConstructor) {
+      methodOrConstructorNesting++;
+      return true;
+    }
+    return false;
+  }
+  protected boolean visitingNestedMethod(DetailAST ast) {
+    if (methodOrConstructorNesting > 0) {
+      switch (ast.getType()) {
+        case TokenTypes.METHOD_DEF:
+        case TokenTypes.CTOR_DEF:
+          methodOrConstructorNesting++;
+          return true;
+         default: return true;
+      }
+    }
+    return false;
 
+  }
+  protected boolean leavingNestedMethod(DetailAST ast) {
+    if (methodOrConstructorNesting > 0) {
+      switch (ast.getType()) {
+        case TokenTypes.METHOD_DEF:
+        case TokenTypes.CTOR_DEF:
+          methodOrConstructorNesting--;
+          return true;
+         default: return true;
+      }
+    }
+    return false;
+
+  }
+  protected boolean checkSpuriosInnerClasses() {
+    return foundSupuriousInnerClass;
+  }
+  protected boolean leavingSpuriousInnerClass(DetailAST ast) {
+    if (foundSupuriousInnerClass) {
+      switch (ast.getType()) {
+        case TokenTypes.CLASS_DEF:
+
+        case TokenTypes.ENUM_DEF:
+
+        case TokenTypes.ANNOTATION_DEF:
+
+          foundSupuriousInnerClass = false;
+
+        default:
+          return true;
+      }
+    }
+    return false;
+
+  }
 }

@@ -35,7 +35,7 @@ public abstract class UNCCheck extends AbstractCheck {
 	public static final String ERROR_KEY = "checkStyleError";
 	public static final String CONSOLE_NAME = "UNCChecks";
 	protected MessageConsole console;
-	protected boolean notInPlugIn;
+	protected static boolean notInPlugIn;
 	protected boolean deferLogging;
 	protected List<LogObject> log = new ArrayList();
 	protected static long lastExecutionTime; // for all checks
@@ -129,7 +129,9 @@ public abstract class UNCCheck extends AbstractCheck {
 						ProjectSTBuilderHolder.getSTBuilder().getChecksName()
 						);
 	}
-	protected static boolean manualProjectDirectory = false;
+//	protected static boolean manualProjectDirectory = false;
+	 protected static boolean manualProjectDirectory = false;
+
 	public static boolean isManualProjectDirectory() {
 		return manualProjectDirectory;
 	}

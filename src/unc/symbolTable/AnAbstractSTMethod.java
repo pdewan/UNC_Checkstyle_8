@@ -435,6 +435,10 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		
 
 		public void addCaller(STMethod aMethod) {
+		  if (aMethod == null) {
+		    System.err.println("Null caller");
+		    return;
+		  }
 			if (callingMethods == null)
 				callingMethods = new HashSet();
 			if (callingTypes == null) {
@@ -443,6 +447,10 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 			callingMethods.add(aMethod);
 			callingTypes.add(aMethod.getDeclaringSTType());
 //			allCallingMethods.add(aMethod); // what is the difference?
+			if (aMethod.getDeclaringClass() == null) {
+			  System.err.println("Null declaring class for:" + aMethod);
+			  return;
+			}
 			if (aMethod.getDeclaringClass().equals(getDeclaringClass())) {
 				if (internallyCallingMethods == null) {
 					internallyCallingMethods = new HashSet();

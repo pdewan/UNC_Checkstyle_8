@@ -74,7 +74,7 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 			return;
 		}
 		if (currentMethodName == null) {
-			System.err.println("Null method name");
+			System.err.println("Null current method name in leave method of " + currentFullFileName);
 		   super.leaveMethod(methodDef); // should probably do this at the end
 
 			return;
@@ -89,7 +89,7 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 		STMethod anSTMethod = anSTType.getMethod(currentMethodName, aLongParameterTypes );
 
 		if (anSTMethod == null) {
-			System.err.println("null st method for" + currentMethodName);
+			System.err.println("null st method for " + currentMethodName + " in " + currentFullFileName);
 		   super.leaveMethod(methodDef); // should probably do this at the end
 
 			return;

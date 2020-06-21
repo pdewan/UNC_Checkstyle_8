@@ -33,14 +33,26 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 //		}
 				
 		// all instance  variables are now initialized
-		declaredMethods = new STMethod[0];
-		methods = new STMethod[0];
-		allComputedTags = new STNameable[0];
-		tags = allComputedTags;
-		configuredTags = allComputedTags;
-		declaredInterfaces = new STNameable[0];
-		interfaces  = new STNameable[0] ;
-		declaredFields = new STNameable[0];
+//		declaredMethods = new STMethod[0];
+//		methods = new STMethod[0];
+//		allComputedTags = new STNameable[0];
+//		tags = allComputedTags;
+//		configuredTags = allComputedTags;
+//		declaredInterfaces = new STNameable[0];
+//		interfaces  = new STNameable[0] ;
+//		declaredFields = new STNameable[0];
+		
+		declaredMethods = this.emptyMethodArray;
+//    methods = null;
+    allComputedTags = emptyNameableArray;
+    tags =  emptyNameableArray;
+    configuredTags =  emptyNameableArray;
+    declaredInterfaces =  emptyNameableArray;
+//    interfaces  =  emptyNameableArray ;
+    declaredFields =  emptyNameableArray;
+
+     
+
 		
 //		globalSTVariables = new ArrayList();
 
@@ -96,6 +108,8 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 		
 		accessModifier = STBuilderCheck.toAccessModifier(aClass.getModifiers());
 		isAbstract = Modifier.isAbstract(aClass.getModifiers());
+		typeType = computeTypeType();
+//    isClass = typeType == TypeType.CLASS;
 		
 		
 	}
@@ -147,14 +161,19 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 //		return null;
 //	}
 
-	@Override
-	public boolean isInterface() {
-		// TODO Auto-generated method stub
-		if (reflectedClass == null) {
-			return false;
-		}
-		return reflectedClass.isInterface();
-	}
+//	@Override
+//	public boolean isInterface() {
+//		// TODO Auto-generated method stub
+//		if (reflectedClass == null) {
+//			return false;
+//		}
+//		return reflectedClass.isInterface();
+//	}
+//	Boolean isClass;
+//	 @Override
+//	  public boolean isClass() {
+//	   return isClass;
+//	  }
 
 //	@Override
 //	public STNameable getSuperClass() {
@@ -285,13 +304,13 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 
 
 
-	@Override
-	public boolean isEnum() {
-		if (reflectedClass == null) return false;
-		
-		return reflectedClass.isEnum();
-		
-	}
+//	@Override
+//	public boolean isEnum() {
+//		if (reflectedClass == null) return false;
+//		
+//		return reflectedClass.isEnum();
+//		
+//	}
 
 
 
@@ -445,13 +464,13 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 	public List<String> getTypeParameterNames() {
 		return null;
 	}
-	@Override
-	public boolean isAnnotation() {
-		if (reflectedClass == null) return false;
-		
-		return reflectedClass.isAnnotation();
-		// TODO Auto-generated method stub
-	}
+//	@Override
+//	public boolean isAnnotation() {
+//		if (reflectedClass == null) return false;
+//		
+//		return reflectedClass.isAnnotation();
+//		// TODO Auto-generated method stub
+//	}
   @Override
   public FileContents getFileContents() {
     // TODO Auto-generated method stub
@@ -472,9 +491,16 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
     // TODO Auto-generated method stub
     
   }
+  protected TypeType computeTypeType() {
+   return reflectedClass.isInterface()?TypeType.INTERFACE:
+       reflectedClass.isAnnotation()?TypeType.ANNOTATION:
+         reflectedClass.isEnum()?TypeType.ENUM:TypeType.CLASS;
+     
+  }
   @Override
   public TypeType getTypeType() {
-    return null;
+    
+    return typeType;
   }
 
 

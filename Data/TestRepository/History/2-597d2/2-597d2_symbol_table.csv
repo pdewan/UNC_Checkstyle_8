@@ -1,7 +1,0 @@
-File Name,# Methods,# Variables,Super Class,Interfaces
-src/tests/BoolBeanTest.java,1,0,null,[]
-src/beans/StringBean.java,2,1,null,[]
-src/tests/IntBeanTest.java,1,0,null,[]
-src/tests/StringBeanTest.java,1,0,null,[]
-src/beans/BoolsBean.java,2,2,null,[]
-src/beans/IntsBean.java,2,2,null,[]

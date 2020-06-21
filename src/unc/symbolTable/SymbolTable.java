@@ -32,7 +32,7 @@ public interface SymbolTable {
 	STType putSTType(String aName, STType anSTType);
 	Set<String> getPackageNames();
 	int size();
-  STType getObjectType();
+  STType getAndMaybePutObjectType();
   SymbolTable getPreviousSymbolTable();
   void setPreviousSymbolTable(SymbolTable newVal);
 

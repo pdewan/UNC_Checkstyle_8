@@ -178,4 +178,6 @@ public interface STType extends STNameable{
   String getMatchedTags();
   void setMatchedTags(String matchedTags);
   TypeType getTypeType();
+  void setTypeType(TypeType aTypeType);
+  boolean isClass();
 }

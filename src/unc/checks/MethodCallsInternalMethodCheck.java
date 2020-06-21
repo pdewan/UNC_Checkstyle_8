@@ -42,7 +42,7 @@ public class MethodCallsInternalMethodCheck extends ComprehensiveVisitCheck {
 			return;
 		}
 		if (currentMethodName == null) {
-			System.err.println("Null method name");
+			System.err.println("Null method name in " + currentFullFileName);
 			return;
 		}
 		String[] aParameterTypes = currentMethodParameterTypes
@@ -52,7 +52,8 @@ public class MethodCallsInternalMethodCheck extends ComprehensiveVisitCheck {
 		STMethod anSTMethod = anSTType.getMethod(currentMethodName, aLongParameterTypes );
 
 		if (anSTMethod == null) {
-			System.err.println("null st method for" + currentMethodName);
+	     System.err.println("null st method for " + currentMethodName + " in " + currentFullFileName);
+
 			return;
 		}
 		Set<STMethod> aCalledMethods = anSTMethod.getAllInternallyDirectlyAndIndirectlyCalledMethods();

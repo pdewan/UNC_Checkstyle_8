@@ -28,6 +28,7 @@ import unc.checks.ClassDefinedCheck;
 import unc.checks.ComprehensiveVisitCheck;
 import unc.checks.MethodCallCheck;
 import unc.checks.MissingMethodTextCheck;
+import unc.checks.MnemonicNameCheck;
 import unc.checks.STBuilderCheck;
 import unc.checks.TagBasedCheck;
 import unc.checks.UNCCheck;
@@ -65,7 +66,9 @@ public class PostProcessingMain {
   static Collection<STType> sTTypes;
   static final String CHECKS_FILE_NAME = "generated_checks.xml";
   static final String DUMMY_FILE_NAME = "firstpassresults.text";
-  static PrintStream checksPrintStream;
+  static final String EXTERNALS_FILE_NAME = "externals.csv";
+
+  static PrintStream checksPrintStream, outPrintStream;
   static String[] emptyStrings = {};
 
   public static void initGlobals() {
@@ -248,6 +251,190 @@ public class PostProcessingMain {
       generateCheckData(anSTType);
 
     }
+  }
+
+  public static void outputExternalReferences(Collection<STType> anSTTypes) {
+    // File aFile = new File(EXTERNALS_FILE_NAME);
+    String aProject = ProjectDirectoryHolder.currentProject;
+    File aFile = new File(aProject + "/" + EXTERNALS_FILE_NAME);
+
+    try {
+      PrintStream anExternalsPrintStream = new PrintStream(aFile);
+
+      for (STType anSTType : anSTTypes) {
+        if (!anSTType.isExternal()) {
+          continue;
+        }
+        if (anSTType.getDeclaredMethods().length == 0) {
+          continue;
+        }
+        for (STMethod aMethod : anSTType.getDeclaredMethods()) {
+          Set<STMethod> aCallingMethods = aMethod.getCallingMethods();
+          if (aCallingMethods == null || aCallingMethods.isEmpty()) {
+            continue;
+          }
+          for (STMethod aCallingMethod : aCallingMethods) {
+            anExternalsPrintStream.println(anSTType.getName() + "," + aMethod.getName() + ","
+                    + aCallingMethod.getDeclaringClass() + "," + aCallingMethod.getName());
+          }
+        }
+      }
+      anExternalsPrintStream.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  static String toShortString(STType anSTType) {
+    return TagBasedCheck.isExplicitlyTagged(anSTType) ? toTaggedType(anSTType)
+            : ComprehensiveVisitCheck.toShortTypeName(anSTType.getName());
+
+  }
+
+  static String toLongString(STType anSTType) {
+    return TagBasedCheck.isExplicitlyTagged(anSTType) ? toTaggedType(anSTType) : anSTType.getName();
+
+  }
+
+  static List<String> externalorTaggedTypes = new ArrayList();
+
+  public static void outputExternalOrTaggedCallInfos(Collection<STType> anSTTypes) {
+    // File aFile = new File(EXTERNALS_FILE_NAME);
+    String aProject = ProjectDirectoryHolder.currentProject;
+    String aProjectDirectoryName = (new File(aProject)).getName();
+    File aFile = new File(aProject + "/" + EXTERNALS_FILE_NAME);
+    // File aFile = new File(aProjectDirectoryName+ "_" + EXTERNALS_FILE_NAME);
+
+    try {
+      PrintStream anExternalsPrintStream = new PrintStream(aFile);
+
+      anExternalsPrintStream.println("Caller Type" + "," + "Caller Type Words" + "," + "Caller Tag"
+              + "," + "Caller Tag Words" + "," + "Caller Method" + "," + "Caller Method Words" + ","
+              + "Caller Super Types" + "," + "Calling Super Types Words" + "," + "Called  Type"
+              + "," + "Called Type Words" + "," + "Called  Tagged Type" + ","
+              + "Called Tagged Type Words" + "," + "Called Method" + "," + "Called Method Words");
+      boolean externalTypesInitialized = false;
+      externalorTaggedTypes.clear();
+
+      for (STType anSTType : anSTTypes) {
+        externalTypesInitialized = false;
+//        if (anSTType.getName().equals("mapreduce.ATokenCountingModel")) {
+//          System.err.println("found mapreduce.ATokenCountingModel");
+//        }
+
+        for (STMethod aMethod : anSTType.getDeclaredMethods()) {
+          CallInfo[] aCallInfos = aMethod.getCallInfoOfMethodsCalled();
+          if (aCallInfos == null) {
+            continue;
+          }
+          for (CallInfo aCallInfo : aCallInfos) {
+            STType aCalledSTType = aCallInfo.getCalledSTType();
+            String aCalledTypeTaggedString = null;
+            String aShortCalledTypeTaggedString = null;
+
+            if (aCalledSTType != null) {
+              // if (!aCalledSTType.isExternal()) {
+              if (!isExternalOrTaggedType(aCalledSTType)) {
+                continue;
+              }
+              aCalledTypeTaggedString = toLongString(aCalledSTType);
+              aShortCalledTypeTaggedString = toShortString(aCalledSTType);
+            } else {
+              aCalledTypeTaggedString = aCallInfo.getCalledType();
+              if (aCalledTypeTaggedString == null) {
+                continue;
+              }
+              aShortCalledTypeTaggedString = ComprehensiveVisitCheck
+                      .toShortTypeName(aCalledTypeTaggedString);
+            }
+            String aCalledType = aCallInfo.getCalledType();
+            String aShortCalldType = ComprehensiveVisitCheck.toShortTypeName(aCalledType);
+            // String aCalledType = aCallInfo.getCalledType();
+            // if (aCalledType == null) {
+            // continue;
+            // }
+            String aCalledMethod = aCallInfo.getCallee();
+            if (aCalledMethod == null) {
+              continue;
+            }
+            if (!externalTypesInitialized) {
+              externalTypesInitialized = true;
+
+              // if (anSTType.getName().equals("mapreduce.ATokenCountingModel")) {
+              // System.err.println("found mapreduce.ATokenCountingModel");
+              // }
+              List<STNameable> anAllTypes = anSTType.getAllTypes();
+              for (STNameable aSuperType : anAllTypes) {
+                if (aSuperType instanceof STType) {
+                  STType aSuperSTType = (STType) aSuperType;
+                  // if (aSuperSTType.isExternal() &&
+                  // SymbolTableFactory.getSymbolTable().getObjectType() != aSuperSTType) {
+                  if (aSuperType != anSTType
+                          && SymbolTableFactory.getSymbolTable().getAndMaybePutObjectType() != aSuperSTType
+                          && isExternalOrTaggedType(aSuperSTType)) {
+
+                    externalorTaggedTypes.add(toShortString(aSuperSTType));
+                  }
+                }
+
+              }
+            }
+            String aTaggedCallerTypeString = toShortString(anSTType);
+            // if (!externalorTaggedTypes.isEmpty()) {
+            // System.err.println("external or tagged type");
+            // }
+            anExternalsPrintStream.println(anSTType.getName() + ","
+                    + toString(MnemonicNameCheck.getDictonaryComponents(
+                            ComprehensiveVisitCheck.toShortTypeName(anSTType.getName())))
+                    + "," + aTaggedCallerTypeString + ","
+                    + toString(MnemonicNameCheck.getDictonaryComponents(aTaggedCallerTypeString))
+                    + "," + aMethod.getName() + ","
+                    + toString(MnemonicNameCheck.getDictonaryComponents(aMethod.getName())) + ","
+                    + toString(externalorTaggedTypes) + ","
+                    + toStringDictionaryComponents(externalorTaggedTypes) + "," + aCalledType + ","
+                    + toString(MnemonicNameCheck.getDictonaryComponents(aShortCalldType)) + ","
+                    + aCalledTypeTaggedString + ","
+                    + toString(
+                            MnemonicNameCheck.getDictonaryComponents(aShortCalledTypeTaggedString))
+                    + "," + aCalledMethod + ","
+                    + toString(MnemonicNameCheck.getDictonaryComponents(aCalledMethod)));
+          }
+        }
+      }
+      anExternalsPrintStream.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  static StringBuilder stringBuilder = new StringBuilder();
+  static List list = new ArrayList();
+
+  public static String toStringDictionaryComponents(List aList) {
+    list.clear();
+    for (Object anElement : aList) {
+      String anElementString = anElement.toString();
+      List anElementComponents = MnemonicNameCheck.getDictonaryComponents(anElementString);
+      list.addAll(anElementComponents);
+
+    }
+    return toString(list);
+
+  }
+
+  public static String toString(List aList) {
+    stringBuilder.setLength(0);
+    for (int anIndex = 0; anIndex < aList.size(); anIndex++) {
+      if (anIndex > 0) {
+        stringBuilder.append(":");
+      }
+      Object anElement = aList.get(anIndex);
+      String anElementString = anElement instanceof List ? toString((List) anElement)
+              : anElement.toString();
+      stringBuilder.append(anElementString);
+
+    }
+    return stringBuilder.length() == 0 ? "none" : stringBuilder.toString();
   }
 
   public static void generateCheckData(STType anSTType) {
@@ -476,7 +663,7 @@ public class PostProcessingMain {
     for (STNameable aClass : aSuperClasses) {
       String aFullName = aClass.getName();
       if (isExternalType(aFullName)) {
-        printExternalSuperClass(anSTType, aFullName);
+        nalSuperClass(anSTType, aFullName);
         return;
       }
       STType aClassSTType = symbolTable.getSTClassByFullName(aClass.getName());
@@ -499,7 +686,7 @@ public class PostProcessingMain {
     System.out.println("printTaggedSuperclass:" + anSTType.getName() + "," + aSuperType.getName());
   }
 
-  private static void printExternalSuperClass(STType anSTType, String aFullName) {
+  private static void nalSuperClass(STType anSTType, String aFullName) {
     System.out.println("printTaggedSuperclass:" + anSTType.getName() + "," + aFullName);
 
   }
@@ -965,6 +1152,9 @@ public class PostProcessingMain {
   static String[] stringArray = {};
 
   public static boolean isExternalOrTaggedType(STType anSTType) {
+    // if (anSTType.getName().equals("gradingTools.comp533s19.assignment0.AMapReduceTracer")) {
+    // System.err.println("found A map reduce tracer");
+    // }
     return anSTType != null
             && (anSTType.isExternal() || TagBasedCheck.isExplicitlyTagged(anSTType));
   }
@@ -1225,7 +1415,26 @@ public class PostProcessingMain {
     PostProcessingMain.printOnlyTaggedClasses = printOnlyTaggedClasses;
   }
 
+  protected static boolean redirectSecondPassOutput = false;
+
+  public static boolean isRedirectSecondPassOutput() {
+    return redirectSecondPassOutput;
+  }
+
+  public static void setRedirectSecondPassOutput(boolean redirectSecondPassOutput) {
+    PostProcessingMain.redirectSecondPassOutput = redirectSecondPassOutput;
+  }
+
   protected static boolean generateChecks = false;
+  protected static boolean generateExternals = true;
+
+  public static boolean isGenerateExternals() {
+    return generateExternals;
+  }
+
+  public static void setGenerateExternals(boolean generateExternals) {
+    PostProcessingMain.generateExternals = generateExternals;
+  }
 
   public static boolean isGenerateChecks() {
     return generateChecks;
@@ -1257,16 +1466,40 @@ public class PostProcessingMain {
   }
 
   public static void main(String[] args) {
+    UNCCheck.setManualProjectDirectory(true);
+    if (isRedirectSecondPassOutput()) {
+      String aFileName = args[args.length - 1];
+      File aFile = new File(aFileName);
+      String aShortFileName = aFile.getName();
+      if ("src".equals(aShortFileName)) {
+        aFile = aFile.getParentFile();
+        if (aFile != null) {
+          aShortFileName = aFile.getName();
+        }
+      }
+      File anOutFile = new File(aShortFileName + "_check_results.txt");
+      try {
+//        aFile.createNewFile();
+        outPrintStream = new PrintStream(anOutFile);
+        System.setOut(outPrintStream);
+
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
     ACheckStyleLogFileManager.setPrintLogInconsistency(false);
     // Set<String> aSet = UnixDictionarySet.getUnixDictionary();
-    File aFile = new File(CHECKS_FILE_NAME);
-    try {
-      aFile.createNewFile();
-      checksPrintStream = new PrintStream(new File(CHECKS_FILE_NAME));
+    if (isGenerateChecks()) {
+      File aFile = new File(CHECKS_FILE_NAME);
+      try {
+        aFile.createNewFile();
+        checksPrintStream = new PrintStream(new File(CHECKS_FILE_NAME));
 
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
 
     // Main.main(ARGS);
@@ -1280,7 +1513,7 @@ public class PostProcessingMain {
       UNCCheck.setDoNotVisit(true);
       if (!STBuilderCheck.isDoAutoPassChange()) {
         STBuilderCheck.setFirstPass(true);
-       
+
       }
       redirectOut();
       // PrintStream oldOut = System.out;
@@ -1299,6 +1532,7 @@ public class PostProcessingMain {
       System.err.println("Symbol table size:" + SymbolTableFactory.getOrCreateSymbolTable().size());
       UNCCheck.setDoNotVisit(false);
       restoreOut();
+     
 
       // System.setOut(oldOut);
       // initGlobals();
@@ -1314,6 +1548,9 @@ public class PostProcessingMain {
       // initGlobals();
       // doSecondPass(sTTypes);
       System.err.println("Finished second pass checks:" + new Date(System.currentTimeMillis()));
+      if (isRedirectSecondPassOutput()) {
+        outPrintStream.close();
+      }
       if (isGenerateChecks()) {
         initGlobals();
 
@@ -1329,6 +1566,15 @@ public class PostProcessingMain {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    if (isGenerateExternals()) {
+      System.err.println("Generating externals" + new Date(System.currentTimeMillis()));
+
+      initGlobals();
+      // outputExternalReferences(sTTypes);
+      outputExternalOrTaggedCallInfos(sTTypes);
+      System.err.println("Finished Generating externals" + new Date(System.currentTimeMillis()));
+
+    }
     if (xmlLogger != null)
       xmlLogger.auditFinished(null);
     // String[] aPropertyNamesAndValues = {"prop", "1", "prop2", "2"};
@@ -1336,7 +1582,9 @@ public class PostProcessingMain {
     // printWarningModuleAndProperties("test module", "KeyValueClass", aPropertyNamesAndValues);
     // String[] aGetterProperties = {"Key", ".*", "Value", ".*"};
     // printExpectedGetters("KeyValueClass", aGetterProperties);
+    if (isGenerateChecks()) {
     checksPrintStream.close();
+    }
     // testXMLLogger();
 
   }

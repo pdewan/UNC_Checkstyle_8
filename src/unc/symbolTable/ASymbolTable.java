@@ -112,8 +112,13 @@ public class ASymbolTable implements SymbolTable{
 				}
 			
 			}
-			
-			if (isExternalClass && STBuilderCheck.getImportsAsExistingClasses()) {
+	     if (STBuilderCheck.getImportsAsExistingClasses() && (isExternalClass || !STBuilderCheck.getLatestInstance().isFirstPass())) {
+	       
+	     
+	       
+	    
+
+//			if (isExternalClass && STBuilderCheck.getImportsAsExistingClasses()) {
 				try {
 					Class aClass = Class.forName(aTypeName);
 					return STBuilderCheck.addExistingClassSTType(aClass);
@@ -192,7 +197,16 @@ public class ASymbolTable implements SymbolTable{
 		return typeNameToSTClass.size();
 	}
 	@Override
-	 public STType getObjectType() {
+	 public STType getAndMaybePutObjectType() {
+	  if (objectType == null) {
+	    if (getPreviousSymbolTable() != null) {
+	      objectType = getPreviousSymbolTable().getAndMaybePutObjectType();
+	    }
+	    if (objectType == null) {
+	    
+	    putSTType(Object.class.getCanonicalName(), new AnSTTypeFromClass(Object.class));
+	    }
+	  }
 	    return objectType;
 	  }
 	@Override

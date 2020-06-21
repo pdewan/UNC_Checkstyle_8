@@ -1726,6 +1726,7 @@ public static DetailAST getEnclosingEnumDeclaration(DetailAST anAST) {
 			break;
 		root = aParent;
 	}
+	
 //	DetailAST result = root.findFirstToken(TokenTypes.ENUM);
 	DetailAST anEnumDef = root;
 	while (true)  {
@@ -1768,6 +1769,7 @@ public static String getFullTypeName(DetailAST aTree) {
 	String aTypeName = getName(getEnclosingTypeDeclaration(aTree));
 	if (aTypeName == null) {
     System.err.println("Could not get class name from ast");
+    return null;
   }
 //	int i = 1;
 	DetailAST aPackageAST = getEnclosingPackageDeclaration(aTree);
@@ -1868,6 +1870,9 @@ public static DetailAST getEnclosingTypeDeclaration(DetailAST anAST) {
 	result = getEnclosingEnumDeclaration(anAST);
 	if (result != null)
 		return result;
+	result = getEnclosingAnnotationDeclaration(anAST);
+	if (result != null)
+    return result;
 	
 //	System.err.println(" could not find a type declaration for:" + anAST + "" + anAST.getText());
 	return result;

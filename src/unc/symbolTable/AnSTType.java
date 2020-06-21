@@ -22,7 +22,6 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	protected final STNameable[] declaredPropertyNames, declaredEditablePropertyNames, tags, configuredTags, derivedTags, computedTags, imports;
 
 //	protected final boolean isInterface, isGeneric, isElaboration, isEnum, isAnnotation;
-	protected final TypeType typeType;
 	protected final boolean isGeneric, isElaboration;
 
 	protected final List<String> typeParameterNames;
@@ -113,7 +112,9 @@ public class AnSTType extends AnAbstractSTType implements STType {
 		this.declaredInterfaces = interfaces;
 		this.superClass = superClass;
 		if (superClass == null) {
-			superClass = STBuilderCheck.getExistingClassSTType(Object.class);
+//			superClass = STBuilderCheck.getExistingClassSTType(Object.class);
+	     superClass = SymbolTableFactory.getOrCreateSymbolTable().getAndMaybePutObjectType();
+
 		}
 		this.packageName = packageName;
 		typeType = aTypeType;
@@ -231,9 +232,13 @@ public class AnSTType extends AnAbstractSTType implements STType {
 //	public String getPackage() {
 //		return packageName;
 //	}
-	public boolean isInterface() {
-		return typeType == TypeType.INTERFACE;
-	}
+//	public boolean isInterface() {
+//		return typeType == TypeType.INTERFACE;
+//	}
+//	@Override
+//	public boolean isClass() {
+//    return typeType == TypeType.CLASS;
+//  }
 	public static void addToList(List<STMethod> aList, STMethod[] anAdditions) {
 		for (STMethod anAddition:anAdditions) {
 			aList.add(anAddition);
@@ -934,15 +939,15 @@ public class AnSTType extends AnAbstractSTType implements STType {
 ////	  }
 //	}
 	
-	@Override
-	public boolean isEnum() {
-		return typeType == TypeType.ENUM;
-
-	}
-	@Override
-	public boolean isAnnotation() {
-		return typeType == TypeType.ANNOTATION;
-	}
+//	@Override
+//	public boolean isEnum() {
+//		return typeType == TypeType.ENUM;
+//
+//	}
+//	@Override
+//	public boolean isAnnotation() {
+//		return typeType == TypeType.ANNOTATION;
+//	}
 //	@Override
 //	public Set<String> getDeclaredGlobals() {
 //		return globalVariableToType.keySet();
@@ -1244,10 +1249,8 @@ public class AnSTType extends AnAbstractSTType implements STType {
   public void setMatchedTags(String matchedTags) {
     this.matchedTags = matchedTags;
   }
-  @Override
-  public TypeType getTypeType() {
-    return typeType;
-  }
+  
+
   
 
 }

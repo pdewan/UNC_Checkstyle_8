@@ -1,5 +1,6 @@
 package unc.checks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,11 +9,18 @@ import java.util.Set;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import unc.symbolTable.AnSTNameable;
 import unc.symbolTable.STMethod;
+import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
 import unc.symbolTable.STVariable;
+import unc.symbolTable.SymbolTableFactory;
+import unc.tools.checkstyle.DictionarySet;
 
+//public class MnemonicNameCheck extends STTypeVisited {
 public class MnemonicNameCheck extends STTypeVisited {
+  
+
 	public static final String MIN_VOWEL_LENGTH_MSG_KEY = "minimumVowelInNameCheck";
 	public static final String MIN_NAME_LENGTH_CHECK = "minimumLettersInNameCheck";
 	public static final String IN_DICTIONARY_CHECK = "nameInDictionaryCheck";
@@ -53,7 +61,10 @@ public class MnemonicNameCheck extends STTypeVisited {
 
 	
 	protected Set<String> ignoreNames = new HashSet();
-
+	public int[] getDefaultTokens() {
+    return new int[] {TokenTypes.CLASS_DEF, TokenTypes.PACKAGE_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF, 
+        TokenTypes.ANNOTATION_DEF, TokenTypes.ANNOTATION_FIELD_DEF};
+  } 
 	
 	public boolean isCheckNumLetters() {
 		return checkNumLetters;
@@ -176,38 +187,58 @@ public class MnemonicNameCheck extends STTypeVisited {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public void doVisitToken(DetailAST ast) {		
-		switch (ast.getType()) {
-		case TokenTypes.PACKAGE_DEF: 
-			visitPackage(ast);
-			return;
-		case TokenTypes.CLASS_DEF:
-//			if (fullTypeName == null)
-
-			visitType(ast);
-			return;	
-		case TokenTypes.INTERFACE_DEF:
-//			if (fullTypeName == null)
-
-			visitType(ast);
-			return;
-		case TokenTypes.ENUM_DEF:
-//			if (fullTypeName == null)
-
-			visitType(ast);
-			return;	
-		case TokenTypes.ANNOTATION_DEF:
-			visitAnnotationDef(ast);
-			return;
-		case TokenTypes.ANNOTATION_FIELD_DEF:
-			visitAnnotationFieldDef(ast);
-			return;
-		default:
-			
-//			System.err.println("Unexpected token");
-		}
-		
-	}
+//	public void doVisitToken(DetailAST ast) {	
+//	  if (checkSpuriosInnerClasses()) {
+//      return;
+//    }
+//    if (inNestedMethod(ast)) {
+//      return;
+//    }
+//		switch (ast.getType()) {
+//		case TokenTypes.PACKAGE_DEF: 
+//			visitPackage(ast);
+//			return;
+//		case TokenTypes.CLASS_DEF:
+////			if (fullTypeName == null)
+//		  if (foundInnerClassToBeNotVisited()) {
+//        return;
+//      }
+//
+//
+//			visitType(ast);
+//			return;	
+//		case TokenTypes.INTERFACE_DEF:
+////			if (fullTypeName == null)
+//		  if (foundInnerClassToBeNotVisited()) {
+//        return;
+//      }
+//
+//			visitType(ast);
+//			return;
+//		case TokenTypes.ENUM_DEF:
+////			if (fullTypeName == null)
+//		  if (foundInnerClassToBeNotVisited()) {
+//        return;
+//      }
+//
+//			visitType(ast);
+//			return;	
+//		case TokenTypes.ANNOTATION_DEF:
+//		  if (foundInnerClassToBeNotVisited()) {
+//        return;
+//      }
+//
+//			visitAnnotationDef(ast);
+//			return;
+//		case TokenTypes.ANNOTATION_FIELD_DEF:
+//			visitAnnotationFieldDef(ast);
+//			return;
+//		default:
+//			
+////			System.err.println("Unexpected token");
+//		}
+//		
+//	}
 	
 	protected void checkComponent(DetailAST aTreeAST, DetailAST anIdentifierAST, String aName, String aComponent,STVariable anStVariable) {
 		NameComponentMetrics aMetrics = NameComponentMetrics.computeComponentMetrics(aComponent);
@@ -231,7 +262,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 			return;
 		if (aMetrics.numLetters < minimumLettersInNameComponent) {
 //			log(anIdentifierAST, MIN_NAME_LENGTH_CHECK, "Class " + getFullTypeName(), aVariable, aComponent, minimumLettersInNameComponent);
-	     log(anIdentifierAST, MIN_NAME_LENGTH_CHECK,  aVariable, aComponent, minimumLettersInNameComponent);
+	     log(MIN_NAME_LENGTH_CHECK, anIdentifierAST,  aVariable, aComponent, Integer.toString(minimumLettersInNameComponent));
 
 
 //			log(MIN_NAME_LENGTH_CHECK, anIdentifierAST, aTreeAST, aVariable, aComponent, MIN_NAME_LENGTH_CHECK);
@@ -243,7 +274,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 			return;
 		if (aMetrics.numVowels < minimumVowelsInNameComponent) {
 //			log(anIdentifierAST, MIN_VOWEL_LENGTH_MSG_KEY, "Class " + getFullTypeName(), aVariable, aComponent, minimumVowelsInNameComponent);
-	     log(anIdentifierAST, MIN_VOWEL_LENGTH_MSG_KEY, aVariable, aComponent, minimumVowelsInNameComponent);
+	     log(MIN_VOWEL_LENGTH_MSG_KEY, anIdentifierAST, aVariable, aComponent, Integer.toString(minimumVowelsInNameComponent));
 
 
 //			log(MIN_VOWEL_LENGTH_MSG_KEY, anIdentifierAST,aTreeAST, MIN_VOWEL_LENGTH_MSG_KEY, aVariable, aComponent, MIN_VOWEL_LENGTH_MSG_KEY);
@@ -261,7 +292,8 @@ public class MnemonicNameCheck extends STTypeVisited {
 //		}
 		if (!aMetrics.isDictionaryWord) {
 //			log(IN_DICTIONARY_CHECK, anIdentifierAST, aTreeAST, aVariable, aComponent);
-			log(anIdentifierAST, IN_DICTIONARY_CHECK,  "Class " + getFullTypeName(), aVariable, aComponent);
+			log(IN_DICTIONARY_CHECK, anIdentifierAST, aVariable, aComponent);
+			
 			return false;
 		} else {
 			return true;
@@ -271,7 +303,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 		String[] aComponents = ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName);
 		if (isPrintComponents()) {
 			
-			log(anIdentifierAST, PRINT_MSG_KEY, aName, Arrays.toString(aComponents), anExplanation );
+			log(PRINT_MSG_KEY, anIdentifierAST,  aName, Arrays.toString(aComponents), anExplanation );
 		}
 		
 		for (String aComponent:aComponents) {
@@ -284,14 +316,17 @@ public class MnemonicNameCheck extends STTypeVisited {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	@Override
-	protected void doLeaveToken(DetailAST ast) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	protected void doLeaveToken(DetailAST ast) {
+//		// TODO Auto-generated method stub
+//	  if (leavingSpuriousInnerClass(ast)) {
+//      return;
+//    }
+//		
+//	}
 	protected void processGlobalVars(DetailAST ast, List<STVariable> aVariables) {
 		if (aVariables == null) {
-			System.err.println ("Null global variables");
+			System.err.println ("Null global variables in " + currentFullFileName);
 			return;
 		}
 		for (STVariable anSTVariable:aVariables) {
@@ -349,7 +384,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 			String aName = anSTMethod.getName();
 			String aComponents = Arrays.toString(ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName));
 			if (isPrintComponents()) {
-			log(ast, PRINT_MSG_KEY, getFullTypeName() + ".Method:"  + aName + " Components:" + aComponents);
+			log(PRINT_MSG_KEY, ast,  "Method:"  + aName + " Components:" + aComponents);
 			}
 			processLocalVars(ast, anSTMethod, anSTMethod.getLocalVariables());
 			processParameters(ast, anSTMethod, anSTMethod.getParameters() );
@@ -373,6 +408,30 @@ public class MnemonicNameCheck extends STTypeVisited {
 //		if (!typeCheck(anSTClass))
 //    		super.logType(ast);
 	}
+//	static List emptyList = new ArrayList();
+	public static List<String> getDictonaryComponents(String aName) {
+	  String[] aComponents = ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName);
+	  if (aComponents.length == 0) {
+	    return AnSTNameable.emptyList;
+	  }
+	  List<String> result = null;
+	  for (String aComponent:aComponents) {
+	    if (aComponent.isEmpty()) continue;
+	    String aComponentLowerCase = aComponent.toLowerCase();
+	    if (DictionarySet.getDictionary().contains(aComponentLowerCase)) {
+	      (result = AnSTNameable.nullToNewList(result)).add(aComponentLowerCase);
+	    }
+	  }
+	  return (AnSTNameable.nullToEmptyList(result));
+	}
+	 public void visitType(DetailAST ast) {
+     super.visitType(ast);
+     
+     STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
+         getSTClassByFullName(getFullTypeName());
+     checkSTType(ast, anSTClass);
+//     if (!typeCheck(anSTClass))
+//       super.logType(ast);
 
-	
+   }
 }

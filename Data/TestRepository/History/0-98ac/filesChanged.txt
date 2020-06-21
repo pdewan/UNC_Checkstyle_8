@@ -1,2 +1,0 @@
-98c 
-src/beans/Int1Bean.java:src/beans/Bool1Bean.java:src/beans/Int2Bean.java:src/beans/Bool2Bean.java:src/tests/IntBeanTest.java:src/tests/BoolBeanTest.java

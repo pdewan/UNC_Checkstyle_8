@@ -1,7 +1,7 @@
 package unc.tools.checkstyle;
 
 public class ProjectDirectoryHolder {
-	static String currentProject;
+	static String currentProject = "vanilla-project";
 
 	public static String getCurrentProjectDirectory() {
 		return currentProject;
