@@ -1139,6 +1139,23 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       else
         return emptyList;
     } else {
+//      return getAllInterfaces(aParentSTType);
+      return aParentSTType.getAllInterfaces();
+
+    }
+
+  }
+  public static List<STNameable> getAllInterfaces(List<STNameable>  result, STNameable aParentType, STType anOriginalType) {
+    // STType aParentSTType = SymbolTableFactory.getOrCreateSymbolTable()
+    // .getSTClassByShortName(aParentType.getName());
+    STType aParentSTType = SymbolTableFactory.getOrCreateSymbolTable()
+            .getSTClassByFullName(aParentType.getName());
+    if (aParentSTType == null) {
+      if (anOriginalType.waitForSuperTypeToBeBuilt())
+        return null;
+      else
+        return emptyList;
+    } else {
       return getAllInterfaces(aParentSTType);
     }
 
@@ -1174,6 +1191,7 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     // result.addAll(aSuperType);
     return result;
   }
+  
 
   public static List<STNameable> getAllInterfaces(STType anSTType) {
     // if (TagBasedCheck.isExternalClass(TypeVisitedCheck
@@ -1242,6 +1260,77 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
         return null;
       else
         return nullToEmptyList(result);
+    }
+    addAllNonDuplicates(result, aSuperInterfaces);
+    return nullToEmptyList(result);
+  }
+  public static List<STNameable>  getAllInterfaces(List<STNameable> result, STType anSTType) {
+    // if (TagBasedCheck.isExternalClass(TypeVisitedCheck
+    // .toShortTypeName(anSTType.getName())))
+    if (TagBasedCheck.isExternalClass(anSTType.getName()))
+      return result;
+//    List<STNameable> result = new ArrayList();
+    // STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
+    // .getSTClassByShortName(aType.getName());
+    // if (anSTType == null)
+    // if (anSTType.waitForSuperTypeToBeBuilt())
+    // return null;
+    // else
+    // return result;
+    if (anSTType.isInterface()) {
+      // System.err.println("An interface does not have an interface:"
+      // + anSTType.getName());
+      return result ;
+    }
+    // if (anSTType.getName().contains("Vertical") || anSTType.getName().contains("Anim")) {
+    // System.err.println("checking all ointerfaces " + anSTType.getName());
+    // }
+    STNameable[] anInterfaces = anSTType.getDeclaredInterfaces();
+    if (anInterfaces == null) {
+      return result;
+    }
+    for (STNameable anInterface : anInterfaces) {
+      // STType anSTInterface = SymbolTableFactory.getOrCreateSymbolTable()
+      // .getSTClassByShortName(anInterface.getName());
+      // if (anSTInterface == null)
+      // if (anSTType.waitForSuperTypeToBeBuilt())
+      // return null;
+      // else
+      // continue;
+      // int i = 0;
+      List<STNameable> anInterfaceTypes = getAllTypes(anInterface, anSTType);
+      if (anInterfaceTypes == null) {
+        // if (TagBasedCheck.isExternalClass(TypeVisitedCheck
+        // .toShortTypeName(anInterface.getName()))) {
+        if (TagBasedCheck.isExternalClass(anInterface.getName())) {
+          // result.add(anInterface);
+          anInterfaceTypes = new ArrayList();
+          anInterfaceTypes.add(anInterface);
+        } else if (anSTType.waitForSuperTypeToBeBuilt()) {
+            return computeMissingNameableList() == null ? null:result;
+        }  else
+          continue;
+      }
+      // result.addAll(anInterfaceTypes);
+      addAllNonDuplicates(result, anInterfaceTypes);
+    }
+    STNameable aSuperClass = anSTType.getSuperClass();
+    // STType anSTSuperClass = SymbolTableFactory.getOrCreateSymbolTable()
+    // .getSTClassByShortName(aSuperClass.getName());
+    // if (anSTSuperClass == null)
+    // if (anSTType.waitForSuperTypeToBeBuilt())
+    // return null;
+    // else
+    // return result;
+    if (aSuperClass == null)
+      return result;
+    // List<STNameable> aSuperInterfaces = getAllInterfaces(anSTSuperClass, anSTType);
+    List<STNameable> aSuperInterfaces = getAllInterfaces(aSuperClass, anSTType);
+    if (aSuperInterfaces == null) {
+      if (anSTType.waitForSuperTypeToBeBuilt())
+        return null;
+      else
+        return result;
     }
     addAllNonDuplicates(result, aSuperInterfaces);
     return nullToEmptyList(result);
