@@ -324,6 +324,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		if (aTypesSeen.contains(aCurrentClassName)) {
 		  System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
 		}
+		aTypesSeen.add(aCurrentClassName);
 		STType aCurrentClass = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aCurrentClassName.getName());
 		if (aCurrentClass == null) {
 			return null;
