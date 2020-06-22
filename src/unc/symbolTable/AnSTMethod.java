@@ -323,7 +323,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		STVariable aVariable = aCurrentClass.getDeclaredGlobalSTVariable(aVariableName);
 		if (aVariable == null) {
 		  STNameable aSuperClass = aCurrentClass.getSuperClass();
-		  if (aCurrentClass.getName().equals(aSuperClass.getName())) {
+		  if (aSuperClass != null && aCurrentClass.getName().equals(aSuperClass.getName())) {
 		    System.err.println("recursive variable super class:" + aCurrentClass);
 		    return null;
 		  }
