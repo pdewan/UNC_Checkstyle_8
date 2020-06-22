@@ -14,6 +14,7 @@ import unc.checks.STBuilderCheck;
 import unc.checks.STTypeVisited;
 import unc.checks.TagBasedCheck;
 import unc.checks.TypeVisitedCheck;
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 	protected String declaringClass;
@@ -312,28 +313,47 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		return getDeclaringISAClass(aSuperClassName, aCallInfo);
 		
 	}
+	static List<STNameable> typesSeen = new ArrayList(5);
 	 public static STType getVariableType(STNameable aCurrentClassName, String aVariableName) {
-	   List<STNameable> aTypesSeen = new ArrayList(5);
-	   return getVariableType(aCurrentClassName, aVariableName, aTypesSeen);
+//	   List<STNameable> aTypesSeen = new ArrayList(5);
+	   typesSeen.clear();
+	   return getVariableType(aCurrentClassName, aVariableName, typesSeen);
 	 }
-
+//	public static void print (List<STNameable> aList) {
+//	  for (STNameable anElement: aList) {
+//	    System.err.println(anElement.getName());
+//	    if (anElement instanceof STType) {
+//	      STType anSTType
+//	      UNCAstTreeStringPrinter.printTree(aRoot, addLineInfo)
+//	    }
+//	      
+//	    }
+//	  
+//	}
+/*
+ * ectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.reactivex.observables.ConnectableObservable, io.reactivex.Observable, io.react
+ */
 	public static STType getVariableType(STNameable aCurrentClassName, String aVariableName, List<STNameable> aTypesSeen) {
 		if (aCurrentClassName == null) {
 			return null;
 		}
-		if (aTypesSeen.contains(aCurrentClassName)) {
-		  System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
-		}
-		aTypesSeen.add(aCurrentClassName);
+		
 		STType aCurrentClass = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aCurrentClassName.getName());
 		if (aCurrentClass == null) {
 			return null;
 		}
+		if (aTypesSeen.contains(aCurrentClassName)) {
+      System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
+      aCurrentClass.setRecursive(true);
+      return null;
+    }
+    aTypesSeen.add(aCurrentClassName);
 		STVariable aVariable = aCurrentClass.getDeclaredGlobalSTVariable(aVariableName);
 		if (aVariable == null) {
 		  STNameable aSuperClass = aCurrentClass.getSuperClass();
 		  if (aSuperClass != null && aCurrentClass.getName().equals(aSuperClass.getName())) {
 		    System.err.println("recursive variable super class:" + aCurrentClass);
+		    aCurrentClass.setRecursive(true);
 		    return null;
 		  }
 			return getVariableType(aCurrentClass.getSuperClass(), aVariableName, aTypesSeen);

@@ -180,4 +180,6 @@ public interface STType extends STNameable{
   TypeType getTypeType();
   void setTypeType(TypeType aTypeType);
   boolean isClass();
+  boolean isRecursive();
+  void setRecursive(boolean isRecursive);
 }

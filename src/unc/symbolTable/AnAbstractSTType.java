@@ -73,8 +73,11 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   protected List<AccessModifierUsage> accessModifierUsage;
 
   protected long timeOfEntry;
+  protected boolean isRecursive;
 
   // Set<STType> superTypes = new HashSet();
+
+ 
 
   public AnAbstractSTType(DetailAST ast, String name) {
     super(ast, name);
@@ -1069,6 +1072,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   // // should use recursion actually
   @Override
   public Map<String, PropertyInfo> getPropertyInfos() {
+    if (isRecursive()) {
+      return emptyMap;
+    }
     if (allPropertyInfos == null) {
       allPropertyInfos = computeAllPropertyInfos();
     }
@@ -1592,7 +1598,6 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       }
       if (anSTType.getName().equals(aSuperClass.getName())) {
         System.err.println("Recursive super class:" + anSTType);
-        return nullToEmptyList(result);
       }
       STType aSuperSTType = SymbolTableFactory.getOrCreateSymbolTable()
               .getSTClassByFullName(aSuperClass.getName());
@@ -1664,6 +1669,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
    */
   @Override
   public List<STNameable> getAllInterfaces() {
+    if (isRecursive()) {
+      return emptyList;
+    }
     if (allInterfaces == null) {
 
       // List<STNameable> result = new ArrayList();
@@ -3494,5 +3502,13 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   @Override
   public boolean isClass() {
     return typeType == TypeType.CLASS;
+  }
+  @Override
+  public boolean isRecursive() {
+    return isRecursive;
+  }
+  @Override
+  public void setRecursive(boolean isRecursive) {
+    this.isRecursive = isRecursive;
   }
 }
