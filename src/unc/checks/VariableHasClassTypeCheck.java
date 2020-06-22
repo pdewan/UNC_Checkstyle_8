@@ -221,6 +221,9 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 			return true;
 		List<STNameable> anAllInterfaces = anSTClass.getAllInterfaces();
 		STNameable[] aDeclaredInterfaces = anSTClass.getDeclaredInterfaces();
+		if (aDeclaredInterfaces == null) {
+		  return true; // could not use interface as type
+		}
 		List<String> aNormalizedInterfaces = getNonTagIntefaces(Arrays.asList(aDeclaredInterfaces));
 		if (aNormalizedInterfaces.size() != 0) {
 			return false; 

@@ -56,6 +56,13 @@ public class ClassHasOneInterfaceCheck extends STClassVisitedComprehensively {
 //			System.out.println ("found oval");
 //		}
 		STNameable[] anInterfaces = anSTClass.getDeclaredInterfaces();
+		if (anInterfaces == null) {
+		  if (isInfo()) {
+		    return false; // do not output a positive if is info
+		  } else {
+		    return true; // do not output a negative if not info
+		  }
+		}
 		
 		if (!isInfo()) {
 		  return anInterfaces.length <= 1;
