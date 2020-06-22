@@ -1575,6 +1575,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 
       // List<STNameable> result = new ArrayList();
       allInterfaces = getAllInterfaces(this);
+      if (allInterfaces == null) {
+        System.err.println("Null all interfaces:" + this);
+      }
       setTypeType(allInterfaces);
 
     }
@@ -1639,6 +1642,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     // return toNameList(aTypes);
   }
   public static void setTypeType (List<STNameable> aSuperTypes){
+    if (aSuperTypes == null) {
+      return;
+    }
     for (STNameable aSuperType:aSuperTypes) {
       if (aSuperType instanceof STType) {
         STType aSuperSTType = (STType) aSuperType;
@@ -1676,7 +1682,12 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 	      
 	     }
 	     if (isInterface()) {
+	       if (superTypes == null) {
+	         System.err.println("Null super type:" + this);
+	         ;
+	       } else {
 	       setTypeType(superTypes);
+	       }
 //         for (STNameable aSuperType:superTypes) {
 //           if (aSuperType instanceof STType) {
 //             STType aSuperSTType = (STType) aSuperType;

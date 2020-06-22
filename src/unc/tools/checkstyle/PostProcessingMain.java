@@ -63,7 +63,8 @@ public class PostProcessingMain {
   static String[] externalPackagePrefixes;
   static String[] externalMethodRegularExpressions;
   static String[] externalClassRegularExpressions;
-  static Collection<STType> sTTypes;
+//  static Collection<STType> sTTypes;
+  static Collection<STType> sTTypes = new ArrayList();
   static final String CHECKS_FILE_NAME = "generated_checks.xml";
   static final String DUMMY_FILE_NAME = "firstpassresults.text";
   static final String EXTERNALS_FILE_NAME = "externals.csv";
@@ -77,7 +78,9 @@ public class PostProcessingMain {
     externalPackagePrefixes = sTBuilderCheck.getExternalPackagePrefixes();
     externalMethodRegularExpressions = sTBuilderCheck.getExternalMethodRegularExpressions();
     externalClassRegularExpressions = sTBuilderCheck.getExternalTypeRegularExpressions();
-    sTTypes = symbolTable.getAllSTTypes();
+//    sTTypes = symbolTable.getAllSTTypes();
+    sTTypes.clear();
+    sTTypes.addAll (symbolTable.getAllSTTypes());
 
   }
 

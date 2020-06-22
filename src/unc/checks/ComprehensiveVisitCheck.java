@@ -2136,7 +2136,17 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     if (aLocalVariable != null) {
       ((currentMethodName == null) ? currentStaticBlocks.getLocalsAssigned()
               : localsAssignedByCurrentMethod).add(aLocalVariable);
+      
+      if (currentMethodName == null ) {
+        currentStaticBlocks.getLocalsAssigned().add(aLocalVariable);
+      } else if (localsAssignedByCurrentMethod != null) {
+        localsAssignedByCurrentMethod.add(aLocalVariable);
+      } else {
+        System.err.println("Null locals assigned:" + currentFullFileName);
+      }
       return;
+      
+      
     }
     // localsAssignedByCurrentMethod
   }
