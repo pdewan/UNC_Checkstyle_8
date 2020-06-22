@@ -312,9 +312,17 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		return getDeclaringISAClass(aSuperClassName, aCallInfo);
 		
 	}
-	public static STType getVariableType(STNameable aCurrentClassName, String aVariableName) {
+	 public static STType getVariableType(STNameable aCurrentClassName, String aVariableName) {
+	   List<STNameable> aTypesSeen = new ArrayList(5);
+	   return getVariableType(aCurrentClassName, aVariableName, aTypesSeen);
+	 }
+
+	public static STType getVariableType(STNameable aCurrentClassName, String aVariableName, List<STNameable> aTypesSeen) {
 		if (aCurrentClassName == null) {
 			return null;
+		}
+		if (aTypesSeen.contains(aCurrentClassName)) {
+		  System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
 		}
 		STType aCurrentClass = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aCurrentClassName.getName());
 		if (aCurrentClass == null) {
@@ -327,7 +335,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		    System.err.println("recursive variable super class:" + aCurrentClass);
 		    return null;
 		  }
-			return getVariableType(aCurrentClass.getSuperClass(), aVariableName);
+			return getVariableType(aCurrentClass.getSuperClass(), aVariableName, aTypesSeen);
 		}
 		return aVariable.getDeclaringSTType();
 		
