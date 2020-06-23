@@ -1549,6 +1549,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       // return null;
     }
     List<STNameable> result = null;
+    if (anSTType.isRecursive()) {
+      return nullToEmptyList(result);
+    }
 
     if (anSTType.isInterface()) {
       STNameable[] anInterfaces = anSTType.getDeclaredInterfaces();

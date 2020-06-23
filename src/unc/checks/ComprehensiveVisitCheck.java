@@ -1177,7 +1177,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       else {
         superClass = superTypes[0];
         if (getFullTypeName().equals(superClass.getName())) {
-          System.err.println ("Recursive super class:" + superClass.getName());
+          System.err.println ("Setting Recursive super class:" + superClass.getName());
         }
       }
       interfaces = getInterfaces(ast);
