@@ -348,6 +348,19 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		if (aTypesSeen.contains(aCurrentClassName)) {
       System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
       aCurrentClass.setRecursive(true);
+      for (STNameable aRecursiveClass:aTypesSeen) {
+       
+        STType aRecursiveSTType = null;
+        if (aRecursiveClass instanceof STType) {
+           aRecursiveSTType = (STType) aRecursiveClass;
+          
+        }  else {
+          aRecursiveSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aRecursiveClass.getName());
+          if (aRecursiveSTType != null && aRecursiveSTType != aCurrentClass ) {
+            aRecursiveSTType.setRecursive(true); 
+          }
+        }
+      }
       return null;
     }
     aTypesSeen.add(aCurrentClassName);

@@ -1596,13 +1596,21 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 
         return nullToEmptyList(result);
       }
-      if (anSTType.getName().equals(aSuperClass.getName())) {
-        System.err.println("Recursive super class:" + anSTType);
-      }
+//      if (anSTType.getName().equals(aSuperClass.getName())) {
+//        System.err.println("Recursive super class:" + anSTType);
+//        anSTType.setRecursive(true);
+//      }
       STType aSuperSTType = SymbolTableFactory.getOrCreateSymbolTable()
               .getSTClassByFullName(aSuperClass.getName());
       if (aSuperSTType != null) {
         aSuperClass = aSuperSTType;
+      }
+      if (anSTType.getName().equals(aSuperClass.getName())) {
+        System.err.println("Recursive super class:" + anSTType);
+        anSTType.setRecursive(true);
+        if (aSuperSTType != null) {
+          aSuperSTType.setRecursive(true);
+        }
       }
       (result = nullToNewList(result)).add(aSuperClass);
       // List<STNameable> aSuperTypes = computeAllSuperTypes(aSuperClass);
