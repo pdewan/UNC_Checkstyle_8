@@ -1174,11 +1174,16 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       STNameable[] superTypes = getSuperTypes(ast);
       if (superTypes.length == 0)
         superClass = null;
-      else
+      else {
         superClass = superTypes[0];
+        if (getFullTypeName().equals(superClass.getName())) {
+          System.err.println ("Recursive super class:" + superClass.getName());
+        }
+      }
       interfaces = getInterfaces(ast);
       // isInterface = false;
       typeType = TypeType.CLASS;
+      
       // System.err.println ("Setting type to class");
 
     }
