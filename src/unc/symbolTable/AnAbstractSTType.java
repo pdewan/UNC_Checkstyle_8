@@ -1026,7 +1026,7 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       }
       STType aSuperClassSTType = SymbolTableFactory.getOrCreateSymbolTable()
               .getSTClassByShortName(aSuperType.getName());
-      if (aSuperClassSTType == null) {
+      if (aSuperClassSTType == null || isRecursive() || aSuperClassSTType.isRecursive()) {
         return null; // this should not happen
       }
       Map<String, PropertyInfo> aSuperPropertyInfos = aSuperClassSTType.getPropertyInfos();

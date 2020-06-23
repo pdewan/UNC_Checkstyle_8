@@ -342,6 +342,9 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		if (aCurrentClass == null) {
 			return null;
 		}
+		if (aCurrentClass.isRecursive()) {
+		  return null;
+		}
 		if (aTypesSeen.contains(aCurrentClassName)) {
       System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
       aCurrentClass.setRecursive(true);
@@ -350,6 +353,9 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
     aTypesSeen.add(aCurrentClassName);
 		STVariable aVariable = aCurrentClass.getDeclaredGlobalSTVariable(aVariableName);
 		if (aVariable == null) {
+		  if (aCurrentClass.isRecursive()) {
+		    return null;
+		  }
 		  STNameable aSuperClass = aCurrentClass.getSuperClass();
 		  if (aSuperClass != null && aCurrentClass.getName().equals(aSuperClass.getName())) {
 		    System.err.println("recursive variable super class:" + aCurrentClass);
