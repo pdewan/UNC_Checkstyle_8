@@ -465,6 +465,11 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
       String[] aParameterNames = AnSTNameable.toStringArray(currentMethodParameterNames);
       DetailAST modifierAST = currentMethodAST.findFirstToken(TokenTypes.MODIFIERS);
       Set<Integer> aModifiers = extractModifiers(modifierAST);
+      String aFullTypeName = getFullTypeName();
+      if (aFullTypeName == null) {
+        aFullTypeName = getFullTypeName(currentTree);
+        setFullTypeName(aFullTypeName);
+      }
       // Set<DetailAST> anAnnotations = extractAnnotations(modifierAST);
       STMethod anSTMethod = new AnSTMethod(currentMethodAST, currentMethodName, getFullTypeName(),
               aParameterNames, aLongParameterTypes,
@@ -1507,7 +1512,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   @Override
   public void doLeaveToken(DetailAST ast) {
     if (!isFirstPass()) {
-
+      if (leavingSpuriousInnerClass(ast)) {
+        return;
+      }
       return;
     }
     super.doLeaveToken(ast);

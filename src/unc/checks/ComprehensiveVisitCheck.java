@@ -3656,6 +3656,12 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     // if (foundSupuriousInnerClass) {
     // return;
     // }
+//    if (currentFullFileName != null && currentFullFileName.endsWith("SchedulerPoolFactory.java")) {
+//      System.err.println ("found offending file!");
+//    }
+//    if (currentFullFileName != null && currentFullFileName.endsWith("RxThreadFactory.java")) {
+//      System.err.println ("found offending file!");
+//    }
     if (checkSpuriosInnerClasses()) {
       return;
     }

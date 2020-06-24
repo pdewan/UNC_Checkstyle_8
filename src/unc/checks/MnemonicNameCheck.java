@@ -61,10 +61,11 @@ public class MnemonicNameCheck extends STTypeVisited {
 
 	
 	protected Set<String> ignoreNames = new HashSet();
-	public int[] getDefaultTokens() {
-    return new int[] {TokenTypes.CLASS_DEF, TokenTypes.PACKAGE_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF, 
-        TokenTypes.ANNOTATION_DEF, TokenTypes.ANNOTATION_FIELD_DEF};
-  } 
+ 
+	 public int[] getDefaultTokens() {
+	    return new int[] {TokenTypes.CLASS_DEF, TokenTypes.PACKAGE_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF, 
+	        TokenTypes.ANNOTATION_DEF, TokenTypes.ANNOTATION_FIELD_DEF};
+	  }
 	
 	public boolean isCheckNumLetters() {
 		return checkNumLetters;
@@ -433,5 +434,13 @@ public class MnemonicNameCheck extends STTypeVisited {
 //     if (!typeCheck(anSTClass))
 //       super.logType(ast);
 
+   }
+	 @Override
+	 public void visitToken(DetailAST ast) {
+	   super.visitToken(ast);
+	 }
+	 @Override
+   public void leaveToken(DetailAST ast) {
+     super.leaveToken(ast);
    }
 }

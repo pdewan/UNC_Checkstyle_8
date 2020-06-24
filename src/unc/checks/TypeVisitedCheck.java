@@ -53,9 +53,28 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //		return new int[] {TokenTypes.PACKAGE_DEF, TokenTypes.CLASS_DEF,  
 //						TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF, TokenTypes.PARAMETER_DEF };
 //	}
+	
 	protected void resetProject() {
-		super.resetProject();
+	  super.resetProject();
+	  resetCheck();
+	  
+
+	}
+	 protected void resetCheck(DetailAST ast) {
+//	   resetCheck();
+	   if (foundSupuriousInnerClass) {
+	      foundSupuriousInnerClass = false;
+//	      System.err.println("Resetting suprious inner class in reset check " + currentFullFileName + " " + this);
+	    }
+	 }
+
+	protected void resetCheck() {
+//		super.resetProject();
 //		fullTypeName = null;
+//	  if (foundSupuriousInnerClass) {
+//      foundSupuriousInnerClass = false;
+//      System.err.println("Resetting suprious inner class in reset check " + currentFullFileName);
+//    }
 		setFullTypeName(null);
 //		isAnnotation = false;
 //		isEnum = false;
@@ -73,6 +92,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 		typeASTStack.clear();
 		isGenericStack.clear();
 		annotationParameters.clear();		
+		
 	}
 	
 	public boolean maybeVisitPackage(DetailAST ast) {
@@ -203,11 +223,21 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //	    	isGenericStack.pop();
 //	    	isGeneric = isGenericStack.peek();
 //	    	isGeneric =  (typeNameAST.getNextSibling().getType() == TokenTypes.TYPE_PARAMETERS);
+			 
 			 shortTypeName = myPop(shortTypeNameStack);
+			 if (shortTypeName == null) {
+			   System.err.println ("null short type name");
+			 }
 //			 shortTypeNameStack.pop();
 //			 shortTypeName = shortTypeNameStack.peek();
 //			fullTypeName = myPop(fullTypeNameStack);
-			setFullTypeName(myPop(fullTypeNameStack));
+			 
+			 String aFullTypeName = myPop(fullTypeNameStack);
+			 if (aFullTypeName == null) {
+			   System.err.println("Null full type name:" + currentFullFileName);
+			 }
+			 setFullTypeName(aFullTypeName);
+//			setFullTypeName(myPop(fullTypeNameStack));
 //			fullTypeNameStack.pop();
 //			fullTypeName = fullTypeNameStack.peek();
 			typeNameable = myPop(typeNameableStack);
@@ -399,8 +429,9 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 	protected String getFullTypeName() {
 		return fullTypeName;
 	}
-	protected void setFullTypeName(String fullTypeName) {
-		this.fullTypeName = fullTypeName;
+	protected void setFullTypeName(String newVal) {
+	  
+		this.fullTypeName = newVal;
 	}
 	public String getShortTypeName() {
 		return shortTypeName;
@@ -411,9 +442,19 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 	protected boolean foundSupuriousInnerClass = false; // should be an int
   protected boolean foundInnerClassToBeNotVisited() {
    boolean retVal = (!getVisitInnerClasses() && getFullTypeName() != null);
+//   if (!retVal && foundSupuriousInnerClass) {
+//     System.err.println ("resetting spurious inner class:" + currentFullFileName);
+//
+//   }
+//   if (retVal && !foundSupuriousInnerClass) {
+//     System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
+//
+//   }
+   
 //   if (retVal) {
      foundSupuriousInnerClass = retVal;
 //   }
+     
    return retVal;
   }
   protected boolean inMethodOrConstructor;
@@ -455,15 +496,21 @@ public abstract class TypeVisitedCheck extends UNCCheck {
     return foundSupuriousInnerClass;
   }
   protected boolean leavingSpuriousInnerClass(DetailAST ast) {
+//    if (!foundSupuriousInnerClass && ast.getType() == TokenTypes.CLASS_DEF ) {
+//      System.err.println("not spurious inner class and class def");
+//    }
     if (foundSupuriousInnerClass) {
       switch (ast.getType()) {
         case TokenTypes.CLASS_DEF:
+          int i = 0;
 
         case TokenTypes.ENUM_DEF:
 
         case TokenTypes.ANNOTATION_DEF:
 
           foundSupuriousInnerClass = false;
+//          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + this);
+          return true;
 
         default:
           return true;

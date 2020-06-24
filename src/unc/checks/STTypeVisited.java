@@ -32,14 +32,14 @@ public abstract class STTypeVisited extends ComprehensiveVisitCheck {
 //    		super.logType(ast);
 
     }
-	@Override
-  protected void doLeaveToken(DetailAST ast) {
-    // TODO Auto-generated method stub
-    if (leavingSpuriousInnerClass(ast)) {
-      return;
-    }
-    
-  }
+//	@Override
+//  protected void doLeaveToken(DetailAST ast) {
+//    // TODO Auto-generated method stub
+//    if (leavingSpuriousInnerClass(ast)) {
+//      return;
+//    } 
+//    
+//  }
 //	protected void leaveMethodOrConstructor(DetailAST methodDef) {
 //    inMethodOrConstructor = false;
 ////    System.err.println("Not in method");

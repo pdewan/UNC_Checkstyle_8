@@ -276,6 +276,10 @@ public abstract class UNCCheck extends AbstractCheck {
 		}
 
 	}
+	
+	protected void resetCheck(DetailAST anAST) {
+	  
+	}
 
 	public void doBeginTree(DetailAST ast) {
 		if (isDoNotVisit()) {
@@ -487,6 +491,7 @@ public abstract class UNCCheck extends AbstractCheck {
 			// }
 			if (isPackageInfo) {
 				isPackageInfo = false;
+				resetCheck(ast);
 				return;
 			}
 			doFinishTree(ast);
@@ -507,6 +512,7 @@ public abstract class UNCCheck extends AbstractCheck {
 			// throw e;
 
 		}
+	  resetCheck(ast);
 	}
 
 	public void leaveToken(DetailAST ast) {
