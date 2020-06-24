@@ -148,9 +148,9 @@ public class ProjectHistoryChecker {
     for (int aVersionIndex = 0; aVersionIndex < versions.length; aVersionIndex++) {
       File aVersion = versions[aVersionIndex];
       System.err.println (" Processing version:" + aVersion.getName());
-      if (aVersion.getName().startsWith("1018")) {
-        System.err.println("Found offending version");
-      }
+//      if (aVersion.getName().startsWith("1018")) {
+//        System.err.println("Found offending version");
+//      }
 
       String anOutFileName = outFileName(aVersion);
       File anOutFile = new File(anOutFileName);
