@@ -446,11 +446,11 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //     System.err.println ("resetting spurious inner class:" + currentFullFileName);
 //
 //   }
-   if (retVal && !foundSupuriousInnerClass) {
-     System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
-
-   }
-   
+//   if (retVal && !foundSupuriousInnerClass) {
+//     System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
+//
+//   }
+//   
 //   if (retVal) {
      foundSupuriousInnerClass = retVal;
 //   }
@@ -509,7 +509,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
         case TokenTypes.ANNOTATION_DEF:
 
           foundSupuriousInnerClass = false;
-          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + this);
+//          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + this);
           return true; //do not
 
         default:
