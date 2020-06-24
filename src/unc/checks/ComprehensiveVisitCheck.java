@@ -41,6 +41,7 @@ import unc.symbolTable.SymbolTableFactory;
 import unc.symbolTable.TypeType;
 import unc.symbolTable.VariableKind;
 import unc.tools.checkstyle.ProjectSTBuilderHolder;
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
 
 public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         implements ContinuationProcessor {
@@ -1861,8 +1862,13 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
           FullIdent aFullIdent = FullIdent.createFullIdentBelow(ast);
           String longMethodName = aFullIdent.getText();
           String[] aCallParts;
+          
           if (longMethodName.length() > 0 && !Character.isLetter(longMethodName.charAt(0))) {
+            if (aTargetName == null) {
+              aCallParts = new String[] {shortMethodName};
+            } else {
             aCallParts = new String[] { aTargetName, shortMethodName };
+            }
           } else {
             aCallParts = longMethodName.split("\\.");
 
@@ -1872,7 +1878,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
             }
           }
           if (aNormalizedParts == null) {
-            aNormalizedParts = toNormalizedClassBasedCall(aCallParts);
+            aNormalizedParts = toNormalizedClassBasedCall(ast, aCallParts);
           }
         }
       }
@@ -3066,7 +3072,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       return null;
   }
 
-  public String[] toNormalizedClassBasedCall(String[] aCallParts) {
+  public String[] toNormalizedClassBasedCall(DetailAST ast, String[] aCallParts) {
     if (aCallParts.length == 3 && ("this".equals(aCallParts[0]) || "super".equals(aCallParts[0]))) { // unncessary
       // this.global
       aCallParts = new String[] { aCallParts[1], aCallParts[2] };
@@ -3088,7 +3094,10 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     } else if (aCallParts.length == 2) {
       String aVariable =aCallParts[0]; 
       if (aVariable == null) {
-        System.err.println("Null variable in call parts " + Arrays.toString(aCallParts) + "of file" + currentFullFileName);
+        String anASTDisplay = UNCAstTreeStringPrinter.printTree(ast, false);
+        System.err.println("Null variable in call parts " + Arrays.toString(aCallParts) +  "of file" + currentFullFileName);
+        System.err.println("Abstract call tree " + anASTDisplay);
+
       }
 //      String aType = lookupType(aCallParts[0]);
       String aType = lookupType(aVariable);
@@ -4229,7 +4238,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     // String retVal = aShortName;
     if (aShortOrLongName == null) {
-      System.err.println("null aShortTypeName");
+//      System.err.println("null aShortTypeName");
       return null;
     }
     int aSubscriptStart = aShortOrLongName.indexOf("[");
