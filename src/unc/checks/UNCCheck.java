@@ -336,6 +336,7 @@ public abstract class UNCCheck extends AbstractCheck {
   }
 
   public static void setFirstPass(boolean isFirstPass) {
+//    System.err.println("Setting first pass:" + isFirstPass);
     STBuilderCheck.isFirstPass = isFirstPass;
   }
 	public void beginTree(DetailAST ast) {

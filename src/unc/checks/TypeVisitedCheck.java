@@ -446,10 +446,10 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //     System.err.println ("resetting spurious inner class:" + currentFullFileName);
 //
 //   }
-//   if (retVal && !foundSupuriousInnerClass) {
+   if (retVal && !foundSupuriousInnerClass) {
 //     System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
-//
-//   }
+
+   }
 //   
 //   if (retVal) {
      foundSupuriousInnerClass = retVal;

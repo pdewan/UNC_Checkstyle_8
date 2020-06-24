@@ -785,8 +785,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   STType[] emptyTypes = {};
 
   protected void leaveAnnotationDef(DetailAST ast) {
-    STType anExistingEntry = getUsableExistingEntryAndSetPass();
-    if (anExistingEntry != null) {
+//    STType anExistingEntry = getUsableExistingEntryAndSetPass();
+    STType anExistingEntry = null;
+    if (isDoAutoPassChange() && (anExistingEntry = getUsableExistingEntryAndSetPass()) != null) {
       setFirstPass(false);
       upateCurrentSTTType(anExistingEntry);
       outputLog(ast);
@@ -890,9 +891,13 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     // if (typeType != TypeType.ENUM) {
     // System.err.println("Not enum");
     // }
-    STType anExistingEntry = getUsableExistingEntryAndSetPass();
-    if (anExistingEntry != null) {
+//    STType anExistingEntry = getUsableExistingEntryAndSetPass();
+//    if (anExistingEntry != null) {
+    
+    STType anExistingEntry = null;
+    if (isDoAutoPassChange() && (anExistingEntry = getUsableExistingEntryAndSetPass()) != null) {
       setFirstPass(false);
+    
       upateCurrentSTTType(anExistingEntry);
       outputLog(anEnumDef);
 

@@ -101,6 +101,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 
   @Override
   public STNameable[] getDeclaredInterfaces() {
+    if (declaredInterfaces == null) {
+      declaredInterfaces = emptyNameableArray;
+    }
     return declaredInterfaces;
   }
 
@@ -1683,14 +1686,16 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     if (isRecursive()) {
       return emptyList;
     }
+    List<STNameable> retVal = null;
     if (allInterfaces == null) {
 
       // List<STNameable> result = new ArrayList();
-      allInterfaces = getAllInterfaces(this);
-      if (allInterfaces == null) {
+      retVal = getAllInterfaces(this);
+      if (retVal == null) {
         System.err.println("Null all interfaces:" + this);
       }
-      setTypeType(allInterfaces);
+      setTypeType(retVal);
+      allInterfaces = retVal;
 
     }
     return allInterfaces;

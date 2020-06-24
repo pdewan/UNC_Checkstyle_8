@@ -185,7 +185,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   public STNameable[] getInterfaces(DetailAST aClassDef) {
     List<STNameable> anInterfaces = new ArrayList();
     int numInterfaces = 0;
-    DetailAST implementsClause = aClassDef.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+//    DetailAST implementsClause = aClassDef.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+    DetailAST implementsClause = findFirstTokenUntil(aClassDef, TokenTypes.IMPLEMENTS_CLAUSE, TokenTypes.OBJBLOCK);
+
     if (implementsClause == null)
       return emptyNameableArray;
     DetailAST anImplementedInterface = implementsClause.findFirstToken(TokenTypes.IDENT);
