@@ -677,10 +677,11 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   public DetailAST findFirstTokenUntil(DetailAST aParent, int type, int typeUntil) {
     DetailAST returnValue = null;
     for (DetailAST ast = aParent.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-        if (ast.getType() == type) {
+        int aType = ast.getType();
+        if (aType  == type) {
             returnValue = ast;
             break;
-        } else if (ast.getType() == typeUntil) {
+        } else if (aType  == typeUntil) {
           return returnValue;
         }
         
