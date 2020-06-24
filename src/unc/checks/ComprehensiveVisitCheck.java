@@ -674,6 +674,20 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     return result;
   }
+  public DetailAST findFirstTokenUntil(DetailAST aParent, int type, int typeUntil) {
+    DetailAST returnValue = null;
+    for (DetailAST ast = aParent.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+        if (ast.getType() == type) {
+            returnValue = ast;
+            break;
+        } else if (ast.getType() == typeUntil) {
+          return returnValue;
+        }
+        
+    }
+    return returnValue;
+  }
+
 
   public STNameable[] getSuperTypes(DetailAST aClassDef) {
     // List<STNameable> aSuperTypes = new ArrayList();
@@ -681,7 +695,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 
     STNameable[] emptyArray = {};
     int numInterfaces = 0;
-    DetailAST extendsClause = aClassDef.findFirstToken(TokenTypes.EXTENDS_CLAUSE);
+//    DetailAST extendsClause = aClassDef.findFirstToken(TokenTypes.EXTENDS_CLAUSE);
+    DetailAST extendsClause =  findFirstTokenUntil( aClassDef, TokenTypes.EXTENDS_CLAUSE, TokenTypes.OBJBLOCK);
+
     if (extendsClause == null)
       return emptyArray;
     DetailAST anExtendedType = extendsClause.findFirstToken(TokenTypes.IDENT);
