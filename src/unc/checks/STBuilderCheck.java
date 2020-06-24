@@ -713,6 +713,10 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
 
   @Override
   public void leaveType(DetailAST ast) {
+//    if (currentFullFileName.equals("C:\\Users\\dewan\\Downloads\\RxJava_java_only\\java_only\\history\\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\\commit_changes\\rxjava-contrib\\rxjava-swing\\src\\main\\java\\rx\\subscriptions\\SwingSubscriptions.java")) {
+//      System.err.println("found problematic file");
+//    };
+
     if (!getVisitInnerClasses())
       return;
     if (checkIncludeExcludeTagsOfCurrentType()) {

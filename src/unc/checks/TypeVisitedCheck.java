@@ -510,7 +510,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 
           foundSupuriousInnerClass = false;
 //          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + this);
-          return true;
+          return false; // we want the symbol table to be created
 
         default:
           return true;

@@ -25,7 +25,7 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 	static Object[] emptyArray = {};
 //	AccessModifier accessModifier = AccessModifier.PUBLIC;
 //	boolean isAbstract = false;
-
+//C:\Users\dewan\Downloads\RxJava_java_only\java_only\history\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\commit_changes\rxjava-contrib\rxjava-swing\src\main\java\rx\subscriptions\SwingSubscriptions.java
 	public AnSTTypeFromClass(String aClassName) {
 		super (null, aClassName);
 //		if (aClassName.contains("rmi")) {

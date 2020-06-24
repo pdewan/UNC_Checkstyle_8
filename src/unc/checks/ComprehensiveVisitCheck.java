@@ -857,7 +857,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   // return retVal;
   // }
   public void visitType(DetailAST typeDef) {
-
+//    if (currentFullFileName.equals("C:\\Users\\dewan\\Downloads\\RxJava_java_only\\java_only\\history\\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\\commit_changes\\rxjava-contrib\\rxjava-swing\\src\\main\\java\\rx\\subscriptions\\SwingSubscriptions.java")) {
+//      System.err.println("found problematic file");
+//    }
     if (getVisitInnerClasses()) {
       initializeTypeState();
     }
@@ -3662,6 +3664,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   // return foundSupuriousInnerClass;
   // }
   protected void doVisitToken(DetailAST ast) {
+//    if (currentFullFileName.equals("C:\\Users\\dewan\\Downloads\\RxJava_java_only\\java_only\\history\\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\\commit_changes\\rxjava-contrib\\rxjava-swing\\src\\main\\java\\rx\\subscriptions\\SwingSubscriptions.java")) {
+//      System.err.println("found problematic file");
+//    }
     // if (foundSupuriousInnerClass) {
     // return;
     // }
