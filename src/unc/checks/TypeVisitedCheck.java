@@ -440,7 +440,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 		this.shortTypeName = shortTypeName;
 	}
 	protected boolean foundSupuriousInnerClass = false; // should be an int
-  protected boolean foundInnerClassToBeNotVisited() {
+  protected boolean foundInnerClassToBeNotVisited(DetailAST anAST) {
    boolean retVal = (!getVisitInnerClasses() && getFullTypeName() != null);
 //   if (!retVal && foundSupuriousInnerClass) {
 //     System.err.println ("resetting spurious inner class:" + currentFullFileName);
@@ -518,5 +518,15 @@ public abstract class TypeVisitedCheck extends UNCCheck {
     }
     return false;
 
+  }
+  public static DetailAST getClassOrInterfaceName (DetailAST aClassOrInterfaceDef) {
+    return   aClassOrInterfaceDef.findFirstToken(TokenTypes.IDENT);
+
+  }
+  public static DetailAST getAnnotationTypeName (DetailAST anAnnotationDef) {
+    return anAnnotationDef.getFirstChild()//Modifiers
+            .getNextSibling()// @
+            .getNextSibling()//interface
+            .getNextSibling();//name
   }
 }

@@ -34,6 +34,9 @@ public class AnSTType extends AnAbstractSTType implements STType {
 //	protected Map<String, DetailAST> globalVariableToRHS ;
 	protected List<CallInfo> methodsCalled = new ArrayList();
 	protected List<CallInfo> allMethodsCalled ;
+	protected final List<DetailAST> innerTypesAST;
+  
+  protected final List<String> innerTypeNames;
 	
 	
 
@@ -88,7 +91,9 @@ public class AnSTType extends AnAbstractSTType implements STType {
 			Map<String, List<DetailAST>> aGlobalIdentToLHS,
 			Map<String, List<DetailAST>> aGlobalIdentToRHS,
 			Set<Integer> aModifiers,
-			List<String> aTypeParameterNames
+			List<String> aTypeParameterNames,
+      List<DetailAST> anInnerTypeASTs,
+      List<String> anInnerTypeNames
 
 			) {
 		super(ast, name);
@@ -158,6 +163,8 @@ public class AnSTType extends AnAbstractSTType implements STType {
 		modifiers = aModifiers;
 		accessModifier = STBuilderCheck.toAccessModifier(modifiers);
 		isAbstract = modifiers != null && modifiers.contains(TokenTypes.ABSTRACT);
+		this.innerTypeNames = anInnerTypeNames;
+    innerTypesAST = anInnerTypeASTs;
 //		if (isInterface) {
 		if (aTypeType == TypeType.INTERFACE) {
 			for (STMethod aMethod:declaredMethods) {
@@ -1251,6 +1258,16 @@ public class AnSTType extends AnAbstractSTType implements STType {
   }
   
 
+  @Override
+  public List<DetailAST> getInnerTypesAST() {
+    return innerTypesAST;
+  }
+
+
+  @Override
+  public List<String> getInnerTypeNames() {
+    return innerTypeNames;
+  }
   
 
 }

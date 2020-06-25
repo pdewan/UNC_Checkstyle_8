@@ -502,6 +502,16 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
     
     return typeType;
   }
+  @Override
+  public List<DetailAST> getInnerTypesAST() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  @Override
+  public List<String> getInnerTypeNames() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
 //

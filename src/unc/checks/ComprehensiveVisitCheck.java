@@ -131,6 +131,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   protected String variablesDeclaredString;
   protected String propertiesDeclaredString;
   protected String statisticsString;
+  protected List<DetailAST> innerTypeASTs = new ArrayList();
+  protected List<String> innerTypeNames = new ArrayList();
+
   protected List<String> typeParameterNames = new ArrayList();
   public static final String NORMALIZED_TYPE_PARAMETER_NAME = "TypeParam";
 
@@ -2632,6 +2635,8 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     variablesDeclaredString = null;
     propertiesDeclaredString = null;
     statisticsString = null;
+    innerTypeNames.clear();
+    innerTypeASTs.clear();
   }
 
   @Override
@@ -3717,7 +3722,11 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         visitAnnotationFieldDef(ast);
         return;
       case TokenTypes.ANNOTATION_DEF:
-        if (foundInnerClassToBeNotVisited()) {
+        if (foundInnerClassToBeNotVisited(ast)) {
+          DetailAST aNameAST = getAnnotationTypeName(ast);
+          innerTypeASTs.add(aNameAST);
+          innerTypeNames.add(aNameAST.getText());
+          
           return;
         }
 
@@ -3730,7 +3739,10 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         // if (getFullTypeName() == null // outer class
         // || ProjectSTBuilderHolder.getSTBuilder().getVisitInnerClasses()) // avoid inner class if
         // we haev visited
-        if (foundInnerClassToBeNotVisited()) {
+        if (foundInnerClassToBeNotVisited(ast)) {
+          DetailAST aNameAST = getClassOrInterfaceName(ast);
+          innerTypeASTs.add(aNameAST);
+          innerTypeNames.add(aNameAST.getText());
           return;
         }
 
@@ -3740,7 +3752,10 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         // if (getFullTypeName() == null // avoid inner class if we have visited
         // // outer class
         // || ProjectSTBuilderHolder.getSTBuilder().getVisitInnerClasses())
-        if (foundInnerClassToBeNotVisited()) {
+        if (foundInnerClassToBeNotVisited(ast)) {
+          DetailAST aNameAST = getClassOrInterfaceName(ast);
+          innerTypeASTs.add(aNameAST);
+          innerTypeNames.add(aNameAST.getText());
           return;
         }
 
@@ -3793,7 +3808,11 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         visitIdent(ast);
         return;
       case TokenTypes.ENUM_DEF:
-        if (foundInnerClassToBeNotVisited()) {
+        if (foundInnerClassToBeNotVisited(ast)) {
+          DetailAST aNameAST = getEnumNameAST(ast);
+          innerTypeASTs.add(aNameAST);
+          innerTypeNames.add(aNameAST.getText());
+
           return;
         }
         visitEnumDef(ast);

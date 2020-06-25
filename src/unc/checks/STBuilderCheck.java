@@ -819,7 +819,10 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
               // new HashMap(),
               AnSTNameable.emptyMap, aModifiers,
               // typeParameterNames
-              AnSTNameable.copy(typeParameterNames)
+              AnSTNameable.copy(typeParameterNames),
+              AnSTNameable.emptyList,
+              AnSTNameable.emptyList
+            
 
       );
 
@@ -925,7 +928,11 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
               // new HashMap(),
               AnSTNameable.emptyMap,
               // new HashMap(),
-              AnSTNameable.emptyMap, aModifiers, AnSTNameable.copy(typeParameterNames));
+              AnSTNameable.emptyMap, aModifiers, 
+              AnSTNameable.copy(typeParameterNames),
+              AnSTNameable.emptyList,
+              AnSTNameable.emptyList
+              );
 
       // anSTClass.introspect();
       // anSTClass.findDelegateTypes();
@@ -1246,7 +1253,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
 
             aModifiers,
             // new ArrayList(typeParameterNames)
-            AnSTNameable.copy(typeParameterNames)
+            AnSTNameable.copy(typeParameterNames),
+            AnSTNameable.copy(innerTypeASTs),
+            AnSTNameable.copy(innerTypeNames)
 
     );
 
@@ -1319,103 +1328,103 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     createNewEntry();
 
   }
-  protected void oldProcessMethodAndClassData() {
-    if (typeAST == null) { // isEnum probably
-      return;
-    }
-    processImports();
-
-    STMethod[] aMethods = stMethods.toArray(new STMethod[0]);
-    STMethod[] aConstructors = stConstructors.toArray(new STMethod[0]);
-    // List<DetailAST> aModifiers = findAllInOrderMatchingNodes(typeAST, TokenTypes.MODIFIERS);
-    DetailAST modifierAST = typeAST.findFirstToken(TokenTypes.MODIFIERS);
-    Set<Integer> aModifiers = extractModifiers(modifierAST);
-
-    boolean anOldFirstPass = isFirstPass();
-
-    STType anExistingEntry = getUsableExistingEntryAndSetPass();
-    if (anExistingEntry != null) {
-      // the entry was made before finishtree
-      // if (anExistingEntry != null && (anExistingEntry.isAnnotation() ||
-      // anExistingEntry.isEnum())) {
-      if ((anExistingEntry.isAnnotation() || anExistingEntry.isEnum())) {
-
-        currentSTType = anExistingEntry;
-
-        return;
-      }
-      // System.err.println ("Second pass:" + currentFile);
-      setFirstPass(false);
-
-      if (anOldFirstPass) {
-        // System.err.println ("Second pass:" +currentFullFileName );
-
-        // if (anOldFirstPass && !UNCCheck.doNotVisit) {
-        PostProcessingMain
-                .doSecondPass(SymbolTableFactory.getOrCreateSymbolTable().getAllSTTypes());
-      }
-      currentSTType = anExistingEntry;
-
-      // PostProcessingMain.doSecondPass(anExistingEntry);
-      return; // do not add entry again
-    }
-
-    STType anSTClass = new AnSTType(currentFullFileName, typeAST, getFullTypeName(), // may be an
-                                                                                     // inner class
-            currentStaticBlocks, aMethods, aConstructors, interfaces, superClass, packageName,
-            // isInterface,
-            typeType, isGeneric, isElaboration,
-            // isEnum,
-            // isAnnotation,
-            structurePattern,
-            // propertyNames.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(propertyNames),
-            // editablePropertyNames.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(editablePropertyNames),
-            // typeTags().toArray( dummyArray),
-            AnSTNameable.toSTNameableArray(typeTags()),
-            // computedTypeTags().toArray(dummyArray),
-            // computedAndDerivedTypeTags().toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(computedAndDerivedTypeTags()),
-            // configuredTags.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(configuredTags),
-            // derivedTags.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(derivedTags),
-            // allImportsOfThisClass.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(allImportsOfThisClass),
-            // globalVariables.toArray(dummyArray),
-            AnSTNameable.toSTNameableArray(globalVariables),
-            // new HashMap<>( globalVariableToCall),
-            AnSTNameable.copy(globalVariableToCall),
-            // new HashMap<>(globalVariableToType),
-            // new HashMap<>(globalVariableToRHS),
-            // new ArrayList<>(typesInstantiated),
-            AnSTNameable.copy(typesInstantiated),
-            // new ArrayList(globalSTVariables),
-            AnSTNameable.copy(globalSTVariables),
-            // new HashMap<>(globalIdentToLHS),
-            AnSTNameable.copy(globalIdentToLHS),
-            // new HashMap<>(globalIdentToRHS),
-            AnSTNameable.copy(globalIdentToRHS),
-
-            aModifiers,
-            // new ArrayList(typeParameterNames)
-            AnSTNameable.copy(typeParameterNames)
-
-    );
-
-    // anSTClass.introspect();
-    // anSTClass.findDelegateTypes();
-    // SymbolTableFactory.getOrCreateSymbolTable().getTypeNameToSTClass().put(
-    // fullTypeName, anSTClass);
-    addSTType(anSTClass);
-    upateCurrentSTTType(anSTClass);
-    // log (typeNameAST.getLineNo(), msgKey(), fullTypeName);
-    // if (!defined) {
-    // // log(ast.getLineNo(), MSG_KEY);
-    // }
-
-  }
+//  protected void oldProcessMethodAndClassData() {
+//    if (typeAST == null) { // isEnum probably
+//      return;
+//    }
+//    processImports();
+//
+//    STMethod[] aMethods = stMethods.toArray(new STMethod[0]);
+//    STMethod[] aConstructors = stConstructors.toArray(new STMethod[0]);
+//    // List<DetailAST> aModifiers = findAllInOrderMatchingNodes(typeAST, TokenTypes.MODIFIERS);
+//    DetailAST modifierAST = typeAST.findFirstToken(TokenTypes.MODIFIERS);
+//    Set<Integer> aModifiers = extractModifiers(modifierAST);
+//
+//    boolean anOldFirstPass = isFirstPass();
+//
+//    STType anExistingEntry = getUsableExistingEntryAndSetPass();
+//    if (anExistingEntry != null) {
+//      // the entry was made before finishtree
+//      // if (anExistingEntry != null && (anExistingEntry.isAnnotation() ||
+//      // anExistingEntry.isEnum())) {
+//      if ((anExistingEntry.isAnnotation() || anExistingEntry.isEnum())) {
+//
+//        currentSTType = anExistingEntry;
+//
+//        return;
+//      }
+//      // System.err.println ("Second pass:" + currentFile);
+//      setFirstPass(false);
+//
+//      if (anOldFirstPass) {
+//        // System.err.println ("Second pass:" +currentFullFileName );
+//
+//        // if (anOldFirstPass && !UNCCheck.doNotVisit) {
+//        PostProcessingMain
+//                .doSecondPass(SymbolTableFactory.getOrCreateSymbolTable().getAllSTTypes());
+//      }
+//      currentSTType = anExistingEntry;
+//
+//      // PostProcessingMain.doSecondPass(anExistingEntry);
+//      return; // do not add entry again
+//    }
+//
+//    STType anSTClass = new AnSTType(currentFullFileName, typeAST, getFullTypeName(), // may be an
+//                                                                                     // inner class
+//            currentStaticBlocks, aMethods, aConstructors, interfaces, superClass, packageName,
+//            // isInterface,
+//            typeType, isGeneric, isElaboration,
+//            // isEnum,
+//            // isAnnotation,
+//            structurePattern,
+//            // propertyNames.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(propertyNames),
+//            // editablePropertyNames.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(editablePropertyNames),
+//            // typeTags().toArray( dummyArray),
+//            AnSTNameable.toSTNameableArray(typeTags()),
+//            // computedTypeTags().toArray(dummyArray),
+//            // computedAndDerivedTypeTags().toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(computedAndDerivedTypeTags()),
+//            // configuredTags.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(configuredTags),
+//            // derivedTags.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(derivedTags),
+//            // allImportsOfThisClass.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(allImportsOfThisClass),
+//            // globalVariables.toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(globalVariables),
+//            // new HashMap<>( globalVariableToCall),
+//            AnSTNameable.copy(globalVariableToCall),
+//            // new HashMap<>(globalVariableToType),
+//            // new HashMap<>(globalVariableToRHS),
+//            // new ArrayList<>(typesInstantiated),
+//            AnSTNameable.copy(typesInstantiated),
+//            // new ArrayList(globalSTVariables),
+//            AnSTNameable.copy(globalSTVariables),
+//            // new HashMap<>(globalIdentToLHS),
+//            AnSTNameable.copy(globalIdentToLHS),
+//            // new HashMap<>(globalIdentToRHS),
+//            AnSTNameable.copy(globalIdentToRHS),
+//
+//            aModifiers,
+//            // new ArrayList(typeParameterNames)
+//            AnSTNameable.copy(typeParameterNames)
+//
+//    );
+//
+//    // anSTClass.introspect();
+//    // anSTClass.findDelegateTypes();
+//    // SymbolTableFactory.getOrCreateSymbolTable().getTypeNameToSTClass().put(
+//    // fullTypeName, anSTClass);
+//    addSTType(anSTClass);
+//    upateCurrentSTTType(anSTClass);
+//    // log (typeNameAST.getLineNo(), msgKey(), fullTypeName);
+//    // if (!defined) {
+//    // // log(ast.getLineNo(), MSG_KEY);
+//    // }
+//
+//  }
 
   public static void addKnownClass(Class aClass) {
 
