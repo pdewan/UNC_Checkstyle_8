@@ -26,6 +26,11 @@
 			<property name="logVariablesDeclared" value="true" />
 			<property name="logPropertiesDeclared" value="true" />
 			<property name="logAccessModifiersUsed" value="true" />	
+			<property name="logSuperTypes" value="true" />	
+			<property name="logInnerTypes" value="true" />	
+			<property name="logInterfaces" value="true" />	
+			
+			
 			<property name="excludeClassRegularExpressions" value="
 				checkstyle.*,
 				test.simulation.*

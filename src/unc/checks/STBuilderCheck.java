@@ -39,6 +39,15 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   // public static final String MSG_KEY = "stBuilder";
   public static final String MSG_KEY = "typeDefined";
   public static final String EXPECTED_TYPES = "expectedTypes";
+  public static final String SUPER_TYPES = "superTypes";
+  public static final String INTERFACES = "interfaces";
+  public static final String PROPERTIES = "properties";
+  public static final String VARIABLES = "variables";
+  public static final String METHODS = "methods";
+  public static final String INNER_TYPES = "innerTypes";
+  public static final String ACCESSOR_MODIFIERS_USED = "accessModifiersUsed";
+  public static final String AGGREGATE_STATISTICS = "aggregateStatistics";
+  public static final String TAG = "tags";
   protected Map<String, Map<String, String[]>> startToSpecification = new HashMap<>();
 
   public static final String EMPTY_STRING = "";
@@ -95,6 +104,11 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   protected boolean overlappingTags = true;
   protected boolean logNoMatches = true;
   protected boolean logMethodsDeclared = false;
+  protected boolean logSuperTypes = false;
+  protected boolean logInterfaces = false;
+  protected boolean logInnerTypes = false;
+
+
   protected boolean logVariablesDeclared = false;
   protected boolean logPropertiesDeclared = false;
   protected boolean logAccessModifiersUsed = false;
@@ -227,7 +241,30 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   public boolean isLogMethodsDeclared() {
     return logMethodsDeclared;
   }
+  
+  
+  public boolean isLogSuperTypes() {
+    return logSuperTypes;
+  }
 
+  public void setLogInnerTypes (boolean newVal) {
+    logInnerTypes =newVal;
+  }
+  
+  public boolean isLogInterfaces() {
+    return logInterfaces;
+  }
+
+  public void setLogInterfaces (boolean newVal) {
+    logInterfaces =newVal;
+  }
+  public boolean isLogInnerTypes() {
+    return logInnerTypes;
+  }
+
+  public void setLogSuperTypes (boolean newVal) {
+    logSuperTypes =newVal;
+  }
   public void setLogMethodsDeclared(boolean newVal) {
     logMethodsDeclared = newVal;
   }
@@ -589,6 +626,11 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     return !isLogMethodsDeclared() ? EMPTY_STRING : toMethodsDeclaredString(currentSTType);
 
   }
+  
+  protected String computeSuperTypesString() {
+    return !isLogSuperTypes() ? EMPTY_STRING : toSuperTypeString(currentSTType);
+
+  }
 
   protected String computeVariablesDeclaredString() {
     return !isLogVariablesDeclared() ? EMPTY_STRING : toVariablesDeclaredString(currentSTType);
@@ -614,6 +656,13 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
       methodsDeclaredString = computeMethodsDeclaredString();
     }
     return methodsDeclaredString;
+  }
+  protected String superTypesString;
+  protected String getSuperTypesString() {
+    if (superTypesString == null) {
+      superTypesString = computeSuperTypesString();
+    }
+    return superTypesString;
   }
 
   protected String getVariablesDeclaredString() {
@@ -1622,6 +1671,8 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     // }
 
   }
+  
+
 
   protected void outputLog(DetailAST ast) {
     if (currentSTType instanceof AnSTTypeFromClass) {
@@ -1629,26 +1680,67 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     }
     String aTags = currentSTType.getMatchedTags();
     boolean aFoundMatch = aTags != null;
+    if (isLogVariablesDeclared()) {
+      log(VARIABLES, ast,  getVariablesDeclaredString());
+    }
+    if (isLogAccessModifiersUsed()) {
+      log(ACCESSOR_MODIFIERS_USED, ast, computeAccessModifiersUsedString());
+    }
+    if (isLogMethodsDeclared()) {
+      log(METHODS, ast, getMethodsDeclaredString());
+    }
+    if (isLogPropertiesDeclared()) {
+      log(PROPERTIES, ast, getPropertiesDeclaredString());
+    }
+    if (isLogAggregateStatistics()) {
+      log(AGGREGATE_STATISTICS, ast, getStatisticsString());
+    }
+    if (isLogInnerTypes()) {
+      log (INNER_TYPES, ast, currentSTType.getInnerTypeNames());
+    }
+    if (isLogInnerTypes()) {
+      log (INNER_TYPES, ast, currentSTType.getInnerTypeNames());
+    }
+    if (isLogSuperTypes()) {
+      if (currentSTType.isClass()) {
+        STNameable aSuperClass = currentSTType.getSuperClass();
+        log (SUPER_TYPES, ast, aSuperClass == null?"None":aSuperClass.getName() );
+      } else if (currentSTType.isInterface()) {
+        STNameable[] anInterfaces = currentSTType.getDeclaredInterfaces();
+        log (SUPER_TYPES, ast, Arrays.toString(anInterfaces));
+      }
+    } 
+    if (isLogInterfaces()) {
+      if (currentSTType.isClass()) {
+        STNameable[] anInterfaces = currentSTType.getDeclaredInterfaces();
 
+        log (INTERFACES, ast, Arrays.toString(anInterfaces));
+      }
+    }
     if (aFoundMatch) {
-//      log(ast, ast, aTags.toString(), typeType.toString(), getStatisticsString(),
+      log (TAG, ast,  aTags.toString());
+    } else if (logNoMatches) {
+      log (TAG, ast, "None" );
+    }
+      
+////      log(ast, ast, aTags.toString(), typeType.toString(), getStatisticsString(),
+////              getMethodsDeclaredString(), getVariablesDeclaredString(),
+////              getPropertiesDeclaredString(), computeAccessModifiersUsedString());
+//      log(ast, ast, aTags.toString(), currentSTType.getTypeType().toString(), getStatisticsString(),
 //              getMethodsDeclaredString(), getVariablesDeclaredString(),
 //              getPropertiesDeclaredString(), computeAccessModifiersUsedString());
-      log(ast, ast, aTags.toString(), currentSTType.getTypeType().toString(), getStatisticsString(),
-              getMethodsDeclaredString(), getVariablesDeclaredString(),
-              getPropertiesDeclaredString(), computeAccessModifiersUsedString());
-
-    }
-    if (!aFoundMatch && logNoMatches) {
-//      log(ast, ast, "None", typeType.toString(), getStatisticsString(), getMethodsDeclaredString(),
+//
+//    
+//    if (!aFoundMatch && logNoMatches) {
+////      log(ast, ast, "None", typeType.toString(), getStatisticsString(), getMethodsDeclaredString(),
+////              getVariablesDeclaredString(), getPropertiesDeclaredString(),
+////              computeAccessModifiersUsedString());
+//      log(ast, ast, "None", currentSTType.getTypeType().toString(), getStatisticsString(), getMethodsDeclaredString(),
 //              getVariablesDeclaredString(), getPropertiesDeclaredString(),
 //              computeAccessModifiersUsedString());
-      log(ast, ast, "None", currentSTType.getTypeType().toString(), getStatisticsString(), getMethodsDeclaredString(),
-              getVariablesDeclaredString(), getPropertiesDeclaredString(),
-              computeAccessModifiersUsedString());
-
-
-    }
+//
+//
+//    }
   }
 
   public void visitClassOrInterface(DetailAST ast) {

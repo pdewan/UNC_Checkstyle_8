@@ -3254,7 +3254,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 
   }
 
-  protected void log(String aMessageKey, DetailAST ast, String... anExplanations) {
+  protected void log(String aMessageKey, DetailAST ast, Object... anExplanations) {
     DetailAST aTreeAST = getEnclosingTreeDeclaration(ast);
     // String aTypeName = getEnclosingShortClassName(ast);
     log(aMessageKey, ast, aTreeAST, anExplanations);
@@ -4099,6 +4099,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     return "NonGetterFunctions:" + getNonGetterFunctions(anSTType) + "NonSetterProcedures:"
             + getNonSetterProcedures(anSTType) + "Getters:" + getGetters(anSTType) + "Setters:"
             + getSetters(anSTType);
+  }
+  public static String toSuperTypeString(STType anSTType) {
+    return "Super Types:" + anSTType.getSuperClass();
   }
 
   public static String toVariablesDeclaredString(STType anSTType) {

@@ -653,6 +653,7 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     return superClass;
   }
 
+
   // @Override
   // public STNameable[] getDeclaredPropertyNames() {
   // return declaredPropertyNames;
