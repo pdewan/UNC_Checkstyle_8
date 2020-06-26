@@ -1,5 +1,6 @@
 package unc.checks;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,6 +41,8 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 	protected Stack<STNameable> typeNameableStack = new Stack();
 	protected Stack<DetailAST> typeASTStack = new Stack();
 	protected Stack<Boolean> isGenericStack = new Stack();
+	protected List<DetailAST> innerTypeASTs = new ArrayList();
+	protected List<String> innerTypeNames = new ArrayList();
 
 
 //	protected STNameable packageNameable;
@@ -439,24 +442,51 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 	public void setShortTypeName(String shortTypeName) {
 		this.shortTypeName = shortTypeName;
 	}
+	public static boolean isType(DetailAST anAST) {
+	  int aType = anAST.getType();
+	  return aType == TokenTypes.CLASS_DEF ||
+	          aType == TokenTypes.INTERFACE_DEF ||
+	          aType == TokenTypes.ANNOTATION_DEF ||
+	          aType == TokenTypes.ENUM_DEF;
+	}
+	public static int typeNestingLevel(DetailAST anAST) {
+	  int result = 0;
+	  while (anAST != null) {
+	    int aType = anAST.getType();
+	    if (isType(anAST)) {
+	      result++;
+	    }
+	    anAST = anAST.getParent();
+	  }
+	  return result;
+	  
+	}
 	protected boolean foundSupuriousInnerClass = false; // should be an int
-  protected boolean foundInnerClassToBeNotVisited(DetailAST anAST) {
-   boolean retVal = (!getVisitInnerClasses() && getFullTypeName() != null);
-//   if (!retVal && foundSupuriousInnerClass) {
-//     System.err.println ("resetting spurious inner class:" + currentFullFileName);
+  protected boolean inOrEnteringInnerClassToBeNotVisited(DetailAST anAST) {
+    boolean retVal = typeNestingLevel(anAST) > 1;
+//    if (retVal) {
+//      System.err.println ("found spurious inner class:" + currentFullFileName + " " + this);
 //
-//   }
-   if (retVal && !foundSupuriousInnerClass) {
-//     System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
-
-   }
-//   
-//   if (retVal) {
-     foundSupuriousInnerClass = retVal;
-//   }
-     
-   return retVal;
+//    }
+    return retVal;
   }
+  protected boolean stateFulFoundInnerClassToBeNotVisited(DetailAST anAST) {
+    boolean retVal = (!getVisitInnerClasses() && getFullTypeName() != null);
+//    if (!retVal && foundSupuriousInnerClass) {
+//      System.err.println ("resetting spurious inner class:" + currentFullFileName);
+ //
+//    }
+    if (retVal && !foundSupuriousInnerClass) {
+      System.err.println ("setting spurious inner class:" + currentFullFileName + " " + this);
+
+    }
+//    
+//    if (retVal) {
+      foundSupuriousInnerClass = retVal;
+//    }
+    
+    return retVal;
+   }
   protected boolean inMethodOrConstructor;
   protected int methodOrConstructorNesting = 0;
   protected boolean incrementMethodOrConstructorNesting() {
@@ -492,10 +522,17 @@ public abstract class TypeVisitedCheck extends UNCCheck {
     return false;
 
   }
-  protected boolean checkSpuriosInnerClasses() {
+  protected boolean inSpuriosInnerClasses(DetailAST ast) {
+//    boolean result = ast.getType() != TokenTypes.CLASS_DEF && enteringInnerClassToBeNotVisited(ast);
+    boolean result = !isType(ast) && 
+            inOrEnteringInnerClassToBeNotVisited(ast);
+
+    return result;
+  }
+  protected boolean statefulCheckSpuriosInnerClasses(DetailAST ast) {
     return foundSupuriousInnerClass;
   }
-  protected boolean leavingSpuriousInnerClass(DetailAST ast) {
+  protected boolean statefulLeavingSpuriousInnerClass(DetailAST ast) {
 //    if (!foundSupuriousInnerClass && ast.getType() == TokenTypes.CLASS_DEF ) {
 //      System.err.println("not spurious inner class and class def");
 //    }
@@ -509,7 +546,7 @@ public abstract class TypeVisitedCheck extends UNCCheck {
         case TokenTypes.ANNOTATION_DEF:
 
           foundSupuriousInnerClass = false;
-//          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + this);
+          System.err.println("Resetting found spurious inner class:" + fullTypeName + " " + innerTypeNames.get(innerTypeNames.size() - 1));
           return true; //do not
 
         default:

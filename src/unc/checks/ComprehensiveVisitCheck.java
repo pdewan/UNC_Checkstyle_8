@@ -131,8 +131,8 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   protected String variablesDeclaredString;
   protected String propertiesDeclaredString;
   protected String statisticsString;
-  protected List<DetailAST> innerTypeASTs = new ArrayList();
-  protected List<String> innerTypeNames = new ArrayList();
+//  protected List<DetailAST> innerTypeASTs = new ArrayList();
+//  protected List<String> innerTypeNames = new ArrayList();
 
   protected List<String> typeParameterNames = new ArrayList();
   public static final String NORMALIZED_TYPE_PARAMETER_NAME = "TypeParam";
@@ -710,6 +710,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     while (anExtendedType != null) {
       if (anExtendedType.getType() == TokenTypes.IDENT) {
         String aDeclaredName = anExtendedType.getText();
+        if (getShortTypeName().equals(aDeclaredName)) {
+          System.err.println ("Setting Recursive super class:" + aDeclaredName);
+        }
         // String aStoredName = aDeclaredName;
         // String aPossibleLongName = importShortToLongName.get(aDeclaredName);
         // if (aPossibleLongName != null) {
@@ -3545,34 +3548,14 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 //  }
 
   protected void doLeaveToken(DetailAST ast) {
-//    if (foundSupuriousInnerClass) {
-//      switch (ast.getType()) {
-//        case TokenTypes.CLASS_DEF:
-//
-//        case TokenTypes.ENUM_DEF:
-//
-//        case TokenTypes.ANNOTATION_DEF:
-//
-//          foundSupuriousInnerClass = false;
-//
-//        default:
-//          return;
-//      }
+
+//    if (statefulLeavingSpuriousInnerClass(ast)) {
+//      return;
 //    }
-    if (leavingSpuriousInnerClass(ast)) {
+    if (inOrEnteringInnerClassToBeNotVisited(ast)) {
       return;
     }
-//    if (methodOrConstructorNesting > 0) {
-//      switch (ast.getType()) {
-//        case TokenTypes.METHOD_DEF:
-//          // return;
-//        case TokenTypes.CTOR_DEF:
-//          methodOrConstructorNesting--;
-//          return;
-//        default:
-//          return;
-//      }
-//    }
+
     if (leavingNestedMethod(ast)) {
       return;
     }
@@ -3684,48 +3667,46 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   // }
   // return false;
   // }
-  // protected boolean checkSpuriosInnerClasses() {
-  // return foundSupuriousInnerClass;
-  // }
+//   protected boolean statefulCheckSpuriosInnerClasses() {
+//   return foundSupuriousInnerClass;
+//   }
+  
+  protected void recordInnerType (DetailAST aDefAST, DetailAST aNameAST) {
+    innerTypeASTs.add(aDefAST);
+    innerTypeNames.add(aNameAST.getText());
+//    System.err.println("added inner type:" + aNameAST.getText() );
+  }
   protected void doVisitToken(DetailAST ast) {
-//    if (currentFullFileName.equals("C:\\Users\\dewan\\Downloads\\RxJava_java_only\\java_only\\history\\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\\commit_changes\\rxjava-contrib\\rxjava-swing\\src\\main\\java\\rx\\subscriptions\\SwingSubscriptions.java")) {
-//      System.err.println("found problematic file");
+//    if (ast.getType() == TokenTypes.CLASS_DEF) {
+//      System.err.println("class def");
 //    }
-    // if (foundSupuriousInnerClass) {
-    // return;
-    // }
-//    if (currentFullFileName != null && currentFullFileName.endsWith("SchedulerPoolFactory.java")) {
-//      System.err.println ("found offending file!");
-//    }
-//    if (currentFullFileName != null && currentFullFileName.endsWith("RxThreadFactory.java")) {
-//      System.err.println ("found offending file!");
-//    }
-    if (checkSpuriosInnerClasses()) {
+
+//    if (statefulCheckSpuriosInnerClasses(ast)) {
+     if (inSpuriosInnerClasses(ast)) {
+
       return;
     }
     if (visitingNestedMethod(ast)) {
       return;
     }
 
-    // if (methodOrConstructorNesting > 0) {
-    // switch (ast.getType()) {
-    // case TokenTypes.METHOD_DEF:
-    // case TokenTypes.CTOR_DEF:
-    // methodOrConstructorNesting++;
-    // return;
-    // default: return;
-    // }
-    // }
-    // System.out.println("Check called:" + MSG_KEY);
+    
     switch (ast.getType()) {
       case TokenTypes.ANNOTATION_FIELD_DEF:
         visitAnnotationFieldDef(ast);
         return;
       case TokenTypes.ANNOTATION_DEF:
-        if (foundInnerClassToBeNotVisited(ast)) {
+        if (inOrEnteringInnerClassToBeNotVisited(ast)) {
           DetailAST aNameAST = getAnnotationTypeName(ast);
-          innerTypeASTs.add(aNameAST);
-          innerTypeNames.add(aNameAST.getText());
+          recordInnerType(ast, aNameAST);
+
+//          innerTypeASTs.add(aNameAST);
+//          innerTypeNames.add(aNameAST.getText());
+//          System.err.println("Inner type:" + aNameAST.getText());
+
+//          System.err.println ("found spurious inner class:" + currentFullFileName + " " + aNameAST.getText());
+
+          
           
           return;
         }
@@ -3739,10 +3720,14 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         // if (getFullTypeName() == null // outer class
         // || ProjectSTBuilderHolder.getSTBuilder().getVisitInnerClasses()) // avoid inner class if
         // we haev visited
-        if (foundInnerClassToBeNotVisited(ast)) {
+        if (inOrEnteringInnerClassToBeNotVisited(ast)) {
           DetailAST aNameAST = getClassOrInterfaceName(ast);
-          innerTypeASTs.add(aNameAST);
-          innerTypeNames.add(aNameAST.getText());
+          recordInnerType(ast, aNameAST);
+
+//          innerTypeASTs.add(aNameAST);
+//          innerTypeNames.add(aNameAST.getText());
+//          System.err.println("Inner type:" + aNameAST.getText());
+
           return;
         }
 
@@ -3752,10 +3737,12 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         // if (getFullTypeName() == null // avoid inner class if we have visited
         // // outer class
         // || ProjectSTBuilderHolder.getSTBuilder().getVisitInnerClasses())
-        if (foundInnerClassToBeNotVisited(ast)) {
+        if (inOrEnteringInnerClassToBeNotVisited(ast)) {
           DetailAST aNameAST = getClassOrInterfaceName(ast);
-          innerTypeASTs.add(aNameAST);
-          innerTypeNames.add(aNameAST.getText());
+          recordInnerType(ast, aNameAST);
+//          innerTypeASTs.add(aNameAST);
+//          innerTypeNames.add(aNameAST.getText());
+//          System.err.println("Inner type:" + aNameAST.getText());
           return;
         }
 
@@ -3808,7 +3795,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         visitIdent(ast);
         return;
       case TokenTypes.ENUM_DEF:
-        if (foundInnerClassToBeNotVisited(ast)) {
+        if (inOrEnteringInnerClassToBeNotVisited(ast)) {
           DetailAST aNameAST = getEnumNameAST(ast);
           innerTypeASTs.add(aNameAST);
           innerTypeNames.add(aNameAST.getText());

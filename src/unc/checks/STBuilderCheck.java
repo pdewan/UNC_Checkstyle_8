@@ -1579,7 +1579,7 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   @Override
   public void doLeaveToken(DetailAST ast) {
     if (!isFirstPass()) {
-      if (leavingSpuriousInnerClass(ast)) {
+      if (statefulLeavingSpuriousInnerClass(ast)) {
         return;
       }
       return;
