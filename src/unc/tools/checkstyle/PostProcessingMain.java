@@ -1427,6 +1427,16 @@ public class PostProcessingMain {
   public static void setRedirectSecondPassOutput(boolean redirectSecondPassOutput) {
     PostProcessingMain.redirectSecondPassOutput = redirectSecondPassOutput;
   }
+  
+  protected static boolean redirectFirstPassOutput = false;
+
+  public static boolean isRedirectFirstPassOutput() {
+    return redirectFirstPassOutput;
+  }
+
+  public static void setRedirectFirstPassOutput(boolean redirectSecondPassOutput) {
+    PostProcessingMain.redirectFirstPassOutput = redirectFirstPassOutput;
+  }
 
   protected static boolean generateChecks = false;
   protected static boolean generateExternals = true;
@@ -1518,28 +1528,17 @@ public class PostProcessingMain {
         STBuilderCheck.setFirstPass(true);
 
       }
+      if (isRedirectFirstPassOutput()) {
       redirectOut();
-      // PrintStream oldOut = System.out;
-      //
-      // try {
-      // File aDummyFile = new File(DUMMY_FILE_NAME);
-      // aDummyFile.createNewFile();
-      // PrintStream aPrintStream = new PrintStream(aDummyFile);
-      // System.setOut(aPrintStream);
-      //
-      // } catch (IOException e) {
-      // // TODO Auto-generated catch block
-      // e.printStackTrace();
-      // }
+      }
+  
       NonExitingMain.main(args);
       System.err.println("Symbol table size:" + SymbolTableFactory.getOrCreateSymbolTable().size());
       UNCCheck.setDoNotVisit(false);
+      if (isRedirectFirstPassOutput()) {
       restoreOut();
+      }
      
-
-      // System.setOut(oldOut);
-      // initGlobals();
-      // doSecondPass(sTTypes);
       System.err.println("Running second pass checks " + new Date(System.currentTimeMillis()));
       if (!STBuilderCheck.isDoAutoPassChange()) {
         STBuilderCheck.setFirstPass(false);
@@ -1547,9 +1546,7 @@ public class PostProcessingMain {
                 .doSecondPass(SymbolTableFactory.getOrCreateSymbolTable().getAllSTTypes());
       }
       NonExitingMain.main(args);
-      // System.err.println("Processing symbol table:" + new Date(System.currentTimeMillis()));
-      // initGlobals();
-      // doSecondPass(sTTypes);
+      
       System.err.println("Finished second pass checks:" + new Date(System.currentTimeMillis()));
       if (isRedirectSecondPassOutput()) {
         outPrintStream.close();

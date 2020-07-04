@@ -35,5 +35,9 @@ public interface SymbolTable {
   STType getAndMaybePutObjectType();
   SymbolTable getPreviousSymbolTable();
   void setPreviousSymbolTable(SymbolTable newVal);
+  String getProjectName();
+  void setProjectName(String newVal);
+  
+
 
 }

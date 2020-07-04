@@ -28,19 +28,14 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 //C:\Users\dewan\Downloads\RxJava_java_only\java_only\history\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\commit_changes\rxjava-contrib\rxjava-swing\src\main\java\rx\subscriptions\SwingSubscriptions.java
 	public AnSTTypeFromClass(String aClassName) {
 		super (null, aClassName);
-//		if (aClassName.contains("rmi")) {
-//			System.err.println("found rmi");
+//		if (STBuilderCheck.isFirstPass()) {
+//		  System.err.println("Adding class in first pass!" + );
+//		}
+//		if (aClassName.contains("ArrayList")) {
+//			System.err.println("found ArrayList");
 //		}
 				
-		// all instance  variables are now initialized
-//		declaredMethods = new STMethod[0];
-//		methods = new STMethod[0];
-//		allComputedTags = new STNameable[0];
-//		tags = allComputedTags;
-//		configuredTags = allComputedTags;
-//		declaredInterfaces = new STNameable[0];
-//		interfaces  = new STNameable[0] ;
-//		declaredFields = new STNameable[0];
+
 		
 		declaredMethods = this.emptyMethodArray;
 //    methods = null;
@@ -50,6 +45,8 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
     declaredInterfaces =  emptyNameableArray;
 //    interfaces  =  emptyNameableArray ;
     declaredFields =  emptyNameableArray;
+    globalSTVariables = emptyList;
+    
 
      
 
@@ -59,8 +56,8 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 	}
 	public AnSTTypeFromClass(Class aClass) {
 		super (null, aClass.getName());
-//		if (aClass.getName().contains("Exception")) {
-//			System.out.println("Found exception");
+//		if (aClass.getName().contains("ArrayList")) {
+//			System.out.println("Found arraylist");
 //		}
 		external = true;
 		reflectedClass = aClass;

@@ -139,7 +139,7 @@ public abstract class MethodEffectCheck extends ComprehensiveVisitCheck{
 	 // in AnAbstractSTMethods
 	 // get rid of aClass as we are foing global checks
 	 // could just compute directly or indirecttly called methods
-	 protected Boolean checkCalledMethodsOf (STMethod aMethod) {	
+	 protected Boolean oldCheckCalledMethodsOf (STMethod aMethod) {	
 		 if (!shouldTraverseVisitedMethod(aMethod))
 				return true;
 //			String[][] aCalledMethods = aMethod.methodsCalled();
@@ -198,6 +198,47 @@ public abstract class MethodEffectCheck extends ComprehensiveVisitCheck{
 			}
 			return stopOnFailure();	    	//nothing failed, so true in one case, nothing succeeded, so false in another
 	 }
+	 
+	 protected Boolean checkCalledMethodsOf (STMethod aMethod) { 
+     if (!shouldTraverseVisitedMethod(aMethod))
+        return true;
+//      String[][] aCalledMethods = aMethod.methodsCalled();
+      Set<STMethod> aCalledMethods = aMethod.getAllDirectlyOrIndirectlyCalledMethods();
+      for (STMethod aPossibleCalledMethod: aCalledMethods) {
+
+          if (!shouldVisitCalledMethod(aPossibleCalledMethod)) { 
+            // called method passes check
+            // why should we return true ever, we should simply continue and pass no judgement
+            // actually this will return if called method is setter.
+            // which means if it assigns to global, it is ok
+            if (!stopOnFailure()) // stop on success
+              return true; // check passed
+            else
+               continue;
+          }
+          Boolean checkCalled = checkCalledMethod(aPossibleCalledMethod);
+          if (checkCalled == null) {
+            return null;
+          }
+//          if (!checkCalledMethod(aPossibleCalledMethod)) {
+          if (!checkCalled) {
+
+            if (stopOnFailure()) {
+              return false; // one failed no point continuing
+            }
+          } else if (!stopOnFailure()) // one suceeded no point continuing
+            return true;
+//          if (!"void".equals(aPossibleCalledMethod.getReturnType()))
+//            continue;
+//          if (methodsVisited.contains(aPossibleCalledMethod))
+//            continue; // it must have been ok
+//          methodsVisited.add(aPossibleCalledMethod);
+//          if (!checkCalledProceduresOf(aClass, aPossibleCalledMethod))
+//            return false;
+        }
+      
+      return stopOnFailure();       //nothing failed, so true in one case, nothing succeeded, so false in another
+   }
 	
 	 
 	 public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {

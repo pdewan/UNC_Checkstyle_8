@@ -97,6 +97,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 		"Double",
 		"Character",
 		"String",
+		"StringBuilder",
 		"Boolean",
 		"Runnable",
 		"Thread",
@@ -104,8 +105,86 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 		"InterruptedException",
 		"System",
 		"Object",
-		"Math"
-};
+		"Math",
+		"Byte",
+		"Class",
+		"ClassLoader",
+		"ClassValue",
+		"Compiler",
+		"Enum",
+		"Float",
+		"InheritableThreadLocal",		
+		"Long", 
+		"Number", 
+		"Package", 
+		"ProcessBuilder",
+		"ProcessBuilder.Redirect",
+		"Runtime",
+		"RuntimePermission",		
+		"SecurityManager", 
+		"Short",
+		"StackTraceElement",
+		"StrictMath",  
+		"StringBuffer", 
+		"ThreadGroup",
+		"ThreadLocal",  
+		"Throwable", 
+		"Void",
+		"Character.UnicodeScript",
+		"ProcessBuilder.Redirect.Type", 
+		"Thread.State",
+		"ArithmeticException", 
+		"ArrayIndexOutOfBoundsException",  
+		"ArrayStoreException",
+		"ClassCastException",  
+		"ClassNotFoundException", 
+		"CloneNotSupportedException",  
+		"EnumConstantNotPresentException", 
+		"IllegalAccessException",  
+		"IllegalArgumentException",  
+		"IllegalMonitorStateException",  
+		"IllegalStateException", 
+		"IllegalThreadStateException", 
+		"IndexOutOfBoundsException",
+		"InstantiationException",  
+		"InterruptedException",  
+		"NegativeArraySizeException",  
+		"NoSuchFieldException",  
+		"NoSuchMethodException", 
+		"NullPointerException",  
+		"NumberFormatException", 
+		"ReflectiveOperationException",  
+		"RuntimeException",  
+		"SecurityException", 
+		"StringIndexOutOfBoundsException", 
+		"TypeNotPresentException", 
+		"UnsupportedOperationException",
+		"AbstractMethodError", 
+		"AssertionError",  
+		"BootstrapMethodError",  
+		"ClassCircularityError", 
+		"ClassFormatError",  
+		"Error", 
+		"ExceptionInInitializerError", 
+		"IllegalAccessError",  
+		"IncompatibleClassChangeError",  
+		"InstantiationError",  
+		"InternalError", 
+		"LinkageError",  
+		"NoClassDefFoundError",  
+		"NoSuchFieldError",  
+		"NoSuchMethodError", 
+		"OutOfMemoryError",  
+		"StackOverflowError",  
+		"ThreadDeath",
+		"UnknownError",  
+		"UnsatisfiedLinkError",  
+		"UnsupportedClassVersionError",  
+		"VerifyError", 
+		"	VirtualMachineError"
+	};
+
+	
 	static List<STNameable> emptyList = new ArrayList();
 
 	protected static Set<String> allProjectExternalImports = new HashSet();
@@ -1263,13 +1342,18 @@ public void visitImport(DetailAST ast) {
 	 if (aShortClassName != null && !aShortClassName.isEmpty()) {
 			importShortToLongName.put(aShortClassName, aLongClassName);
 			}
+//   if (aLongClassName.contains("com.netflix.template.common.Conversation")) {
+
+//   if (aLongClassName.contains("Conversation")) {
+//     
+//   
+//     System.err.println("found offending class");
+//   }
 	 STNameable anSTNameable = new AnSTNameable(ast, aLongClassName);
 	 allImportsOfThisClass.add(anSTNameable);
 	 if (!isProjectImport(aLongClassName)) {
 //		 allProjectExternalImports.add(aShortClassName);
-//		 if (aLongClassName.startsWith("rmi")) {
-//			 System.err.println("found rmi");
-//		 }
+		
 		 allProjectExternalImports.add(aLongClassName);
 		 if (!aShortClassName.equals("*"))
 		 allProjectExternalImportsShortName.add(aShortClassName);
@@ -1282,6 +1366,7 @@ public void visitImport(DetailAST ast) {
 }
 
 public static boolean isMaybeProjectImport (String aPackageName, String aClassName) {
+  
 	String[] aClassNameComponents = aClassName.split("\\.");
 	// if it does not begin with com, org or edu should we say we do not care about it?
 	// instructor provided pakages may not follow it
@@ -1484,13 +1569,15 @@ public static boolean isProjectImport(String aFullName) {
 //			return false;
 //		}
 //	}
-
+	 if (STBuilderCheck.isNonInteractive() || !STBuilderCheck.isDoAutoPassChange()) {
+     return true;
+   }
 	 Set<String> aPackageNames = SymbolTableFactory.getOrCreateSymbolTable().getPackageNames();
 	 for (String aPackageName:aPackageNames) {
 		 if (isMaybeProjectImport(aPackageName, aFullName))
 			 return true;
 	 }
-
+	 
 	 return false;
 }
 static List<DetailAST> emptyASTList = new ArrayList();

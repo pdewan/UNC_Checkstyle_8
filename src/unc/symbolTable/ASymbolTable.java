@@ -16,6 +16,7 @@ import unc.checks.TagBasedCheck;
 
 public class ASymbolTable implements SymbolTable{
   protected SymbolTable previousSymbolTable;
+  protected String projectName;
 
   STType objectType;
 
@@ -219,6 +220,18 @@ public class ASymbolTable implements SymbolTable{
 	@Override
   public void setPreviousSymbolTable(SymbolTable newVal) {
     this.previousSymbolTable = newVal;
+  }
+
+  @Override
+  public String getProjectName() {
+    // TODO Auto-generated method stub
+    return projectName;
+  }
+
+  @Override
+  public void setProjectName(String newVal) {
+    projectName = newVal;
+    
   }
 
  

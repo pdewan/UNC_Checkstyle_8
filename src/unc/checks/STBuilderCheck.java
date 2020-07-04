@@ -474,6 +474,10 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
       // aClassName) != null)
       if (anSTType != null)
         return anSTType;
+//      if (STBuilderCheck.isFirstPass()) {
+//    	  System.err.println("Adding in first pass:" + aClassName);
+//    	  return null;
+//      }
       return addExistingClassSTType(aClassName);
       // anSTType = new AnSTTypeFromClass(aClassName);
       //// STType anSTType = new AnSTTypeFromClass(aClassName);

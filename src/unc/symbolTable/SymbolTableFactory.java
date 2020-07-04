@@ -30,6 +30,7 @@ public class SymbolTableFactory {
 			}
 			lastSymbolTable = aSymbolTable;
 			projectToSymbolTable.put(aProjectDirectory, aSymbolTable);
+			aSymbolTable.setProjectName(aProjectDirectory);
 		}
 		return aSymbolTable;
 	}
