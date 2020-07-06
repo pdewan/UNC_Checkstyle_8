@@ -9,11 +9,11 @@ import unc.tools.checkstyle.ProjectDirectoryHolder;
 public class SymbolTableFactory {
 	static Map<String, SymbolTable> projectToSymbolTable = new HashMap<>();
 	protected static boolean linkSymbolTables = false;
-	protected static SymbolTable lastSymbolTable = null;
+	protected static SymbolTable currentSymbolTable = null;
 
 
-  public static SymbolTable getLastSymbolTable() {
-    return lastSymbolTable;
+  public static SymbolTable getCurrentSymbolTable() {
+    return currentSymbolTable;
   }
 
   public static Map<String, SymbolTable>  getProjectSymbolTables() {
@@ -26,9 +26,9 @@ public class SymbolTableFactory {
 		if (aSymbolTable == null) {
 			aSymbolTable = new ASymbolTable();
 			if (isLinkSymbolTables()) {
-			  aSymbolTable.setPreviousSymbolTable(lastSymbolTable);
+			  aSymbolTable.setPreviousSymbolTable(currentSymbolTable);
 			}
-			lastSymbolTable = aSymbolTable;
+			currentSymbolTable = aSymbolTable;
 			projectToSymbolTable.put(aProjectDirectory, aSymbolTable);
 			aSymbolTable.setProjectName(aProjectDirectory);
 		}

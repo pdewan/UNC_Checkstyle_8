@@ -24,7 +24,6 @@ public class JSONTest {
     JSONObject aParsedJSON = new JSONObject(aDateJSON);
     Date aReadDate = new Date();
     ProjectHistoryChecker.toBean(aParsedJSON, aReadDate);
-    
    set1.add("element1");
    set1.add("element2");
    set2.add("element3");

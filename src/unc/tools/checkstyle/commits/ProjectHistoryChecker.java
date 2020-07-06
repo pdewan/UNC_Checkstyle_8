@@ -29,9 +29,14 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanIntrospector;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONML;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller;
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language;
+import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
+import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import unc.checks.ComprehensiveVisitCheck;
 import unc.checks.STBuilderCheck;
 import unc.symbolTable.PropertyInfo;
@@ -75,89 +80,94 @@ public class ProjectHistoryChecker {
   // protected static Map<String, Set<String>> versionToClassAndFilesChanged = new HashMap();
 
   protected static Map<String, List<String>> classNameToFileAndVersion = new HashMap();
-  protected static Map<String, List<String>> versionToClassAndFilesDeleted = new HashMap();
-  protected static Map<String, List<String>> versionToClassAndFilesAdded = new HashMap();
-  protected static Map<String, List<String>> versionToClassAndFilesChanged = new HashMap();
-  // static Set<String> allFilesSeen = new HashSet();
-  // static Set<String> allClassesSeen = new HashSet();
-  // static Set<String> allFilesModified = new HashSet();
+  
+//  protected static Map<String, List<String>> versionToClassAndFilesDeleted = new HashMap();
+//  protected static Map<String, List<String>> versionToClassAndFilesAdded = new HashMap();
+//  protected static Map<String, List<String>> versionToClassAndFilesChanged = new HashMap();
+ 
 
-  static List<String> allFilesSeen = new ArrayList();
-  static List<String> allClassesSeen = new ArrayList();
-  static List<String> allFilesModified = new ArrayList();
+//  static List<String> allFilesSeen = new ArrayList();
+//  static List<String> allClassesSeen = new ArrayList();
+//  static List<String> allFilesModified = new ArrayList();
+//
+//  static Set<String> filesAddedByThisVersion = new HashSet();
+//
+//  static Set<String> filesDeletedByThisVersion = new HashSet();
+//
+//  static Set<String> classesSeenByThisCommit = new HashSet();
+//
+//  protected static Map<String, String> fileNameToClassName = new HashMap();
+//  protected static Map<String, String> ClassNameToFileName = new HashMap();
 
-  static Set<String> filesAddedByThisVersion = new HashSet();
-
-  static Set<String> filesDeletedByThisVersion = new HashSet();
-
-  static Set<String> classesSeenByThisCommit = new HashSet();
-
-  protected static Map<String, String> fileNameToClassName = new HashMap();
   public static final String CLASS_NAME_TO_FILE_AND_VERSION = "classNameToFileAndVersion.csv";
   public static final String VERSION_TO_CLASS_AND_FILES_DELETED = "versionToClassAndFilesDeleted.csv";
   public static final String VERSION_TO_CLASS_AND_FILES_ADDED = "versionToClassAndFilesAdded.csv";
   public static final String VERSION_TO_CLASS_AND_FILES_CHANGED = "versionToClassAndFilesChanged.csv";
 
-  public static void printAggregateFiles() {
-    printClassNameToFileAndVersion();
-    printVersionToClassAndFilesAdded();
-    printVersionToClassAndFilesDeleted();
-    printVersionToClassAndFilesChanged();
+//  public static void printAggregateFiles() {
+//    printClassNameToFileAndVersion();
+//    printVersionToClassAndFilesAdded();
+//    printVersionToClassAndFilesDeleted();
+//    printVersionToClassAndFilesChanged();
+//
+//  }
 
-  }
+//  public static void printClassNameToFileAndVersion() {
+//    File aFile = new File(root.getAbsolutePath() + "/" + CLASS_NAME_TO_FILE_AND_VERSION);
+//    String aHeader = "Class,Version,File";
+//    // printToFile(classNameToFileAndVersion, aFile, aHeader);
+//    printJSONToFile(classNameToFileAndVersion, aFile, aHeader);
+//
+//  }
 
-  public static void printClassNameToFileAndVersion() {
-    File aFile = new File(root.getAbsolutePath() + "/" + CLASS_NAME_TO_FILE_AND_VERSION);
-    String aHeader = "Class,Version,File";
-    // printToFile(classNameToFileAndVersion, aFile, aHeader);
-    printJSONToFile(classNameToFileAndVersion, aFile, aHeader);
+//  public static void printVersionToClassAndFilesDeleted() {
+//    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_DELETED);
+//    String aHeader = "Version,Class Deleted,File Deleted";
+//
+//    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//
+//  }
 
-  }
+//  public static void printVersionToClassAndFilesAdded() {
+//    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_ADDED);
+//    String aHeader = "Version,Class Added,File Added";
+//
+//    // printToFile(versionToClassAndFilesAdded, aFile, aHeader);
+//    printJSONToFile(versionToClassAndFilesAdded, aFile, aHeader);
+//
+//  }
 
-  public static void printVersionToClassAndFilesDeleted() {
-    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_DELETED);
-    String aHeader = "Version,Class Deleted,File Deleted";
+//  public static void printVersionToClassAndFilesChanged() {
+//    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_CHANGED);
+//    String aHeader = "Version,Class Changed,File Changed";
+//
+//    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//
+//  }
 
-    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
-    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//  public static void saveCheckPoint() {
+//    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_CHANGED);
+//    String aHeader = "Version,Class Changed,File Changed";
+//
+//    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
+//
+//  }
 
-  }
-
-  public static void printVersionToClassAndFilesAdded() {
-    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_ADDED);
-    String aHeader = "Version,Class Added,File Added";
-
-    // printToFile(versionToClassAndFilesAdded, aFile, aHeader);
-    printJSONToFile(versionToClassAndFilesAdded, aFile, aHeader);
-
-  }
-
-  public static void printVersionToClassAndFilesChanged() {
-    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_CHANGED);
-    String aHeader = "Version,Class Changed,File Changed";
-
-    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
-    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
-
-  }
-
-  public static void saveCheckPoint() {
-    File aFile = new File(root.getAbsolutePath() + "/" + VERSION_TO_CLASS_AND_FILES_CHANGED);
-    String aHeader = "Version,Class Changed,File Changed";
-
-    // printToFile(versionToClassAndFilesChanged, aFile, aHeader);
-    printJSONToFile(versionToClassAndFilesChanged, aFile, aHeader);
-
-  }
-
-  public static void saveCheckeState(File aCurrentCommit) {
+  public static void saveCheckeState(File aCommit) {
     CheckerCommitSavedState aCheckerCommitSavedState = new ACheckerCommitSavedState(
-            classNameToFileAndVersion, versionToClassAndFilesDeleted, versionToClassAndFilesAdded,
-            versionToClassAndFilesChanged, allFilesSeen, allClassesSeen, allFilesModified);
+            classNameToFileAndVersion
+//            , versionToClassAndFilesDeleted, versionToClassAndFilesAdded,
+//            versionToClassAndFilesChanged, allFilesSeen, allClassesSeen, allFilesModified
+            );
     JSONObject aJSONObject = new JSONObject(aCheckerCommitSavedState);
     String aSavedString = aJSONObject.toString();
     try {
-      File aSavedFile = new File(aCurrentCommit + "/" + CHECKER_COMMIT_SAVED_STATE);
+//      File aSavedFile = new File(aCurrentCommit + "/" + CHECKER_COMMIT_SAVED_STATE);
+      File aSavedFile = toCheckerStateFile(aCommit);
+
       PrintStream aPrintStream = new PrintStream(aSavedFile);
       aPrintStream.println(aSavedString);
       aPrintStream.close();
@@ -177,7 +187,15 @@ public class ProjectHistoryChecker {
         if (aPropertyName.equals("class")) {
           continue;
         }
-        aPropertyDescriptor.getWriteMethod().invoke(object, jobject.get(aPropertyName));
+        Object aValue = jobject.get(aPropertyName);
+        if (aValue instanceof JSONArray) {
+          JSONArray aJSOnArray = (JSONArray) aValue;
+          aValue = aJSOnArray.toList();
+        } else if (aValue instanceof JSONObject) {
+          JSONObject aJSONObject = (JSONObject) aValue;
+          aValue = aJSONObject.toMap();
+        }
+        aPropertyDescriptor.getWriteMethod().invoke(object, aValue);
 
       }
     } catch (IllegalArgumentException | IllegalAccessException | JSONException e) {
@@ -191,14 +209,20 @@ public class ProjectHistoryChecker {
       e.printStackTrace();
     }
   }
-
+  public static File toCheckerStateFile (File aCommit) {
+    String aCurrentCommitName = aCommit.getName();
+    return new File(aCommit + "/" + aCurrentCommitName + "_" + CHECKER_COMMIT_SAVED_STATE);
+  }
   // Call:
   //
   // User user = (User) toBean(jo, new User());
-  public static void loadCheckerState(File aCurrentCommit) {
+  public static void loadCheckerState(File aCommit) {
 
     try {
-      File aSavedFile = new File(aCurrentCommit + "/" + CHECKER_COMMIT_SAVED_STATE);
+//      String aCurrentCommitName = aCommit.getName();
+//      File aSavedFile = new File(aCommit + "/" + aCurrentCommitName + "_" + CHECKER_COMMIT_SAVED_STATE);
+      
+      File aSavedFile = toCheckerStateFile(aCommit);
       Scanner aScanner = new Scanner(aSavedFile);
       String aSavedString = aScanner.nextLine();
       JSONObject aJSONObject = new JSONObject(aSavedString);
@@ -207,12 +231,12 @@ public class ProjectHistoryChecker {
       CheckerCommitSavedState aCheckerCommitSavedState = new ACheckerCommitSavedState();
       toBean(aJSONObject, aCheckerCommitSavedState);
       classNameToFileAndVersion = aCheckerCommitSavedState.getClassNameToFileAndCommit();
-      versionToClassAndFilesDeleted = aCheckerCommitSavedState.getCommitToClassAndFilesDeleted();
-      versionToClassAndFilesAdded = aCheckerCommitSavedState.getCommitToClassAndFilesAdded();
-      versionToClassAndFilesChanged = aCheckerCommitSavedState.getCommitToClassAndFilesChanged();
-      allFilesSeen = aCheckerCommitSavedState.getAllFilesSeen();
-      allClassesSeen = aCheckerCommitSavedState.getAllClassesSeen();
-      allFilesModified = aCheckerCommitSavedState.getAllFilesModified();
+//      versionToClassAndFilesDeleted = aCheckerCommitSavedState.getCommitToClassAndFilesDeleted();
+//      versionToClassAndFilesAdded = aCheckerCommitSavedState.getCommitToClassAndFilesAdded();
+//      versionToClassAndFilesChanged = aCheckerCommitSavedState.getCommitToClassAndFilesChanged();
+//      allFilesSeen = aCheckerCommitSavedState.getAllFilesSeen();
+//      allClassesSeen = aCheckerCommitSavedState.getAllClassesSeen();
+//      allFilesModified = aCheckerCommitSavedState.getAllFilesModified();
 
       aPrintStream.print(aSavedString);
       aPrintStream.close();
@@ -291,7 +315,7 @@ public class ProjectHistoryChecker {
   static String nextCheckpointName;
 
   static File currentCheckpointFile;
-  static String stoppingCommit;
+//  static String stoppingCommit;
   static int stoppingCommitIndex;
   static int currentCommitIndex;
   static int currentCheckpointIndex;
@@ -307,7 +331,7 @@ public class ProjectHistoryChecker {
     File result = new File(aString);
     if (!result.exists() || !result.isDirectory()) {
       System.err.println("Not a file or directory:" + result);
-      System.exit(-1);
+      return null;
 
     }
     return result;
@@ -355,11 +379,15 @@ public class ProjectHistoryChecker {
     String aMaxPreviousCommitName = "";
     for (int aCommitIndex = currentCommitIndex - 1; aCommitIndex >= 0; aCommitIndex--) {
       String aCommitName = commits[aCommitIndex].getName();
-      String[] aSplit = aCommitName.split("-");
-      if (aSplit.length != 3) {
+      String aPreviousVersion = getVersion(aCommitName);
+      if (aPreviousVersion == null) {
         continue; // some other kind of file;
       }
-      String aPreviousVersion = aSplit[1];
+//      String[] aSplit = aCommitName.split("-");
+//      if (aSplit.length != 3) {
+//        continue; // some other kind of file;
+//      }
+//      String aPreviousVersion = aSplit[1];
       int aVersionComparisonWithCurrent = aPreviousVersion.compareTo(currentCheckpointVersion);
       if (aVersionComparisonWithCurrent > 0) {
         continue; // new commit changed a previous version
@@ -379,24 +407,82 @@ public class ProjectHistoryChecker {
 
     }
   }
+  public static void findStoppingCommitIndex() {
+    stoppingCommitIndex = findStoppingCommitIndex(currentCheckpointIndex);
+//    stoppingCommit = "";
+//    for (int aCheckpointIndex = currentCheckpointIndex
+//            + 1; aCheckpointIndex < checkpoints.length; aCheckpointIndex++) {
+//      String aName = checkpoints[aCheckpointIndex].getName();
+//      String[] aSplit = aName.split("-");
+//      if (aSplit.length != 3) {
+//        continue; // some other kind of file;
+//      }
+//      stoppingCommit = aName;
+//      break;
+//    }
+//    if (stoppingCommit.isEmpty()) {
+//      stoppingCommitIndex = commits.length - 1;
+//    } else {
+//      stoppingCommitIndex = findCommitIndex(stoppingCommit);
+//    }
+  }
 
-  public static void findStoppingCommitNameAndCommitIndex() {
-    stoppingCommit = "";
-    for (int aCheckpointIndex = currentCheckpointIndex
+//  public static void findStoppingCommitNameAndCommitIndex() {
+//    stoppingCommit = "";
+//    for (int aCheckpointIndex = currentCheckpointIndex
+//            + 1; aCheckpointIndex < checkpoints.length; aCheckpointIndex++) {
+//      String aName = checkpoints[aCheckpointIndex].getName();
+//      String[] aSplit = aName.split("-");
+//      if (aSplit.length != 3) {
+//        continue; // some other kind of file;
+//      }
+//      stoppingCommit = aName;
+//      break;
+//    }
+//    if (stoppingCommit.isEmpty()) {
+//      stoppingCommitIndex = commits.length - 1;
+//    } else {
+//      stoppingCommitIndex = findCommitIndex(stoppingCommit);
+//    }
+//  }
+  
+  public static String getVersion(String aName) {
+//    String aName =  aCheckpoint.getName();
+    String[] aSplit = aName.split("-");
+    if (aSplit.length != 3) {
+      return null; // some other kind of file;
+    }
+    return aSplit[1];
+  }
+  public static int findStoppingCommitIndex(int aCurrentIndex) {
+    String aStoppingCommit = "";
+    String aCurrentVersion = getVersion(checkpoints[aCurrentIndex].getName());
+    
+    int retVal;
+    for (int aCheckpointIndex = aCurrentIndex
             + 1; aCheckpointIndex < checkpoints.length; aCheckpointIndex++) {
       String aName = checkpoints[aCheckpointIndex].getName();
-      String[] aSplit = aName.split("-");
-      if (aSplit.length != 3) {
-        continue; // some other kind of file;
+      String aVersion = getVersion(aName);
+      if (aVersion == null) {
+        continue;
       }
-      stoppingCommit = aName;
+//      if (aVersion.compareTo(aCurrentVersion) < 0) {
+//        continue; // this should not happen
+//      }
+//      String[] aSplit = aName.split("-");
+//      if (aSplit.length != 3) {
+//        continue; // some other kind of file;
+//      }
+//      if (aName.compareTo(anotherString))
+      aStoppingCommit = aName;
       break;
     }
-    if (stoppingCommit.isEmpty()) {
-      stoppingCommitIndex = commits.length - 1;
+    if (aStoppingCommit.isEmpty()) {
+      retVal = commits.length - 1;
     } else {
-      stoppingCommitIndex = findCommitIndex(stoppingCommit);
+      retVal = findCommitIndex(aStoppingCommit);
     }
+    return retVal;
   }
 
   public static void processArgs(String[] args) {
@@ -443,7 +529,7 @@ public class ProjectHistoryChecker {
     findCurrentVersionAndCommitIndex();
     findCurrentCheckpointIndex();
     findPreviousCommitDirectory();
-    findStoppingCommitNameAndCommitIndex();
+    findStoppingCommitIndex();
     runChecks(args);
     // printAggregateFiles();
 
@@ -475,10 +561,17 @@ public class ProjectHistoryChecker {
     if (previousCommitDirectory != null) {
       loadCheckerState(previousCommitDirectory);
     }
+    // let us do stopping commit also so we can compare with previous symbol table
+//    for (int aCommitIndex = currentCommitIndex; aCommitIndex < stoppingCommitIndex; aCommitIndex++) {
 
     for (int aCommitIndex = currentCommitIndex; aCommitIndex <= stoppingCommitIndex; aCommitIndex++) {
       File aCommit = commits[aCommitIndex];
-      System.err.println(" Processing version:" + aCommit.getName());
+      String aName = aCommit.getName();
+      if (getVersion(aName).compareTo(currentCheckpointVersion) < 0) { 
+        
+        continue;
+      }
+      System.err.println(" Processing commit:" + aCommit.getName());
       // if (aVersion.getName().startsWith("1018")) {
       // System.err.println("Found offending version");
       // }
@@ -507,7 +600,9 @@ public class ProjectHistoryChecker {
         ProjectDirectoryHolder.setCurrentProjectDirectory(aCheckedSource.getAbsolutePath());
 
         PostProcessingMain.main(myArgs);
-        processCommit(aCommit, changedFilesInCurrentCommit);
+//        processCommit(aCommit, changedFilesInCurrentCommit);
+        processCommit(aCommit, aCheckedSource, aCommitIndex);
+
       } catch (FileNotFoundException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -576,29 +671,29 @@ public class ProjectHistoryChecker {
     return aSet.toString();
   }
 
-  static void printFileChangeDetails(File aVersion) {
-
-    String[] aFiles = findFilesChanged(aVersion);
-    // filesDeletedByThisVersion.addAll(Arrays.asList(aFiles));
-    // filesDeletedByThisVersion.removeAll(filesModifiedByThisVersion);
-    // filesDeletedByThisVersion.removeAll(filesAddedByThisVersion);
-    File aFileChangeDetails = new File(fileChangeDetails(aVersion));
-
-    try {
-      // aSymbolTableFile.createNewFile();
-      PrintStream anOutput = new PrintStream(aFileChangeDetails);
-      anOutput.println("Files Added:");
-      anOutput.println(toString(filesAddedByThisVersion));
-      anOutput.println("Files Modified:");
-      anOutput.println(toString(allFilesModified));
-      anOutput.println("Files Deleted:");
-      anOutput.println(toString(filesDeletedByThisVersion));
-      anOutput.close();
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+//  static void printFileChangeDetails(File aVersion) {
+//
+//    String[] aFiles = findFilesChanged(aVersion);
+//    // filesDeletedByThisVersion.addAll(Arrays.asList(aFiles));
+//    // filesDeletedByThisVersion.removeAll(filesModifiedByThisVersion);
+//    // filesDeletedByThisVersion.removeAll(filesAddedByThisVersion);
+//    File aFileChangeDetails = new File(fileChangeDetails(aVersion));
+//
+//    try {
+//      // aSymbolTableFile.createNewFile();
+//      PrintStream anOutput = new PrintStream(aFileChangeDetails);
+//      anOutput.println("Files Added:");
+//      anOutput.println(toString(filesAddedByThisVersion));
+//      anOutput.println("Files Modified:");
+//      anOutput.println(toString(allFilesModified));
+//      anOutput.println("Files Deleted:");
+//      anOutput.println(toString(filesDeletedByThisVersion));
+//      anOutput.close();
+//
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//  }
 
   public static Set<String> lookupSet(Map<String, Set<String>> aMap, String aKey) {
     Set<String> aRetVal = aMap.get(aKey);
@@ -632,6 +727,19 @@ public class ProjectHistoryChecker {
       aSet.add(aValue);
 
   }
+  public static String getLastValue(Map<String, List<String>> aMap, String aKey) {
+    List<String> aList = aMap.get(aKey);
+    if (aList == null || aList.isEmpty()) return null;
+    return aList.get(aList.size() - 1); 
+
+  }
+  public static String getLastFileName(Map<String, List<String>> aMap, String aKey) {
+    String aValue = getLastValue(aMap, aKey);
+    return 
+            (aValue == null)?null:
+             aValue.split(VERSION_FILE_SEPARATOR)[1];
+    
+  }
 
   public static void setAdd(Collection aList, Object anElement) {
     if (!aList.contains(anElement)) {
@@ -639,110 +747,227 @@ public class ProjectHistoryChecker {
     }
   }
 
-  static void processCommit(File aCommit, File aVersionContents) {
-    SymbolTable aSymbolTable = SymbolTableFactory.getLastSymbolTable();
-    JSONObject aGitCommitData = findGitCommitData(aCommit);
+//  static void processCommit(File aCommit, File aVersionContents) {
+//    SymbolTable aSymbolTable = SymbolTableFactory.getLastSymbolTable();
+//    JSONObject aGitCommitData = findGitCommitData(aCommit);
+//
+//    if (aSymbolTable == null) {
+//      return;
+//    }
+//  
+////    filesAddedByThisVersion.clear();
+////    filesDeletedByThisVersion.clear();
+////    classesSeenByThisCommit.clear();
+//    File aSymbolTableFile = new File(symbolTableFileName(aCommit));
+//    try {
+//      // aSymbolTableFile.createNewFile();
+//      PrintStream output = new PrintStream(aSymbolTableFile);
+//      Collection<STType> anAllTypes = aSymbolTable.getAllSTTypes();
+//      output.println("File Name" + "," + "# Methods" + "," + "# Variables" + "," + "Super Class"
+//              + "," + "Interfaces");
+//      for (STType anSTType : anAllTypes) {
+//        if (anSTType.isExternal()) {
+//          continue;
+//        }
+//        String aFileName = toNormalizeFileName(aVersionContents, anSTType.getFileName());
+//        String aCommitName = aCommit.getName();
+//        String aVersionAndFileName = aCommitName + VERSION_FILE_SEPARATOR + aFileName;
+//        String aClassName = anSTType.getName();
+//        String aClassAndFileName = aClassName + CLASS_FILE_SEPARATOR + aFileName;
+//        // maybeAddToSet(classNameToFileAndVersion, aClassName, aFileAndVersionName);
+//        classesSeenByThisCommit.add(aClassName);
+//
+//        if (!allClassesSeen.contains(aClassName)) {
+//          // allClassesSeen.add(aClassName);
+//          setAdd(allClassesSeen, aClassName);
+//
+//          // addToSet(classNameToFileAndVersion, aClassName, aVersionAndFileName);
+//          addToList(classNameToFileAndVersion, aClassName, aVersionAndFileName);
+//
+//          // versionToClassAndFilesAdded.put(aVersion, aClassAndFileName);
+//        } else {
+//          // addToSet(versionToClassAndFilesChanged, aVersionName, aClassAndFileName);
+//          addToList(versionToClassAndFilesChanged, aCommitName, aClassAndFileName);
+//          List<String> aFileAndVersions = classNameToFileAndVersion.get(aClassName); 
+//          String aPreviousClassName = fileNameToClassName.get(aFileName);
+//          String aPreviousFileName = getLastFileName(classNameToFileAndVersion, aClassName);
+////          if (!aClassName.equals(aPreviousClassName)) {
+////            if (!aFileName.equals(aPreviousFileName)) {
+//
+//
+////          if (!aClassName.equals(fileNameToClassName.get(aFileName))) {
+//            // addToSet(classNameToFileAndVersion, aClassName, aVersionAndFileName);
+//            addToList(classNameToFileAndVersion, aClassName, aVersionAndFileName);
+//
+////          }
+//          if (aPreviousFileName != null) { // it should not be
+//          String aFullPreviousFileName = changedFilesInPreviousCommit.getAbsolutePath() + "/" + aPreviousFileName;
+//          String aFullCurrentFileName = changedFilesInCurrentCommit.getAbsolutePath() + "/" + aFileName;
+//          }
+//        
+//        }
+//        fileNameToClassName.put(aFileName, aClassName);
+//
+//        if (allFilesSeen.contains(aFileName)) {
+//          // allFilesModified.add(aFileName);
+//          setAdd(allFilesModified, aFileName);
+//
+//        } else {
+//
+//          filesAddedByThisVersion.add(aFileName);
+//
+//          // allFilesSeen.add(aFileName);
+//          setAdd(allFilesSeen, aFileName);
+//
+//          // addToSet(versionToClassAndFilesAdded, aVersionName, aClassAndFileName);
+//          addToList(versionToClassAndFilesAdded, aCommitName, aClassAndFileName);
+//
+//        }
+//        // filesTouchedByThisVersion.add(aFileName);
+//        // filesSeenByAllVersions.add(aFileName);
+//        output.println(aFileName + "," + anSTType.getNumberOfDeclaredMethods() + ","
+//                + anSTType.getNumberOfDeclaredVariables() + "," + anSTType.getSuperClass() + ","
+//                + ComprehensiveVisitCheck.toString(anSTType.getDeclaredInterfaces()));
+//
+//      }
+//      String[] aFiles = findFilesChanged(aCommit);
+//
+//      filesDeletedByThisVersion.addAll(Arrays.asList(aFiles));
+//      filesDeletedByThisVersion.removeAll(allFilesModified);
+//      filesDeletedByThisVersion.removeAll(filesAddedByThisVersion);
+//      String aVersionName = aCommit.getName();
+//      for (String aFileName : filesDeletedByThisVersion) {
+//        if (!isSourceFile(aFileName)) continue;
+//        String aClassName = fileNameToClassName.get(aFileName);
+//        if (aClassName == null) {
+//          System.err.println("No class for deleted file" + aFileName);
+//          continue;
+//        }
+//        String aClassAndFileName = aClassName + CLASS_FILE_SEPARATOR + aFileName;
+//        // addToSet(versionToClassAndFilesDeleted, aVersionName, aClassAndFileName);
+//        addToList(versionToClassAndFilesDeleted, aVersionName, aClassAndFileName);
+//
+//        if (!classesSeenByThisCommit.contains(aClassName)) {
+//          // addToSet( classNameToFileAndVersion, aClassName, aVersionName + VERSION_FILE_SEPARATOR
+//          // + "");
+//          addToList(classNameToFileAndVersion, aClassName,
+//                  aVersionName + VERSION_FILE_SEPARATOR + ""); // indicate that is was deleted
+//
+//        }
+//
+//      }
+//      saveCheckeState(aCommit);
+//      output.close();
+//      // printFileChangeDetails(aVersion);
+//      //
+//      // String[] aFiles = findFilesChanged(aVersion);
+//      // filesDeletedByThisVersion.addAll(Arrays.asList(aFiles));
+//      // filesDeletedByThisVersion.removeAll(filesModifiedByThisVersion);
+//      // filesDeletedByThisVersion.removeAll(filesAddedByThisVersion);
+//
+//    } catch (IOException e) {
+//
+//    }
+//  }
+  
+  static FileDistiller distiller = ChangeDistiller.createFileDistiller(Language.JAVA);
 
-    if (aSymbolTable == null) {
+  static void runChangeDistiller (File aCommit, File aCommitContents, STType anSTType, String aNormalizedFileName) {
+    
+
+   
+    if (changedFilesInPreviousCommit == null) {
       return;
     }
-    // JSONObject aGitCommitData = findGitCommitData(aCommit);
-    // filesTouchedByThisVersion.clear();
-    // allFilesModified.clear();
-    filesAddedByThisVersion.clear();
-    filesDeletedByThisVersion.clear();
-    classesSeenByThisCommit.clear();
+  
+//    String aNormalizedFileName = toNormalizeFileName(aCommitContents, anSTType.getFileName());
+    String aPreviousFileFullName =
+            changedFilesInPreviousCommit.getAbsolutePath() + "/" + aNormalizedFileName;
+    File aPreviousFile = new File(aPreviousFileFullName);
+    if (!aPreviousFile.exists()) {
+      return;
+    }
+    String aCurrentFileFullName = 
+            changedFilesInCurrentCommit.getAbsolutePath() + "/" + aNormalizedFileName;
+    File aCurrentFile = new File(aCurrentFileFullName);
+    if (!aCurrentFile.exists()) {
+      return;
+    }
+    System.err.println ("Current file " + aCurrentFileFullName + " Previous file " + aPreviousFileFullName);
+      try {
+        distiller.extractClassifiedSourceCodeChanges(aPreviousFile, aCurrentFile);
+    
+  
+        List<SourceCodeChange> changes = distiller.getSourceCodeChanges();
+        if(changes != null) {
+            for(SourceCodeChange change : changes) {
+               System.err.println(change.getClass() + " type " + change.getChangedEntity() + " new entity" + change.getChangedEntity());
+            }
+        }
+      } catch(Exception e) {
+        /* An exception most likely indicates a bug in ChangeDistiller. Please file a
+           bug report at https://bitbucket.org/sealuzh/tools-changedistiller/issues and
+           attach the full stack trace along with the two files that you tried to distill. */
+        System.err.println("Warning: error while change distilling. " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+  }
+  static void processCommit(File aCommit, File aCommitContents, int aCommitIndex) {
+    if (aCommitIndex == stoppingCommitIndex) {
+      return; // for now do nothing with the last one
+    }
+    SymbolTable aCurrentSymbolTable = SymbolTableFactory.getCurrentSymbolTable();
+    SymbolTable aPreviousSymbolTable = aCurrentSymbolTable.getPreviousSymbolTable();
+    JSONObject aGitCommitData = findGitCommitData(aCommit);
+
+    if (aCurrentSymbolTable == null) {
+      return;
+    }
+  
+//    filesAddedByThisVersion.clear();
+//    filesDeletedByThisVersion.clear();
+//    classesSeenByThisCommit.clear();
     File aSymbolTableFile = new File(symbolTableFileName(aCommit));
     try {
       // aSymbolTableFile.createNewFile();
       PrintStream output = new PrintStream(aSymbolTableFile);
-      Collection<STType> anAllTypes = aSymbolTable.getAllSTTypes();
+      Collection<STType> anAllCurrentTypes = aCurrentSymbolTable.getAllSTTypes();
       output.println("File Name" + "," + "# Methods" + "," + "# Variables" + "," + "Super Class"
               + "," + "Interfaces");
-      for (STType anSTType : anAllTypes) {
+      for (STType anSTType : anAllCurrentTypes) {
         if (anSTType.isExternal()) {
           continue;
         }
-        String aFileName = toNormalizeFileName(aVersionContents, anSTType.getFileName());
+        String aNormalizedFileName = toNormalizeFileName(aCommitContents, anSTType.getFileName());
+
+        runChangeDistiller(aCommit, aCommitContents, anSTType, aNormalizedFileName);
+
+        
         String aCommitName = aCommit.getName();
-        String aVersionAndFileName = aCommitName + VERSION_FILE_SEPARATOR + aFileName;
+        String aVersionAndFileName = aCommitName + VERSION_FILE_SEPARATOR + aNormalizedFileName;
         String aClassName = anSTType.getName();
-        String aClassAndFileName = aClassName + CLASS_FILE_SEPARATOR + aFileName;
+        String aClassAndFileName = aClassName + CLASS_FILE_SEPARATOR + aNormalizedFileName;
         // maybeAddToSet(classNameToFileAndVersion, aClassName, aFileAndVersionName);
-        classesSeenByThisCommit.add(aClassName);
+//        classesSeenByThisCommit.add(aClassName);
+        
+//        String aPreviousFileName = getLastFileName(classNameToFileAndVersion, aFileName);
+        addToList(classNameToFileAndVersion, aClassName, aVersionAndFileName);
 
-        if (!allClassesSeen.contains(aClassName)) {
-          // allClassesSeen.add(aClassName);
-          setAdd(allClassesSeen, aClassName);
-
-          // addToSet(classNameToFileAndVersion, aClassName, aVersionAndFileName);
-          addToList(classNameToFileAndVersion, aClassName, aVersionAndFileName);
-
-          // versionToClassAndFilesAdded.put(aVersion, aClassAndFileName);
-        } else {
-          // addToSet(versionToClassAndFilesChanged, aVersionName, aClassAndFileName);
-          addToList(versionToClassAndFilesChanged, aCommitName, aClassAndFileName);
-          String aPreviousFileName = fileNameToClassName.get(aFileName);
-          if (!aClassName.equals(aPreviousFileName)) {
-
-//          if (!aClassName.equals(fileNameToClassName.get(aFileName))) {
-            // addToSet(classNameToFileAndVersion, aClassName, aVersionAndFileName);
-            addToList(classNameToFileAndVersion, aClassName, aVersionAndFileName);
-
-          }
-          String aFullPreviousFileName = changedFilesInPreviousCommit.getAbsolutePath() + "/" + aPreviousFileName;
-          String aFullCurrentFileName = changedFilesInCurrentCommit.getAbsolutePath() + "/" + aFileName;
-        }
-        fileNameToClassName.put(aFileName, aClassName);
-
-        if (allFilesSeen.contains(aFileName)) {
-          // allFilesModified.add(aFileName);
-          setAdd(allFilesModified, aFileName);
-
-        } else {
-
-          filesAddedByThisVersion.add(aFileName);
-
-          // allFilesSeen.add(aFileName);
-          setAdd(allFilesSeen, aFileName);
-
-          // addToSet(versionToClassAndFilesAdded, aVersionName, aClassAndFileName);
-          addToList(versionToClassAndFilesAdded, aCommitName, aClassAndFileName);
-
-        }
+   
         // filesTouchedByThisVersion.add(aFileName);
         // filesSeenByAllVersions.add(aFileName);
-        output.println(aFileName + "," + anSTType.getNumberOfDeclaredMethods() + ","
+        output.println(aNormalizedFileName + "," + anSTType.getNumberOfDeclaredMethods() + ","
                 + anSTType.getNumberOfDeclaredVariables() + "," + anSTType.getSuperClass() + ","
                 + ComprehensiveVisitCheck.toString(anSTType.getDeclaredInterfaces()));
 
       }
-      String[] aFiles = findFilesChanged(aCommit);
+      String[] aFiles = findFilesChanged(aCommit); // do not need this, should use git commit data
+      
+      // process them
 
-      filesDeletedByThisVersion.addAll(Arrays.asList(aFiles));
-      filesDeletedByThisVersion.removeAll(allFilesModified);
-      filesDeletedByThisVersion.removeAll(filesAddedByThisVersion);
-      String aVersionName = aCommit.getName();
-      for (String aFileName : filesDeletedByThisVersion) {
-        if (!isSourceFile(aFileName)) continue;
-        String aClassName = fileNameToClassName.get(aFileName);
-        if (aClassName == null) {
-          System.err.println("No class for deleted file" + aFileName);
-          continue;
-        }
-        String aClassAndFileName = aClassName + CLASS_FILE_SEPARATOR + aFileName;
-        // addToSet(versionToClassAndFilesDeleted, aVersionName, aClassAndFileName);
-        addToList(versionToClassAndFilesDeleted, aVersionName, aClassAndFileName);
-
-        if (!classesSeenByThisCommit.contains(aClassName)) {
-          // addToSet( classNameToFileAndVersion, aClassName, aVersionName + VERSION_FILE_SEPARATOR
-          // + "");
-          addToList(classNameToFileAndVersion, aClassName,
-                  aVersionName + VERSION_FILE_SEPARATOR + "");
-
-        }
-
-      }
+     
+    
       saveCheckeState(aCommit);
       output.close();
       // printFileChangeDetails(aVersion);

@@ -1,9 +1,11 @@
 package unc.testables.classInterfaces;
 
-public class ClassWithNoInterfaceTestable  {
+ class ClassWithNoInterfaceTestable  {
 //@Override
-public void signature2(int anInt) {
+protected void signature2(int anInt) {
   // TODO Auto-generated method stub
+  System.out.println("Goodbye world");
+
   
 }
 

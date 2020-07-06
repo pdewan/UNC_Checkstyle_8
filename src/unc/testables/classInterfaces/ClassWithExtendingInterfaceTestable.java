@@ -4,8 +4,7 @@ public class ClassWithExtendingInterfaceTestable implements InterfaceExtendingTe
 
   @Override
   public void signature1(boolean aFlag) {
-    // TODO Auto-generated method stub
-    
+    System.out.println("Hello world");
   }
 
   @Override
