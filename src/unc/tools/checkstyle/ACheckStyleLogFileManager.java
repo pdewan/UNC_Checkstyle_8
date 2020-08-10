@@ -289,7 +289,7 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 
 		
 	}
-	static boolean printLogInconsistency = true;
+	static boolean printLogInconsistency = false;
 	public static boolean isPrintLogInconsistency() {
 		return printLogInconsistency;
 	}

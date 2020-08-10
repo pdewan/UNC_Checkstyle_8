@@ -62,6 +62,9 @@ public class AConsentFormVetoer implements VetoableChangeListener {
 	}
 	
 	public static boolean checkConstentForm(String aFileName) {
+	  if (!isCheckConsentForm()) {
+	    return true;
+	  }
 		if (agreementFileExists(aFileName))
 			return true;
 		showConsentForm();
@@ -87,6 +90,9 @@ public class AConsentFormVetoer implements VetoableChangeListener {
 	@Override
 	public void vetoableChange(PropertyChangeEvent evt)
 			throws PropertyVetoException {
+	  if (!isCheckConsentForm()) {
+      return;
+    }
 		if (consentFormChecked) {
 			return;
 		}
@@ -181,5 +187,11 @@ public class AConsentFormVetoer implements VetoableChangeListener {
 		}
 		fos.close();
 	}
-
+  static boolean checkConsentForm = false;
+  public static void setCheckConsentForm(boolean newVal) {
+    checkConsentForm = newVal;
+  }
+  public static boolean isCheckConsentForm() {
+    return checkConsentForm;
+  }
 }

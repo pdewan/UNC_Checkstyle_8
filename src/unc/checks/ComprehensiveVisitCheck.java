@@ -3365,43 +3365,44 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 
   protected Object[] composeArgs(String aMessageKey, DetailAST anAST, DetailAST aTreeAST,
           int aLineNo, Object... anExplanations) {
-    return anExplanations;
-    // String aLongFileName = getLongFileName(aTreeAST);
-    //
-    // String aSourceName = shortFileName(aLongFileName);
-    // Object[] anArgs = new String[anExplanations.length + 3];
-    //
-    //
-    // // Object[] anArgs = new String[anExplanations.length + 2];
-    // anArgs[0] = composeMessageKey(aMessageKey);
-    // if (aSourceName.isEmpty()){
-    // anArgs[1] = aSourceName;
-    // anArgs[2] = aSourceName;
-    //
-    // } else {
-    // anArgs[1] = composeSourceName(aSourceName, aLineNo);
-    //
-    //// String aShortTypeName = shortTypeName;
+//    return anExplanations;
+     String aLongFileName = getLongFileName(aTreeAST);
+    
+     String aSourceName = shortFileName(aLongFileName);
+     Object[] anArgs = new String[anExplanations.length + 3];
+    
+    
+     // Object[] anArgs = new String[anExplanations.length + 2];
+     anArgs[0] = composeMessageKey(aMessageKey);
+     if (aSourceName.isEmpty()){
+     anArgs[1] = aSourceName;
+     anArgs[2] = aSourceName;
+    
+     } else {
+     anArgs[1] = composeSourceName(aSourceName, aLineNo);
+    
     // String aShortTypeName = shortTypeName;
-    //
-    // if (aShortTypeName == null) {
-    // aShortTypeName = getOutermostOrEnclosingShortTypeName(anAST);
-    //
-    // }
-    // anArgs[2] = aShortTypeName;
-    //
-    // if (anArgs[2] == null || anArgs[2].toString().isEmpty()) {
-    // System.err.println("Empty name");
-    // }
-    //
-    // }
-    // for (int i = 0; i < anArgs.length; i++) {
-    //
-    //
-    // anArgs[i] = anExplanations[i].toString();
-    //
-    // }
-    // return anArgs;
+     String aShortTypeName = shortTypeName;
+    
+     if (aShortTypeName == null) {
+     aShortTypeName = getOutermostOrEnclosingShortTypeName(anAST);
+    
+     }
+     anArgs[2] = aShortTypeName;
+    
+     if (anArgs[2] == null || anArgs[2].toString().isEmpty()) {
+     System.err.println("Empty name");
+     }
+    
+     }
+//     int anOffset = anArgs.length - anExplanations.length ;
+     for (int i = 0; i < anExplanations.length; i++) {
+    
+    
+     anArgs[3 + i] = anExplanations[i].toString();
+    
+     }
+     return anArgs;
   }
 
   protected void log(String aMessageKey, DetailAST ast, DetailAST aTreeAST,
@@ -3412,7 +3413,8 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     // Object[] anArgs = composeArgs(aMessageKey, ast, aTreeAST, ast.getLineNo(),
     // anExplanations);
-    Object[] anArgs = composeArgs(aMessageKey, ast, aTreeAST, ast.getLineNo(), anExplanations);
+//    Object[] anArgs = composeArgs(aMessageKey, ast, aTreeAST, ast.getLineNo(), anExplanations);
+    Object[] anArgs = anExplanations;
 
     if (aTreeAST == currentTree) { // standard form?
       extendibleLog(ast.getLineNo(),

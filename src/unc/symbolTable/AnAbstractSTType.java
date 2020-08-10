@@ -1693,7 +1693,8 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       // List<STNameable> result = new ArrayList();
       retVal = getAllInterfaces(this);
       if (retVal == null) {
-        System.err.println("Null all interfaces:" + this);
+//        System.err.println("Null all interfaces:" + this);
+        return null;
       }
       setTypeType(retVal);
       allInterfaces = retVal;
@@ -2074,6 +2075,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   public List<String> getPeerTypes() {
     if (peerTypes == null) {
       peerTypes = computePeerTypes();
+      if (peerTypes == null) {
+        return emptyList;
+      }
       if (peerTypes.isEmpty()) {
         return emptyList;
       }

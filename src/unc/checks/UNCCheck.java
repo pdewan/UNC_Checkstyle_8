@@ -25,7 +25,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 public abstract class UNCCheck extends AbstractCheck {
-	public static long NEW_CHEKCKS_THRESHOLD = 6000; // 1 seconds between
+	public static long NEW_CHEKCKS_THRESHOLD = 60000; // 10 seconds between
 														// checks
 	public static final String INFO = "info";
 	public static final String WARNING = "warning";
@@ -312,6 +312,7 @@ public abstract class UNCCheck extends AbstractCheck {
 //			System.out.println("Time delta:" + aTimeDelta);
 			newSequenceNumber = true;
 			newSequenceNumber();
+			setFirstPass(true);
 
 		} else {
 			newSequenceNumber = false;
