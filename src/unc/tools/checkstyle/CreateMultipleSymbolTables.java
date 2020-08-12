@@ -92,6 +92,8 @@ public class CreateMultipleSymbolTables {
 //			e.printStackTrace();
 //		}
 		int aProjectNumber = 0;
+    UNCCheck.setManualProjectDirectory(true);
+
 		for (int aStartIndex = commonArgs.size() + 1; aStartIndex < args.length;   ) {
 			makeProjectArgsList(args, aStartIndex);
 			int aNumFilesAdded = argsList.size() - commonArgs.size();

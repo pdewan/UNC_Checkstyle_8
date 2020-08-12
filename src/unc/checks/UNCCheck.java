@@ -138,6 +138,9 @@ public abstract class UNCCheck extends AbstractCheck {
 	public static void setManualProjectDirectory(boolean manualProjectDirectory) {
 		UNCCheck.manualProjectDirectory = manualProjectDirectory;
 	}
+	protected void doPostProjectDirectorySteps() {
+	  
+	}
 	protected boolean maybeSaveProjectDirectory(String aFileName) {
 		if (isManualProjectDirectory()) {
 			return false;
@@ -405,6 +408,8 @@ public abstract class UNCCheck extends AbstractCheck {
 					+ aFileName;
 
 			maybeSaveProjectDirectory(aFileName);
+			doPostProjectDirectorySteps();
+			
 			if (!isAutoBuild) {
 				maybeAskForConsent();
 			}

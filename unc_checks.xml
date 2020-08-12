@@ -15,7 +15,7 @@
 		<property name="severity" value="info" />
 
 		<module name="STBuilder">
-			<property name="configurationFileName" value="ClassConfiguration.csv" />		
+			<property name="configurationFileName" value="ClassRegistry.csv" />		
 			<property name="includeTypeTags" value="*" />
 			<property name="severity" value="info" />
 			<property name="logNoMatches" value="true" />	

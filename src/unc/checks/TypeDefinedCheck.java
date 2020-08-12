@@ -82,13 +82,14 @@ public class TypeDefinedCheck extends ComprehensiveVisitCheck{
 
 //    			log(ast, anExpectedClassOrTag, unmatchedTypes.toString().replaceAll(",", " "));
     			log(ast, anExpectedClassOrTag);
-    			aFoundMatch = false;
+    			aFoundMatch = true;
 //
 //    			}
     		}
     		
     	}
     	if (!aFoundMatch && logNoMacthes) {
+//    	  String aFullTypeName = getFullTypeName();
 			log(ast, "No Expected Tag");
 		}
 //    		

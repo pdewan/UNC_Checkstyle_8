@@ -60,7 +60,9 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 	
 	protected void processMethod(STMethod anSTMethod) {
 		
-
+	  if ("static public  main:String[]->void".equals(anSTMethod.toString())) {
+	    return;
+	  }
 	
 
 		if (anSTMethod == null) {

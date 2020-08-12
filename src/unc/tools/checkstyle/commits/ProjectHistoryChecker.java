@@ -39,6 +39,7 @@ import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import unc.checks.ComprehensiveVisitCheck;
 import unc.checks.STBuilderCheck;
+import unc.checks.UNCCheck;
 import unc.symbolTable.PropertyInfo;
 import unc.symbolTable.STType;
 import unc.symbolTable.SymbolTable;
@@ -563,6 +564,7 @@ public class ProjectHistoryChecker {
     }
     // let us do stopping commit also so we can compare with previous symbol table
 //    for (int aCommitIndex = currentCommitIndex; aCommitIndex < stoppingCommitIndex; aCommitIndex++) {
+    UNCCheck.setManualProjectDirectory(true);
 
     for (int aCommitIndex = currentCommitIndex; aCommitIndex <= stoppingCommitIndex; aCommitIndex++) {
       File aCommit = commits[aCommitIndex];
@@ -595,6 +597,8 @@ public class ProjectHistoryChecker {
         File aCheckedSource = aCommitIndex == currentCommitIndex ? currentCheckpointFile
                 : changedFilesInCurrentCommit;
         myArgs[myArgs.length - 1] = aCheckedSource.getAbsolutePath();
+//        UNCCheck.setManualProjectDirectory(true);
+
         // STBuilderCheck.setFirstPass(true);
         // ProjectDirectoryHolder.setCurrentProjectDirectory(aChangedFilesInCurrentCommit.getAbsolutePath());
         ProjectDirectoryHolder.setCurrentProjectDirectory(aCheckedSource.getAbsolutePath());

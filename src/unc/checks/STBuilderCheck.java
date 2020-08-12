@@ -309,10 +309,17 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
     STBuilderCheck.excludeClassRegularExpressions = excludeClassRegularExpressions;
   }
 
+protected void doPostProjectDirectorySteps() {
+maybeProcessExistingClasses();
+maybeProcessConfigurationFileName();
+  }
+  
   protected void newProjectDirectory(String aNewProjectDirectory) {
     super.newProjectDirectory(aNewProjectDirectory);
-    maybeProcessExistingClasses();
-    maybeProcessConfigurationFileName();
+//    maybeProcessExistingClasses();
+//    maybeProcessConfigurationFileName();
+    
+    
     // System.err.println ("Clearing symbol table");
     // SymbolTableFactory.getOrCreateSymbolTable().clear();
 

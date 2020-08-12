@@ -56,6 +56,9 @@ public  class PublicMethodsOverrideCheck extends STClassVisitedComprehensively {
 	  publicNonOverriddenMethods.clear();
 	  boolean aFoundPublicOverriddenMethod = false;
 	  for (STMethod anSTMethod:aDeclaredMethods) {
+	    if (!anSTMethod.isInstance()) {
+	      continue;
+	    }
 	    if (anSTMethod.isPublic()) {
 	      if (anSTMethod.hasAnnotation(OVERRIDE)) {
 	        aFoundPublicOverriddenMethod = true;

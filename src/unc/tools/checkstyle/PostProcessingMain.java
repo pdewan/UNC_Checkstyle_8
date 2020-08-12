@@ -248,8 +248,11 @@ public class PostProcessingMain {
       }
     }
 
-    printSingleProperty("expectedTypes", aTags.toArray(emptyStrings));
+//    printSingleProperty("expectedTypes", aTags.toArray(emptyStrings));
+//    printModuleSingleProperty(aModule, aSeverity, aScopingType, aProperty, aPropertyValues);("expectedTypes", aTags.toArray(emptyStrings));
 
+    printModuleSingleProperty("ClassDefined", "info", null,
+            "expectedTypes", aTags.toArray(emptyStrings));
     for (STType anSTType : anSTTypes) {
       generateCheckData(anSTType);
 
@@ -464,6 +467,7 @@ public class PostProcessingMain {
   // <property name="excludeProperties" value="this" />
   // </module>
   public static void printProperty(String aProperty, String aValue) {
+    if (aValue == null) return;
     String aFiller = aValue.contains(",") ? "\n\t\t" : "";
     checksPrintStream.println(
             "\t\t<property name=\"" + aProperty + "\" value=\"" + aValue + aFiller + "\"/>");
@@ -1479,7 +1483,7 @@ public class PostProcessingMain {
   }
 
   public static void main(String[] args) {
-    UNCCheck.setManualProjectDirectory(true);
+//    UNCCheck.setManualProjectDirectory(true);
     if (isRedirectSecondPassOutput()) {
       String aFileName = args[args.length - 1];
       File aFile = new File(aFileName);
