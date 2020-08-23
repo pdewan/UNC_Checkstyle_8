@@ -326,6 +326,7 @@ maybeProcessConfigurationFileName();
   }
 
   protected void maybeProcessConfigurationFileName() {
+    classToConfiguredClass.clear();
     String aProjectDirectory = ProjectDirectoryHolder.getCurrentProjectDirectory();
     if (aProjectDirectory == null || configurationFileName == null) {
       return;
@@ -682,9 +683,22 @@ maybeProcessConfigurationFileName();
     }
     return variablesDeclaredString;
   }
-
+  static long lastTime = 0;
+  
+  public static void maybeSetFirstPass() {
+    if (!isDoAutoPassChange()) {
+      return;
+    }
+    long currentTime = System.currentTimeMillis();
+    if (currentTime - lastTime > getBetweenPassTime()) {
+      setFirstPass(true);
+      lastTime = currentTime;
+    }
+  }
   @Override
+  
   public void doFinishTree(DetailAST ast) {
+    maybeSetFirstPass();
     if (!isFirstPass()) {
       return;
     }
@@ -1067,7 +1081,9 @@ maybeProcessConfigurationFileName();
     List<STNameable> result = computedTypeTags();
     List<STNameable> derivedTags = derivedTags(typeAST,
             anIsInterface ? INTERFACE_START : CLASS_START);
-    String aConfiguredName = classToConfiguredClass.get(shortTypeName);
+//    String aConfiguredName = classToConfiguredClass.get(shortTypeName);
+    String aConfiguredName = classToConfiguredClass.get(getFullTypeName());
+
 
     addAllNoDuplicates(result, new HashSet(derivedTags));
     configuredTags.clear();
@@ -1199,7 +1215,16 @@ maybeProcessConfigurationFileName();
     }
   }
 
-  public static long BETWEEN_PASS_TIME = 30000; // 30 seconds
+//  public static long BETWEEN_PASS_TIME = 30000; // 30 seconds
+   static long betweenPassTime = 10000; // 6 seconds
+
+  public static long getBetweenPassTime() {
+    return betweenPassTime;
+  }
+
+  public static void setBetweenPassTime(long betweenPassTime) {
+    STBuilderCheck.betweenPassTime = betweenPassTime;
+  }
   public static boolean nonInteractive = false;
 
   public static boolean isNonInteractive() {
@@ -1210,7 +1235,8 @@ maybeProcessConfigurationFileName();
     STBuilderCheck.nonInteractive = nonInteractive;
       UNCCheck.notInPlugIn = nonInteractive;
   }
- 
+  
+   
   protected STType getUsableExistingEntryAndSetPass() {
     String aFullTypeName = getFullTypeName();
     STType anExistingEntry = SymbolTableFactory.getOrCreateSymbolTable()
@@ -1220,7 +1246,7 @@ maybeProcessConfigurationFileName();
                                                                                 // predicted it as
                                                                                 // external class
             || (!isNonInteractive() && System.currentTimeMillis()
-                    - anExistingEntry.getTimeOfEntry() > BETWEEN_PASS_TIME)) {
+                    - anExistingEntry.getTimeOfEntry() > getBetweenPassTime())) {
       if (!isFirstPass() && isDoAutoPassChange()) {
         setFirstPass(true);
       }

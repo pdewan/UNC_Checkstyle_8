@@ -565,6 +565,7 @@ public class ProjectHistoryChecker {
     // let us do stopping commit also so we can compare with previous symbol table
 //    for (int aCommitIndex = currentCommitIndex; aCommitIndex < stoppingCommitIndex; aCommitIndex++) {
     UNCCheck.setManualProjectDirectory(true);
+    STBuilderCheck.setBetweenPassTime(30000);
 
     for (int aCommitIndex = currentCommitIndex; aCommitIndex <= stoppingCommitIndex; aCommitIndex++) {
       File aCommit = commits[aCommitIndex];

@@ -86,7 +86,7 @@ public class ASymbolTable implements SymbolTable{
 //	    System.err.println("Found system");
 //	  }
 		if (aTypeName == null) {
-			System.err.println("Null type name");
+//			System.err.println("Null type name");
 			return null;
 		}
 		

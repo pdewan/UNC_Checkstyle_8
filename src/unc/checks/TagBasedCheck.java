@@ -598,8 +598,15 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 		return asListOrNull(anSTType.getComputedTags());
 
  }
+ static List<STNameable> allTags = new ArrayList();
  public List<STNameable> lookupTagsOfCurrentTree()  {
    STType anSTType = null;
+   anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(getFullTypeName());
+   if (anSTType != null) {
+     return asListOrNull(anSTType.getComputedTags());
+
+//     return asListOrNull(anSTType.getConfiguredTags());
+   }
    if (!isFirstPass()) {
      anSTType =  getSTType(currentTree);
  }
@@ -1163,6 +1170,7 @@ public void maybeVisitTypeTags(DetailAST ast) {
 	typeTags = getArrayLiterals(annotationAST);
 	}
 	computedTypeTags = new ArrayList(typeTags);
+	
 	if (typeNameable == null) {
 		String aName = getName(ast);
 		typeNameable = new AnSTNameable(aName);

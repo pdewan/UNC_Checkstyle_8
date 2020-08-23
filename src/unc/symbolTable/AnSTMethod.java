@@ -142,9 +142,9 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 //			System.err.println("getKey");
 //		}
 		this.declaringClass = declaringClass;
-		if (declaringClass == null) {
-		  System.err.println("Null declaring class:");
-		}
+//		if (declaringClass == null) {
+//		  System.err.println("Null declaring class:");
+//		}
 		this.parameterTypes = parameterTypes;
 		if (parameterTypes != null) {
 			 numParameters = parameterTypes.length;
