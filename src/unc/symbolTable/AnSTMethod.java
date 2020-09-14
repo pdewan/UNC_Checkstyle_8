@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import unc.checks.ComprehensiveVisitCheck;
@@ -56,7 +57,17 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 
 //	protected List<String> unknownAssigned;
 	protected Map<String, Set<DetailAST>> unknownAssigned;
-	Set<String> unknownsWithShortNames = new HashSet();
+	protected Map<Integer, Integer> tokenTypeCounts;
+	protected TextBlock javaDocComment;
+	@Override
+  public TextBlock getJavaDocComment() {
+    return javaDocComment;
+  }
+	@Override
+  public void setJavaDocComment(TextBlock javaDocComment) {
+    this.javaDocComment = javaDocComment;
+  }
+  Set<String> unknownsWithShortNames = new HashSet();
 //	Set<String> unknownsWithLongNamesWithUnknownTypes = new HashSet();
 	Set<String> unknownsWithLongNamesWithUnknownSTTypes = new HashSet();
 
@@ -113,7 +124,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		return new AnSTMethod(anAST, name, declaringClass, emptyStringArray, emptyStringArray, true, true, 
 				anIsConstructor, false, returnType, true, aTags, aTags, false, emptyCallInfos, 
 				null, null, null, null, null, null, null,
-				null, null, null, 0, null, null);
+				null, null, null, 0, null, null, null, null);
 		
 	}
 
@@ -136,7 +147,9 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 
 			Integer anAccessToken, int aNumberOfTernaryOperators, List<STType> anAsserts,
 
-			Set<Integer> aModifiers) {
+			Set<Integer> aModifiers,
+			Map<Integer, Integer> aTokenTypeCounts,
+			TextBlock aJavaDocComment) {
 		super(ast, name);
 //		if ( name != null && name.contains("setKey")) {
 //			System.err.println("getKey");
@@ -186,6 +199,8 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 //		initUnkowns(unknownAccessed);
 //		initUnkowns(unknownAssigned);
 		modifiers = aModifiers;
+		tokenTypeCounts = aTokenTypeCounts;
+		javaDocComment = aJavaDocComment;
 		if (aModifiers != null) {
 		accessModifier = STBuilderCheck.toAccessModifier(aModifiers);
 		isAbstract = modifiers.contains(TokenTypes.ABSTRACT);
@@ -346,7 +361,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		  return null;
 		}
 		if (aTypesSeen.contains(aCurrentClassName)) {
-      System.err.println("Reursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
+      System.err.println("Recursive variable super class " + aCurrentClassName + " in " + aTypesSeen );
       aCurrentClass.setRecursive(true);
       for (STNameable aRecursiveClass:aTypesSeen) {
        
@@ -381,6 +396,14 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		
 		
 	}
+//	@Override
+//	public boolean equals(Object anOtherObject) {
+//	  if (anOtherObject == null || !(anOtherObject instanceof STMethod))  {
+//	    return super.equals(anOtherObject);
+//	  }
+//	  return getSignature().equals(((STMethod) anOtherObject).getSignature());
+//	  
+//	}
 	
 	public void correctCallers () {
 		for (CallInfo aCall : methodsCalled) {
@@ -470,7 +493,9 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 				aMethod.addCaller(this);
 			}
 		}
-		return localMethodsCalled;
+//		return localMethodsCalled;
+    return allMethodsCalled;
+
 	}
 
 	@Override
@@ -909,6 +934,10 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 		DetailAST generic = ast.findFirstToken(TokenTypes.TYPE_PARAMETERS);
 		return generic != null;
 	}
+	@Override
+	public Map<Integer, Integer> getTokenTypeCounts() {
+    return tokenTypeCounts;
+  }
 //	@Override
 //	public void addFullNamesToUnknowns() {
 //		for (String anUnknown:unknownAccessed.keySet()) {

@@ -260,7 +260,10 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 //				getSTClassByShortName(aLongTypeName);
 		STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
 		        getSTClassByFullName(aLongTypeName);
-		
+    if (anSTClass.getName().contains("ClassAsType")) {
+      int i = 0;
+    }
+
 	
 		if (anSTClass instanceof AnSTTypeFromClass)
 			return true;
@@ -284,8 +287,10 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 		
 //		if (!checkType(anSTClass)) {
 
-			log (anIdentifierType, aTreeAST, anIdentifierType.getText(),
-					anIdentifier.getText());
+//			log (anIdentifierType, aTreeAST, anIdentifierType.getText(),
+//					anIdentifier.getText());
+			log (anIdentifier, aTreeAST, anIdentifierType.getText(),
+	          anIdentifier.getText());
 			  
 
 //			return true;

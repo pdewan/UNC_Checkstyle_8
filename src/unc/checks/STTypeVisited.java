@@ -27,6 +27,9 @@ public abstract class STTypeVisited extends ComprehensiveVisitCheck {
     	
     	STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
     			getSTClassByFullName(getFullTypeName());
+    	if (anSTClass == null) {
+    	  return;
+    	}
     	checkSTType(ast, anSTClass);
 //    	if (!typeCheck(anSTClass))
 //    		super.logType(ast);

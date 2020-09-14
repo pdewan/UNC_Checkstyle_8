@@ -2,9 +2,9 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryR {
 public static String[] dictionary =
 	{
-	 "R",
+//	 "R",
 	 "RCA",
-	 "Ra",
+//	 "Ra",
 	 "Rabat",
 	 "Rabelais",
 	 "Rabelaisian",
@@ -403,7 +403,7 @@ public static String[] dictionary =
 	 "Rydberg",
 	 "Ryder",
 	 "Ryukyu",
-	 "r",
+//	 "r",
 	 "rabbi",
 	 "rabbinate",
 	 "rabbinical",

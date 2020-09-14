@@ -227,6 +227,16 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 	public void setIncludeTypeTags(String[] newVal) {
 		this.includeTypeTags = new HashSet(Arrays.asList(newVal));		
 	}
+	
+	protected String toTagInformation() {
+	  Set<String> anIncludeTypeTags = getIncludeTypeTags();
+    String aTagInformation = anIncludeTypeTags == null || anIncludeTypeTags.isEmpty()?
+            "No Tag":anIncludeTypeTags.toString();
+    return aTagInformation;
+	}
+	protected Set<String> getIncludeTypeTags() {
+	  return includeTypeTags;
+	}
 	public void setExcludeTypeTags(String[] newVal) {
 		this.excludeTypeTags = new HashSet(Arrays.asList(newVal));		
 	}
@@ -993,6 +1003,30 @@ public static Boolean matchesType(String aDescriptor, String aShortClassName) {
 protected boolean inferTag() {
 	return false;
 }
+protected Boolean checkIncludeExcludeTagsOfType(STType anSTType) {
+  if (!checkExcludeRegularExpressionsOfCurrentType()) {
+    return false;
+  }
+  if (inferTag())
+    return true;
+  if (!hasIncludeTypeTags() && !hasExcludeTypeTags())
+    return true; // all tags checked in this case
+//    return false; // no tags checked in this case
+//  
+//  if (fullTypeName == null) {
+////    System.err.println("Check called without type name being populated");
+//    return false;
+//  }
+  
+  return checkIncludeTagsOfCurrentType(anSTType)  && checkExcludeTagsOfCurrentType(anSTType);
+//  List<STNameable> aStoredTags = computedTypeTags();
+//  for (STNameable aStoredTag:aStoredTags) {
+//    if (checkTagOfCurrentType(aStoredTag.getName()))
+//        return true;
+//  }
+//  return false;
+  
+}
 protected boolean checkExcludeRegularExpressionsOfCurrentType() {
 	
 	if (getFullTypeName() == null) {
@@ -1068,6 +1102,19 @@ public boolean checkIncludeTagsOfCurrentType() {
 
 	
 }
+public boolean checkIncludeTagsOfCurrentType(STType anSTType) {
+  if (!hasIncludeTypeTags()) {
+//    return false;
+  return true;
+  }
+
+//  return checkTags(includeTags, computedTypeTags());
+//  return matchesSomeSpecificationTags(computedTypeTags(), includeTypeTags);
+  return matchesSomeSpecificationTags(getAllTags(anSTType), includeTypeTags);
+  
+
+  
+}
 /*
  * return true if type is not to be excluded, that is, checked
  */
@@ -1076,6 +1123,12 @@ public boolean checkExcludeTagsOfCurrentType() {
 		return true;
 //	return !checkTags(excludeTags, computedTypeTags());
 	return !matchesSomeSpecificationTags(lookupTagsOfCurrentTree(), excludeTypeTags);	
+}
+public boolean checkExcludeTagsOfCurrentType(STType anSTType) {
+  if (!hasExcludeTypeTags())
+    return true;
+//  return !checkTags(excludeTags, computedTypeTags());
+  return !matchesSomeSpecificationTags(getAllTags(anSTType), excludeTypeTags); 
 }
 
 /*
@@ -1544,6 +1597,17 @@ public static List<String> getNonComputedTagsList (STType anSTType) {
 
 
 }
+public static Set<STNameable> getAllTags (STType anSTType) {
+  Set<STNameable> retVal = new HashSet();
+  
+  retVal.addAll(Arrays.asList(anSTType.getDerivedTags()));
+  retVal.addAll(Arrays.asList(anSTType.getConfiguredTags()));
+  retVal.addAll(Arrays.asList(anSTType.getTags()));
+  retVal.addAll(Arrays.asList(anSTType.getComputedTags()));
+  return retVal;
+
+
+}
 public static Set<String> tagsNotContainedIn(STType aContainee, STType aContainer ) {
 	Set<String> aContaineeSet = getNonComputedTags(aContainee);
 	Set<String> aContainerSet = getNonComputedTags(aContainer);
@@ -1794,6 +1858,9 @@ public static DetailAST getEnclosingInterfaceDeclaration(DetailAST anAST) {
 }
 public static DetailAST getEnclosingTreeDeclaration(DetailAST anAST) {
 	DetailAST root = anAST;
+	if (root == null) {
+	  return null;
+	}
 	while (true) {		
 		DetailAST aParent = root.getParent();
 		if (aParent == null)

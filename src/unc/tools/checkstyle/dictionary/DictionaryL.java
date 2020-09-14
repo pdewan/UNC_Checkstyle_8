@@ -2,9 +2,9 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryL {
 public static String[] dictionary =
 	{
-	 "L",
+//	 "L",
 	 "LBJ",
-	 "La",
+//	 "La",
 	 "Laban",
 	 "Labrador",
 	 "Labradors",
@@ -476,7 +476,7 @@ public static String[] dictionary =
 	 "Lysenko",
 	 "Lysistrata",
 	 "Lysol",
-	 "l",
+//	 "l",
 	 "la",
 	 "lab",
 	 "label",

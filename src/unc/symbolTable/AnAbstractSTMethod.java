@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import unc.checks.ComprehensiveVisitCheck;
+import unc.checks.STBuilderCheck;
 import unc.checks.STTypeVisited;
 import unc.checks.TagBasedCheck;
 import unc.checks.TypeVisitedCheck;
@@ -393,6 +394,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		}
 		@Override
 		public List<AccessModifierUsage> getAccessModifiersUsed() {
+//		  if (STBuilderCheck.isFirstPass()) {
+//		    return null;
+//		  }
 			if (accessModifierUsage == null) {
 				accessModifierUsage = AnSTVariable.getAccessModifiersUsed (this, getAccessModifier(), this.getDeclaringSTType(), callingTypes, getCallingMethods());
 			}

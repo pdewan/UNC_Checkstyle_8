@@ -98,7 +98,8 @@ public class ASymbolTable implements SymbolTable{
 		    anSTType = getPreviousSymbolTable().getSTClassByFullName(aTypeName);
 		  }
 		  if (anSTType == null) {
-			boolean isExternalClass = aTypeName.startsWith("java.lang") ;
+//			boolean isExternalClass = aTypeName.startsWith("java.lang") ;
+		   boolean isExternalClass = STBuilderCheck.isExternalImportCacheChecking(aTypeName); // we need it to work with one pass scheme also
 			
 			// we do not need to guess external class with two pass scheme
 //			        || 

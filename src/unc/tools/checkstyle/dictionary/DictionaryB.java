@@ -2,9 +2,9 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryB {
 public static String[] dictionary =
 	{
-	 "B",
+//	 "B",
 	 "BMW",
-	 "Ba",
+//	 "Ba",
 	 "Baal",
 	 "Baath",
 	 "Baathist",
@@ -745,7 +745,7 @@ public static String[] dictionary =
 	 "Byzantine",
 	 "Byzantines",
 	 "Byzantium",
-	 "b",
+//	 "b",
 	 "baa",
 	 "baaed",
 	 "baaing",

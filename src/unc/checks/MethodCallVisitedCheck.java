@@ -18,6 +18,16 @@ public abstract class MethodCallVisitedCheck extends ComprehensiveVisitCheck {
 	 * file.
 	 */
 	public static final String MSG_KEY = "methodCallVisited";
+	
+//	protected String callingMethodSignature;
+//	protected STMethod callingMethod;
+//	public String getCallingMethod() {
+//    return callingMethodSignature;
+//  }
+//  
+//  public STMethod getCallingSTMethod() {
+//    return callingMethod;
+//  }
 
 	// protected String shortMethodName;
 	// protected String longMethodName;
@@ -83,7 +93,18 @@ public abstract class MethodCallVisitedCheck extends ComprehensiveVisitCheck {
 //		}
 //	}
 
-	protected abstract Boolean check(STType aCallingType, DetailAST ast,
+	
+	
+//	protected  boolean checkCallingMethod(STMethod anActualMethod) {
+//	  return callingMethod == null || matchSignature(callingMethod, anActualMethod);
+//	}
+//
+//  public void setCallingMethod(String callingMethodSignature) {
+//    this.callingMethodSignature = callingMethodSignature;
+//    callingMethod = signatureToMethod(callingMethodSignature);
+//  }
+
+  protected abstract Boolean check(STType aCallingType, DetailAST ast,
 			String aShortMethodName, String aLongMethodName, CallInfo aCallInfo);
 	
 	protected void log(DetailAST ast, DetailAST aTreeAST, String aShortMethodName,
@@ -217,10 +238,22 @@ public abstract class MethodCallVisitedCheck extends ComprehensiveVisitCheck {
 			aCallInfo = registerConstructorCallAndtoNormalizedParts(ast, aTreeAST);
 		else
 			aCallInfo = registerMethodCallAndtoNormalizedParts(ast, aTreeAST);
+		if (callingMethodSignature != null) {
+      STMethod anActualCaller = aCallInfo.getCallingMethod();
+      if (anActualCaller == null) {
+        return null; // have not built the table
+      }
+      
+      STMethod anExpectedCaller = signatureToMethod(callingMethodSignature);
+      if (matchSignature(anExpectedCaller, anActualCaller)) {
+        return true;
+      }
+      
+    }
 		String aNormalizedLongName = toLongName(aCallInfo.getNormalizedCall());
 		String shortMethodName = toShortTypeOrVariableName(aNormalizedLongName);
-
-
+		
+		
 		STType anSTType = getSTType(aTreeAST);
 		Boolean checkResult = check(anSTType, ast, shortMethodName,
 				aNormalizedLongName, aCallInfo);

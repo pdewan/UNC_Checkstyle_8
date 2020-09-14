@@ -2,7 +2,7 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryQ {
 public static String[] dictionary =
 	{
-	 "Q",
+//	 "Q",
 	 "Qaddafi",
 	 "Qantas",
 	 "Qatar",
@@ -35,7 +35,7 @@ public static String[] dictionary =
 	 "Quixotism",
 	 "Qumran",
 	 "Quonset",
-	 "q",
+//	 "q",
 	 "qua",
 	 "quack",
 	 "quacked",

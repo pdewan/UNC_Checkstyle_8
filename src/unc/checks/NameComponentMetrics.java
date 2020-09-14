@@ -7,7 +7,7 @@ public class NameComponentMetrics {
 	public int numLetters;
 	public int numVowels;
 	public int numDigits;
-	public boolean isDictionaryWord;
+	public Boolean isDictionaryWord;
 
 public static boolean isVowel(char c) {
 		  return "AEIOUaeiou".indexOf(c) != -1;
@@ -26,8 +26,12 @@ public static NameComponentMetrics computeComponentMetrics(String aName) {
 			}
 		}
 	}
-//	retVal.isDictionaryWord = DictionarySet.getDictionary().contains(aName.toLowerCase());
-	retVal.isDictionaryWord = DictionarySet.getDictionary().contains(aName);
+	if (retVal.numDigits > 0) {
+	  retVal.isDictionaryWord = null;
+	  
+	} else
+	retVal.isDictionaryWord = DictionarySet.getDictionary().contains(aName.toLowerCase());
+//	retVal.isDictionaryWord = retVal.numDigits > 0 || DictionarySet.getDictionary().contains(aName);
 
 	retVal.numChars = aName.length();
 	return retVal;

@@ -63,6 +63,7 @@ public  class MethodBlockLimitCheck extends ComprehensiveVisitCheck {
         		TokenTypes.CTOR_DEF,
         		TokenTypes.LITERAL_WHILE,
         		TokenTypes.LITERAL_FOR,
+        	  TokenTypes.LITERAL_DO,
 //        		TokenTypes.LITERAL_SWITCH,
         		};
     }
@@ -123,7 +124,9 @@ public  class MethodBlockLimitCheck extends ComprehensiveVisitCheck {
             case TokenTypes.LITERAL_WHILE:
                 blockVisited(ast, MSG_KEY);
                 break;
-            
+            case TokenTypes.LITERAL_DO:
+              blockVisited(ast, MSG_KEY);
+              break;
             default:
             	super.doVisitToken(ast);
 //                throw new IllegalStateException(ast.toString());

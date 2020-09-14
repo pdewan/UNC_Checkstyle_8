@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TextBlock;
 
 import unc.checks.ComprehensiveVisitCheck;
 
@@ -274,6 +275,21 @@ public class AnSTMethodFromConstructor extends AnAbstractSTMethod implements STM
 	public boolean isGeneric() {
 		return false;
 	}
+  @Override
+  public Map<Integer, Integer> getTokenTypeCounts() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  @Override
+  public TextBlock getJavaDocComment() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  @Override
+  public void setJavaDocComment(TextBlock javaDocComment) {
+    // TODO Auto-generated method stub
+    
+  }
 	
 	
 

@@ -34,7 +34,10 @@ public  class PublicMethodsOverrideCheck extends STClassVisitedComprehensively {
 //	   return true;// return non null value
 //	 }
 	 protected Boolean callTypeCheck(DetailAST ast, DetailAST aTreeAST, STType anSTType) {
-	    Boolean aTypeCheck = typeCheck(anSTType);
+//	    if (anSTType.toString().contains("bad")) {
+//	      int i = 0;
+//	    }
+	   Boolean aTypeCheck = typeCheck(anSTType);
 	    if (aTypeCheck == null)
 	      return null;
 	    boolean aDoLog = 

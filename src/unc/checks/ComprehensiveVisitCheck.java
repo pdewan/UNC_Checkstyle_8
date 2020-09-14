@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
@@ -78,6 +80,8 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   protected boolean currentMethodAssignsToGlobalVariable;
   // protected List<String[]> methodsCalledByCurrentMethod = new ArrayList();
   protected List<CallInfo> methodsCalledByCurrentMethod = new ArrayList();
+  protected Map<Integer, Integer> tokenTypeCountsInCurrentMethod = new HashMap();
+
   protected Map<String, Set<DetailAST>> globalsAccessedByCurrentMethod = new HashMap();
   protected Map<String, Set<DetailAST>> globalsAssignedByCurrentMethod = new HashMap();
 
@@ -533,9 +537,16 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     // aCamelCaseName.split("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[0-9])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9])");
     // return
     // aCamelCaseName.split("_|-|\\.|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[0-9])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9])");
-    return aCamelCaseName.split(
+    String[] aComponents = aCamelCaseName.split(
             "@|\\+|_|-|\\.|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[0-9])(?=[A-Z][a-z])|(?<=[a-zA-Z])(?=[0-9])");
 
+    for (int anIndex = 0; anIndex < aComponents.length; anIndex++) {
+      String[] aSplit = aComponents[anIndex].split("\\d+");
+      if (aSplit.length > 1) {
+        aComponents[anIndex] = aSplit[1];
+      }
+    }
+    return aComponents;
   }
 
   public static String[] splitDashHyphen(String aDashHyphenName) {
@@ -564,7 +575,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       }
       return new AnSTMethod(null, aSignature.trim(), null, null, null, true, true, false, false,
               null, false, null, null, false, null, null, null, null, null, null, null, null, null,
-              null, null, 0, null, null);
+              null, null, 0, null, null, null, null);
     }
     if (aNameAndRest.length > 2) {
       System.err.println("Illegal signature," + aSignature + ",  too many :" + aSignature);
@@ -591,7 +602,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     return new AnSTMethod(null, aName, null, null, aParameterTypes, true, true, false, false,
             aReturnType, true, null, null, false, null, null, null, null, null, null, null, null,
-            null, null, null, 0, null, null);
+            null, null, null, 0, null, null, null, null);
 
   }
 
@@ -617,7 +628,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     return new AnSTMethod(null, aName, null, null, aLongParameterTypes, true, true, false, false,
             aReturnType, true, null, null, false, null, null, null, null, null, null, null, null,
-            null, null, null, 0, null, null);
+            null, null, null, 0, null, null, null, null);
 
   }
 
@@ -1031,6 +1042,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     localSTVariables.clear();
     parameterSTVariables.clear();
     methodsCalledByCurrentMethod.clear();
+    tokenTypeCountsInCurrentMethod.clear();
     globalsAccessedByCurrentMethod.clear();
     globalsAssignedByCurrentMethod.clear();
     unknownVariablesAccessedByCurrentMethod.clear();
@@ -2651,6 +2663,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     currentMethodAssignsToGlobalVariable = false;
     currentMethodScope.clear();
     methodsCalledByCurrentMethod.clear();
+    tokenTypeCountsInCurrentMethod.clear();
     globalsAccessedByCurrentMethod.clear();
     globalsAssignedByCurrentMethod.clear();
     unknownVariablesAssignedByCurrentMethod.clear();
@@ -2821,6 +2834,12 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   }
 
   protected void maybeAddToPendingTypeChecks(DetailAST ast) {
+    String aFullTypeName = getFullTypeName();
+//    System.err.println("Type processed:" + aFullTypeName);
+//    if (aFullTypeName != null && aFullTypeName.contains("ClassAsType") && !isFirstPass()) {
+//      int i = 1;
+//    }
+    
     if (!checkIncludeExcludeTagsOfCurrentType())
       return;
     specificationVariablesToUnifiedValues.clear();
@@ -3251,9 +3270,15 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   }
 
   protected void log(DetailAST ast, String... anExplanations) {
+    String aMsgKey = isInfo() ? msgKeyInfo() : msgKeyWarning();
+    if (aMsgKey == null) {
+      aMsgKey = msgKey();
+    }
     DetailAST aTreeAST = getEnclosingTreeDeclaration(ast);
     // String aTypeName = getEnclosingShortClassName(ast);
-    log(msgKey(), ast, aTreeAST, anExplanations);
+//    log(msgKey(), ast, aTreeAST, anExplanations);
+    log(aMsgKey, ast, aTreeAST, anExplanations);
+
 
   }
 
@@ -3408,7 +3433,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   protected void log(String aMessageKey, DetailAST ast, DetailAST aTreeAST,
           Object... anExplanations) {
     if (ast == null) {
-      System.err.println("Null ast:" + currentFile);
+//      System.err.println("Null ast:" + currentFile);
       return;
     }
     // Object[] anArgs = composeArgs(aMessageKey, ast, aTreeAST, ast.getLineNo(),
@@ -3838,7 +3863,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         return;
 
       default:
-        System.err.println(checkAndFileDescription + "Unexpected token");
+//        System.err.println(checkAndFileDescription + "Unexpected token");
     }
 
   }
@@ -4295,4 +4320,42 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   public static void main(String[] args) {
     System.out.println("Math.PI".matches("Math.(.*)"));
   }
+  protected String callingMethodSignature;
+  protected STMethod callingMethod;
+  public String getCallingMethod() {
+    return callingMethodSignature;
+  }
+  
+ 
+  
+  public STMethod getCallingSTMethod() {
+    return callingMethod;
+  }
+  protected  boolean checkCallingMethod(STMethod anActualMethod) {
+    return callingMethod == null || matchSignature(callingMethod, anActualMethod);
+  }
+
+  public void setCallingMethod(String callingMethodSignature) {
+    this.callingMethodSignature = callingMethodSignature;
+    callingMethod = signatureToMethod(callingMethodSignature);
+  }
+protected boolean processCalledMethods;
+public boolean isProcessCalledMethods() {
+  return processCalledMethods;
+}
+
+public void setProcessCalledMethods(boolean processCalledMethods) {
+  this.processCalledMethods = processCalledMethods;
+}
+  
+  //Compiling the regular expression
+  static final Pattern multipSpacePattern = Pattern.compile("\\s+");
+  //Retrieving the matcher object
+  public static String multipSpaceToSingleSpace(String aString){
+    Matcher matcher = multipSpacePattern.matcher(aString);
+    //Replacing all space characters with single space
+    String result = matcher.replaceAll(" ");
+    return result;
+  }
+ 
 }

@@ -23,7 +23,9 @@ public class MnemonicNameCheck extends STTypeVisited {
 
 	public static final String MIN_VOWEL_LENGTH_MSG_KEY = "minimumVowelInNameCheck";
 	public static final String MIN_NAME_LENGTH_CHECK = "minimumLettersInNameCheck";
-	public static final String IN_DICTIONARY_CHECK = "nameInDictionaryCheck";
+	public static final String NOT_IN_DICTIONARY = "nameNotInDictionary";
+	 public static final String IN_DICTIONARY = "nameInDictionary";
+
 
 
 
@@ -291,17 +293,32 @@ public class MnemonicNameCheck extends STTypeVisited {
 //		if (aComponent.matches(".*[0-9].*")) { 
 //		    return true; // it is effectively in dictionary
 //		}
-		if (!aMetrics.isDictionaryWord) {
+		if (aMetrics.isDictionaryWord == null) {
+		  return false;
+		}
+		if (!aMetrics.isDictionaryWord && !isInfo()) {
 //			log(IN_DICTIONARY_CHECK, anIdentifierAST, aTreeAST, aVariable, aComponent);
-			log(IN_DICTIONARY_CHECK, anIdentifierAST, aVariable, aComponent);
+			log(NOT_IN_DICTIONARY, anIdentifierAST, aVariable, aComponent);
 			
 			return false;
-		} else {
+		} else if (aMetrics.isDictionaryWord && isInfo()) {
+      log(IN_DICTIONARY, anIdentifierAST, aVariable, aComponent);
+      return true;
+
+		}
+		else {
 			return true;
 		}
 	}
 	protected void checkIdentifier (DetailAST aTreeAST, DetailAST anIdentifierAST, String aName, String anExplanation, STVariable anStVariable) {
 		String[] aComponents = ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName);
+//		for (int anIndex = 0; anIndex < aComponents.length; anIndex++) {
+//		  String[] aSplit = aComponents[anIndex].split("\\d+");
+//		  if (aSplit.length > 1) {
+//		    aComponents[anIndex] = aSplit[1];
+//		  }
+//		}
+//		String[] aTest = "20AB".split("\\d+");
 		if (isPrintComponents()) {
 			
 			log(PRINT_MSG_KEY, anIdentifierAST,  aName, Arrays.toString(aComponents), anExplanation );
@@ -343,7 +360,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 	}
 	protected void processLocalVars(DetailAST ast, STMethod anSTMethod, List<STVariable> aVariables) {
 		if (aVariables == null) {
-			System.err.println("NUll variables in:" + anSTMethod);
+//			System.err.println("NUll variables in:" + anSTMethod);
 			return;
 		}
 		for (STVariable anSTVariable:aVariables) {
@@ -369,7 +386,7 @@ public class MnemonicNameCheck extends STTypeVisited {
 	
 	protected void processParameters(DetailAST ast, STMethod anSTMethod, List<STVariable> aVariables) {
 		if (aVariables == null) {
-			System.err.println("Null parameters in:" + anSTMethod);
+//			System.err.println("Null parameters in:" + anSTMethod);
 			return;
 		}
 		for (STVariable anSTVariable:aVariables) {
@@ -425,16 +442,16 @@ public class MnemonicNameCheck extends STTypeVisited {
 	  }
 	  return (AnSTNameable.nullToEmptyList(result));
 	}
-	 public void visitType(DetailAST ast) {
-     super.visitType(ast);
-     
-     STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
-         getSTClassByFullName(getFullTypeName());
-     checkSTType(ast, anSTClass);
-//     if (!typeCheck(anSTClass))
-//       super.logType(ast);
-
-   }
+//	 public void visitType(DetailAST ast) {
+//     super.visitType(ast);
+//     
+//     STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
+//         getSTClassByFullName(getFullTypeName());
+//     checkSTType(ast, anSTClass);
+////     if (!typeCheck(anSTClass))
+////       super.logType(ast);
+//
+//   }
 	 @Override
 	 public void visitToken(DetailAST ast) {
 	   super.visitToken(ast);

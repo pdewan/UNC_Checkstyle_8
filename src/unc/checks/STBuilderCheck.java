@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.Stack;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FileContents;
+import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
@@ -73,7 +75,7 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   static String[] externalPackagePrefixes = {};
 
   static String[] builtInExternalPackagePrefixes = { "java", "com.google", "com.sun", "org.apache",
-      "org.eclipse", "bus.uigen", "util", "gradingTools" };
+      "org.eclipse", "bus.uigen", "util", "gradingTools", "weka" };
   static String[] externalMethodRegularExpressions = { "trace.*" };
   static String[] externalClassRegularExpressions = { ".*utton.*" };
 
@@ -114,12 +116,92 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   protected boolean logAccessModifiersUsed = false;
 
   protected boolean logAggregateStatistics = false;
+  
+ 
+  protected boolean trackTokenTypesUsed = false;
+  protected boolean trackJavaDocComments = false;
+
 
   //
   // protected String methodsDeclaredString;
   // protected String variablesDeclaredString;
   // protected String propertiesDeclaredString;
   // protected String statisticsString;
+  
+  public boolean isTrackJavaDocComments() {
+    return trackJavaDocComments;
+  }
+
+  public void setTrackJavaDocComments(boolean trackJavaDocComments) {
+    this.trackJavaDocComments = trackJavaDocComments;
+  }
+
+  public int[] getDefaultTokens() {
+    return new int[] { 
+        TokenTypes.PACKAGE_DEF, 
+        TokenTypes.CLASS_DEF, 
+        TokenTypes.INTERFACE_DEF,
+        TokenTypes.ENUM_DEF,
+        TokenTypes.ANNOTATION_DEF, 
+        TokenTypes.ANNOTATION_FIELD_DEF,
+        TokenTypes.TYPE_ARGUMENTS,
+        TokenTypes.TYPE_PARAMETERS, 
+        TokenTypes.VARIABLE_DEF,
+        TokenTypes.PARAMETER_DEF, 
+        TokenTypes.METHOD_DEF, 
+        TokenTypes.CTOR_DEF, 
+        TokenTypes.IMPORT,
+        TokenTypes.STATIC_IMPORT, 
+        TokenTypes.METHOD_CALL, 
+        TokenTypes.IDENT, 
+        TokenTypes.ENUM_DEF,
+      
+        TokenTypes.COLON,
+        TokenTypes.LITERAL_CASE,
+        TokenTypes.LITERAL_CATCH,
+        TokenTypes.LITERAL_SWITCH, 
+        TokenTypes.LITERAL_IF, 
+        TokenTypes.LITERAL_ELSE,
+        TokenTypes.LITERAL_FOR, 
+        TokenTypes.LITERAL_WHILE, 
+        TokenTypes.LITERAL_BREAK, 
+        TokenTypes.LITERAL_DO, 
+        TokenTypes.LITERAL_CONTINUE,
+        TokenTypes.LITERAL_FINALLY,
+        TokenTypes.LITERAL_INSTANCEOF,
+        TokenTypes.LITERAL_NEW, 
+        TokenTypes.LITERAL_RETURN, 
+        TokenTypes.LITERAL_ASSERT,
+        TokenTypes.LITERAL_SYNCHRONIZED,
+        TokenTypes.LITERAL_THIS,
+        TokenTypes.LITERAL_THROW,
+        TokenTypes.LITERAL_THROWS,
+        TokenTypes.LITERAL_TRANSIENT,
+        TokenTypes.LITERAL_FALSE,
+        TokenTypes.LITERAL_TRUE,
+        TokenTypes.LITERAL_TRY,
+        TokenTypes.LITERAL_VOLATILE,
+        TokenTypes.LAND,
+        TokenTypes.LOR,
+        TokenTypes.LNOT,
+        TokenTypes.BAND,
+        TokenTypes.BNOT,
+        TokenTypes.BXOR,
+        TokenTypes.BSR,
+        TokenTypes.BAND_ASSIGN,
+        TokenTypes.BOR_ASSIGN,
+        TokenTypes.BSR_ASSIGN,
+        TokenTypes.LT,
+        TokenTypes.GT,
+        TokenTypes.LE,
+        TokenTypes.GE,
+        TokenTypes.EQUAL,
+        TokenTypes.NOT_EQUAL,
+        TokenTypes.LCURLY, 
+        TokenTypes.RCURLY,
+        
+         };
+  }
 
   public STBuilderCheck() {
     latestInstance = this;
@@ -439,6 +521,7 @@ maybeProcessConfigurationFileName();
   public static STType addExistingClassSTType(Class aClass) {
 
     STType anSTType = new AnSTTypeFromClass(aClass);
+    
     addSTType(anSTType);
     // anSTType.setExternal(true);
     // SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(
@@ -518,6 +601,11 @@ maybeProcessConfigurationFileName();
       if (aFullTypeName == null) {
         aFullTypeName = getFullTypeName(currentTree);
         setFullTypeName(aFullTypeName);
+      };
+      TextBlock aTextBlock = null;
+      if (isTrackJavaDocComments()) {
+        final FileContents contents = getFileContents();
+          aTextBlock = contents.getJavadocBefore(currentMethodAST.getLineNo());
       }
       // Set<DetailAST> anAnnotations = extractAnnotations(modifierAST);
       STMethod anSTMethod = new AnSTMethod(currentMethodAST, currentMethodName, getFullTypeName(),
@@ -552,7 +640,11 @@ maybeProcessConfigurationFileName();
               AnSTNameable.copy(localsAssignedByCurrentMethod),
               AnSTNameable.copy(parametersAssignedByCurrentMethod),
               getAccessToken(currentMethodAST), numberOfTernaryIfsInCurrentMethod,
-              AnSTNameable.copy(assertsInCurrentMethod), aModifiers);
+              AnSTNameable.copy(assertsInCurrentMethod), 
+              aModifiers,
+              AnSTNameable.copy(tokenTypeCountsInCurrentMethod),
+              aTextBlock
+              );
 
       if (currentMethodIsConstructor)
         stConstructors.add(anSTMethod);
@@ -855,6 +947,7 @@ maybeProcessConfigurationFileName();
   }
 
   Object[] emptyArray = {};
+  Map emptyMap = new HashMap();
   STMethod[] emptyMethods = {};
   STType[] emptyTypes = {};
 
@@ -1216,7 +1309,9 @@ maybeProcessConfigurationFileName();
   }
 
 //  public static long BETWEEN_PASS_TIME = 30000; // 30 seconds
-   static long betweenPassTime = 10000; // 6 seconds
+//   static long betweenPassTime = 10000; // 6 seconds
+   static long betweenPassTime = 30000; // 30seconds
+
 
   public static long getBetweenPassTime() {
     return betweenPassTime;
@@ -1557,12 +1652,21 @@ maybeProcessConfigurationFileName();
     processSecondPass(anEnumDef);
 
   }
+  protected void incrementTokenCount (Integer aTokenType) {
+    Integer aCurrentCount = tokenTypeCountsInCurrentMethod.get(aTokenType);
+    Integer aNewCount = 
+            aCurrentCount == null?1:aCurrentCount+1;
+    tokenTypeCountsInCurrentMethod.put(aTokenType, aNewCount);
+  }
 
   // public void visitType(DetailAST typeDef) {
   // super.maybeVisitTypeTags(typeDef);
   // processSecondPass(typeDef);
   // }
   protected void doVisitToken(DetailAST ast) {
+    if (isTrackTokenTypesUsedInMethods() && currentMethodName != null) {
+      incrementTokenCount(ast.getType());
+    }
     // System.out.println("Check called:" + MSG_KEY);
     switch (ast.getType()) {
       // case TokenTypes.ANNOTATION_FIELD_DEF:
@@ -1907,5 +2011,12 @@ maybeProcessConfigurationFileName();
     STBuilderCheck.lastSequenceNumberOfExpectedTypes = -1;
     STBuilderCheck.latestInstance = null;
     STBuilderCheck.nonInteractive = true;
+  }
+  public boolean isTrackTokenTypesUsedInMethods() {
+    return trackTokenTypesUsed;
+  }
+
+  public void setTrackTokenTypesUsedInMethods(boolean trackTokenTypesUsed) {
+    this.trackTokenTypesUsed = trackTokenTypesUsed;
   }
 }

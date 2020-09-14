@@ -1784,7 +1784,7 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 //			superTypes = getAllSuperTypes(this);
 	     superTypes = computeAllSuperTypes(this);
 	     STType anObjectType = SymbolTableFactory.getOrCreateSymbolTable().getAndMaybePutObjectType();
-	     if (isClass() && !superTypes.contains(anObjectType)) {
+	     if ( superTypes != null && isClass() && !superTypes.contains(anObjectType)) {
 	       for (STNameable aSuperType:superTypes) {
 	         if (aSuperType instanceof STType) {
 	           STType aSuperSTType = (STType) aSuperType;

@@ -2,7 +2,7 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryE {
 public static String[] dictionary =
 	{
-	 "E",
+//	 "E",
 	 "ECMAScript",
 	 "Eakins",
 	 "Earhart",
@@ -337,7 +337,7 @@ public static String[] dictionary =
 	 "Eysenck",
 	 "Ezekiel",
 	 "Ezra",
-	 "e",
+//	 "e",
 	 "eBay",
 	 "eMusic",
 	 "each",

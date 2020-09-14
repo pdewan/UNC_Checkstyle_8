@@ -2,7 +2,7 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryM {
 public static String[] dictionary =
 	{
-	 "M",
+//	 "M",
 	 "MCI",
 	 "MGM",
 	 "MHz",

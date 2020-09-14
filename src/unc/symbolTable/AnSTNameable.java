@@ -180,6 +180,7 @@ public  class AnSTNameable implements STNameable {
     }
     return new ArrayList(anOriginal);
   }
+  
   public static Map copy (Map anOriginal) {
     if (anOriginal.isEmpty()) {
       return emptyMap;

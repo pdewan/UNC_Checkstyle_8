@@ -2,8 +2,8 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryC {
 public static String[] dictionary =
 	{
-	 "C",
-	 "Ca",
+//	 "C",
+//	 "Ca",
 	 "Cabernet",
 	 "Cabinet",
 	 "Cabot",
@@ -828,7 +828,7 @@ public static String[] dictionary =
 	 "Czechoslovakians",
 	 "Czechs",
 	 "Czerny",
-	 "c",
+//	 "c",
 	 "cab",
 	 "cabal",
 	 "cabals",

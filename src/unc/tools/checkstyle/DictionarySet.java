@@ -36,7 +36,11 @@ public class DictionarySet {
   static Set<String> dictionarySet;
   static String[] extraWords = {
       "io", 
-      "cpu"
+      "cpu",
+      "util",
+      "num",
+      "retval",
+      "val"
   };
   public static Set<String> getDictionary() {
 	  if (dictionarySet == null) {

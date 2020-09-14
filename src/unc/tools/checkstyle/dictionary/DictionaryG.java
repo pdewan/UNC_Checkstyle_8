@@ -2,10 +2,10 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryG {
 public static String[] dictionary =
 	{
-	 "G",
+//	 "G",
 	 "GE",
 	 "GTE",
-	 "Ga",
+//	 "Ga",
 	 "Gable",
 	 "Gabon",
 	 "Gaborone",
@@ -425,7 +425,7 @@ public static String[] dictionary =
 	 "Gwyn",
 	 "Gypsies",
 	 "Gypsy",
-	 "g",
+//	 "g",
 	 "gab",
 	 "gabardine",
 	 "gabardines",

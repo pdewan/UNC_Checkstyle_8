@@ -2,7 +2,7 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryI {
 public static String[] dictionary =
 	{
-	 "I",
+//	 "I",
 	 "IBM",
 	 "ING",
 	 "Iaccoca",
@@ -191,7 +191,7 @@ public static String[] dictionary =
 	 "Izmir",
 	 "Izod",
 	 "Izvestia",
-	 "i",
+//	 "i",
 	 "iPad",
 	 "iPhone",
 	 "iPod",

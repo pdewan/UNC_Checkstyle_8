@@ -143,9 +143,9 @@ public  class MissingMethodTextCheck extends MissingMethodCallCheck {
 				if (aCallerAndText.length == 2) {
 					
 				
-	    		log(anAST, aTree, aCallerAndText[0], aCallerAndText[1]);
+	    		log(anAST, aTree, aCallerAndText[0], aCallerAndText[1], toTagInformation());
 				} else {
-		    		log(anAST, aTree,  aCallerAndText[0]);
+		    		log(anAST, aTree,  aCallerAndText[0], toTagInformation());
 
 				}
 			}

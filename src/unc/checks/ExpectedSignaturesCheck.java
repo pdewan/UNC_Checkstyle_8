@@ -82,7 +82,9 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 //			System.err.println("found map signature");
 //		}
 		String aTypeName = getName(getEnclosingTypeDeclaration(anAST));
-		super.log(anAST, aTreeAST, aSignature, aTypeName);
+//		super.log(anAST, aTreeAST, aSignature, aTypeName, toTagInformation());
+    super.log(anAST, aTreeAST, aSignature, toTagInformation());
+
 //		if (aTreeAST == currentTree) {
 //			DetailAST aLoggedAST = aTreeAST;
 //			log(aLoggedAST.getLineNo(),  msgKey(), aSignature, aTypeName, aSourceName);

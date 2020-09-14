@@ -1,5 +1,7 @@
 package unc.tools.checkstyle;
 
+import java.io.File;
+
 public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String SOURCE = "C:\\Users\\dewan\\Downloads\\twitter-heron";
@@ -15,7 +17,7 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 //C:\Users\dewan\Downloads\RxJava_java_only\java_only\history\1004-9b61c134e929dbd5b17216a58453bc8baea9a666\commit_changes\rxjava-core\src\main\java\rx\observers\SafeSubscriber.java
 //static final String SOURCE = "C:/Users/dewan/Downloads/RxJava-3.x/src/main/java/io/reactivex/rxjava3/internal/functions/Functions.java";
 //static final String SOURCE = "C:/Users/dewan/Downloads/RxJava_java_only/java_only/history/1980-2d5ce6935910cb3046384254329bd46236802796/commit_changes";
-static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/greeting/Hello.java";
+//static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/greeting/Hello.java";
 //static final String SOURCE = "C:/Users/dewan/Downloads/RxJava_java_only/java_only/history/1980-2d5ce6935910cb3046384254329bd46236802796/commit_changes/src/main/java/rx/Observable.java";
 
 //Null variable in call parts [Ljava.lang.String;@420e17cdof fileC:\Users\dewan\Downloads\RxJava_java_only\java_only\history\1004-9b61c134e929dbd5b17216a58453bc8baea9a666\commit_changes\rxjava-core\src\main\java\rx\operators\SafeObserver.java
@@ -62,6 +64,7 @@ static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/greet
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
 static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/unc_checks.xml";
+static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/";
 
 //static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_decomposition_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_interfaces_checks.xml";
@@ -74,10 +77,14 @@ static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION,  SOURCE};
 
 
 	public static void main (String[] args) {
+    String[] anActualArgs = args.length == 0?ARGS:args;
 		setPrintOnlyTaggedClasses(true);
 		setRedirectSecondPassOutput(true);
 		PostProcessingMain.setGenerateChecks(true);
-		PostProcessingMain.main(ARGS);
+		PostProcessingMain.setSecondPassFile(new File("myresults.txt"));
+    PostProcessingMain.setGeneratedChecksFile(new File("mychecks.xml"));
+
+		PostProcessingMain.main(anActualArgs);
 //		    Main.main(ARGS);
 
 //			try {

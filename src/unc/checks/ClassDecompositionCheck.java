@@ -129,7 +129,7 @@ public  class ClassDecompositionCheck extends ComprehensiveVisitCheck {
 		return false;
 	}
 	protected boolean ignoredMethod(STMethod anSTMethod) {
-		return anSTMethod.getGlobalsAccessed().isEmpty() ||
+		return anSTMethod == null || anSTMethod.getGlobalsAccessed() == null || anSTMethod.getGlobalsAccessed().isEmpty() ||
 				!checkIncludeExcludeTagsOfMethod(Arrays.asList(anSTMethod.getComputedTags()));
 	}
 	

@@ -2,8 +2,8 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryP {
 public static String[] dictionary =
 	{
-	 "P",
-	 "Pa",
+//	 "P",
+//	 "Pa",
 	 "Paar",
 	 "Pablo",
 	 "Pablum",
@@ -537,7 +537,7 @@ public static String[] dictionary =
 	 "Pythagorean",
 	 "Pythias",
 	 "Python",
-	 "p",
+//	 "p",
 	 "pH",
 	 "pa",
 	 "pace",

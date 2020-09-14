@@ -3,7 +3,8 @@ package unc.tools.checkstyle;
 import java.security.Permission;
 
 class NonExitingSecurityManager extends SecurityManager {
-  @Override public void checkExit(int status) {
+  @Override 
+  public void checkExit(int status) {
     throw new SecurityException();
   }
 

@@ -107,7 +107,10 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 			log (methodDef, anSTMethod.getSimpleChecksSignature(), anSTMethod.getAccessModifier().toString(),
 					aReferencingTypes.toString(), aUsedAccessModifiers.toString() );
 		} 
-		else if (aMinDifference > 0 && !isInfo()) {			
+		else if (aMinDifference > 0 && !isInfo()) {	
+//		  if (anSTMethod.toString().contains("isGivenSafe")) {
+//		    int i = 1;
+//		  }
 			AccessModifier anAccessNeeded = AccessModifier.values()[anSTMethod.getAccessModifier().ordinal() +  aMinDifference];
 			log (methodDef, anSTMethod.getSimpleChecksSignature(), anSTMethod.getAccessModifier().toString(), anAccessNeeded.toString(), "" + aMinDifference,
 					aReferencingTypes.toString(), aUsedAccessModifiers.toString() );
@@ -118,6 +121,9 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 //  public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
 	@Override
     public void doFinishTree(DetailAST anAST) {
+	  if (isFirstPass()) {
+	    return;
+	  }
 
     String aTypeName = getFullTypeName();
     if (aTypeName == null) {
@@ -128,6 +134,9 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
     STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aTypeName);
     if (anSTType == null) {
       System.err.println("Null STType :" + currentFullFileName);
+      return;
+    }
+    if (!checkIncludeTagsOfCurrentType(anSTType)) {
       return;
     }
     if (anSTType.getDeclaredMethods() == null) {

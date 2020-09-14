@@ -32,6 +32,8 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
     protected int max;
     /** current nesting depth */
     protected int depth;
+    
+    protected DetailAST lastBlock = null;
 
     /**
      * A key is pointing to the warning message text in "messages.properties"
@@ -61,10 +63,12 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
     public int[] getDefaultTokens()
     {
         return new int[] {
-//        		TokenTypes.LITERAL_IF,
+        		TokenTypes.LITERAL_IF,
         		TokenTypes.LITERAL_WHILE,
         		TokenTypes.LITERAL_FOR,
-//        		TokenTypes.LITERAL_SWITCH,
+        		TokenTypes.LITERAL_SWITCH,
+            TokenTypes.LITERAL_DO,
+
         		};
     }
 
@@ -81,6 +85,8 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
     {
         switch (ast.getType()) {
         	case TokenTypes.LITERAL_IF:
+              if (isLoop(lastBlock)) return;
+
         			nestOut();
         			break;
         	 case TokenTypes.LITERAL_FOR:
@@ -92,20 +98,32 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
             case TokenTypes.LITERAL_SWITCH:
                 nestOut();
                 break;
+            case TokenTypes.LITERAL_DO:
+              nestOut();
+              break;
             default:
                 throw new IllegalStateException(ast.toString());
         }
+    }
+    public static boolean isLoop(DetailAST anAST) {
+      return (anAST != null && 
+              (anAST.getType() == TokenTypes.LITERAL_FOR ||
+              anAST.getType() == TokenTypes.LITERAL_WHILE));
     }
     @Override
     protected void doVisitToken(DetailAST ast)
     {
         switch (ast.getType()) {
         	case TokenTypes.LITERAL_IF:
+        	    if (isLoop(lastBlock)) return;
         			nestIn(ast, IF_MSG_KEY);
         			break;
         	 case TokenTypes.LITERAL_FOR:
                  nestIn(ast, MSG_KEY);
                  break;
+        	 case TokenTypes.LITERAL_DO:
+             nestIn(ast, MSG_KEY);
+             break;
             case TokenTypes.LITERAL_WHILE:
                 nestIn(ast, MSG_KEY);
                 break;
@@ -140,7 +158,7 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
     {
         this.max = max;
     }
-
+    
     /**
      * Increasing current nesting depth.
      * @param ast note which increases nesting.
@@ -148,6 +166,7 @@ public  class NestedBlockDepthCheck extends ComprehensiveVisitCheck {
      */
     protected final void nestIn(DetailAST ast, String messageId)
     {
+        lastBlock = ast;
         depth++;
 
         if (depth > max) {

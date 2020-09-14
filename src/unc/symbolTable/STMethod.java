@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
 public interface STMethod extends STNameable{
@@ -82,6 +83,9 @@ public interface STMethod extends STNameable{
 	int getNumParameters();
 	boolean isGeneric();
 	String getSimpleChecksTaggedSignature();
+  Map<Integer, Integer> getTokenTypeCounts();
+  TextBlock getJavaDocComment();
+  void setJavaDocComment(TextBlock javaDocComment);
 
 
 }

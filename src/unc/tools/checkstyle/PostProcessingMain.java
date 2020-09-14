@@ -65,7 +65,7 @@ public class PostProcessingMain {
   static String[] externalClassRegularExpressions;
 //  static Collection<STType> sTTypes;
   static Collection<STType> sTTypes = new ArrayList();
-  static final String CHECKS_FILE_NAME = "generated_checks.xml";
+  static final String DEFAULT_GENERATED_CHECKS_FILE_NAME = "generated_checks.xml";
   static final String DUMMY_FILE_NAME = "firstpassresults.text";
   static final String EXTERNALS_FILE_NAME = "externals.csv";
 
@@ -457,7 +457,7 @@ public class PostProcessingMain {
     processDeclaredMethods(anSTType);
     processMethodsCalled(anSTType);
     processUnknownVariablesAccessed(anSTType);
-    processAccessModifiersUsed(anSTType);
+//    processAccessModifiersUsed(anSTType);
     // processReferencesPerVariable(anSTType);
 
   }
@@ -1438,8 +1438,8 @@ public class PostProcessingMain {
     return redirectFirstPassOutput;
   }
 
-  public static void setRedirectFirstPassOutput(boolean redirectSecondPassOutput) {
-    PostProcessingMain.redirectFirstPassOutput = redirectFirstPassOutput;
+  public static void setRedirectFirstPassOutput(boolean newVal) {
+    PostProcessingMain.redirectFirstPassOutput = newVal;
   }
 
   protected static boolean generateChecks = false;
@@ -1461,9 +1461,10 @@ public class PostProcessingMain {
     generateChecks = newVal;
   }
 
-  static PrintStream oldOut;
+  static PrintStream oldOut, initialOut;
 
   public static void redirectOut() {
+	 
     oldOut = System.out;
 
     try {
@@ -1477,14 +1478,23 @@ public class PostProcessingMain {
       e.printStackTrace();
     }
   }
-
+  public static void restoreInitialOut() {
+	  System.setOut(initialOut);
+  }
   public static void restoreOut() {
     System.setOut(oldOut);
   }
-
-  public static void main(String[] args) {
-//    UNCCheck.setManualProjectDirectory(true);
+  static  File secondPassFile = null;
+  public static void setSecondPassFile(File newVal) {
+    secondPassFile = newVal;
+  }
+  public static File getSecondPassFile() {
+    return secondPassFile;
+  }
+  public static final String DEFAULT_SECOND_PASS_SUFFIX = "_check_results.txt";
+  public static void maybeInitializeRedirectSecondPassOutput(String[] args) {
     if (isRedirectSecondPassOutput()) {
+      if (secondPassFile == null) {
       String aFileName = args[args.length - 1];
       File aFile = new File(aFileName);
       String aShortFileName = aFile.getName();
@@ -1494,10 +1504,14 @@ public class PostProcessingMain {
           aShortFileName = aFile.getName();
         }
       }
-      File anOutFile = new File(aShortFileName + "_check_results.txt");
+//       secondPassFile = new File(aShortFileName + "_check_results.txt");
+       secondPassFile = new File(aShortFileName + DEFAULT_SECOND_PASS_SUFFIX);
+      }
+
       try {
 //        aFile.createNewFile();
-        outPrintStream = new PrintStream(anOutFile);
+        oldOut = System.out;
+        outPrintStream = new PrintStream(secondPassFile);
         System.setOut(outPrintStream);
 
       } catch (IOException e) {
@@ -1505,19 +1519,70 @@ public class PostProcessingMain {
         e.printStackTrace();
       }
     }
-    ACheckStyleLogFileManager.setPrintLogInconsistency(false);
-    // Set<String> aSet = UnixDictionarySet.getUnixDictionary();
+  }
+  static  File generatedChecksFile = null;
+  public static void setGeneratedChecksFile(File newVal) {
+    generatedChecksFile = newVal;
+  }
+  public static File getGeneratedChecksFile() {
+    return generatedChecksFile;
+  }
+  public static void maybeInitializeGeneratedChecksFile() {
     if (isGenerateChecks()) {
-      File aFile = new File(CHECKS_FILE_NAME);
+      if (generatedChecksFile == null) {
+      generatedChecksFile = new File(DEFAULT_GENERATED_CHECKS_FILE_NAME);
+      }
       try {
-        aFile.createNewFile();
-        checksPrintStream = new PrintStream(new File(CHECKS_FILE_NAME));
+        generatedChecksFile.createNewFile();
+//        checksPrintStream = new PrintStream(new File(DEFAULT_GENERATED_CHECKS_FILE_NAME));
+        checksPrintStream = new PrintStream(generatedChecksFile);
+
 
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
+  }
+  public static void main(String[] args) {
+//    UNCCheck.setManualProjectDirectory(true);
+//    if (isRedirectSecondPassOutput()) {
+//      String aFileName = args[args.length - 1];
+//      File aFile = new File(aFileName);
+//      String aShortFileName = aFile.getName();
+//      if ("src".equals(aShortFileName)) {
+//        aFile = aFile.getParentFile();
+//        if (aFile != null) {
+//          aShortFileName = aFile.getName();
+//        }
+//      }
+//       secondPassFile = new File(aShortFileName + "_check_results.txt");
+//      try {
+////        aFile.createNewFile();
+//        outPrintStream = new PrintStream(secondPassFile);
+//        System.setOut(outPrintStream);
+//
+//      } catch (IOException e) {
+//        // TODO Auto-generated catch block
+//        e.printStackTrace();
+//      }
+//    }
+	  initialOut = System.out;
+    maybeInitializeRedirectSecondPassOutput(args);
+    ACheckStyleLogFileManager.setPrintLogInconsistency(false);
+    // Set<String> aSet = UnixDictionarySet.getUnixDictionary();
+    maybeInitializeGeneratedChecksFile();
+//    if (isGenerateChecks()) {
+//      File aFile = new File(DEFAULT_GENERATED_CHECKS_FILE_NAME);
+//      try {
+//        aFile.createNewFile();
+//        checksPrintStream = new PrintStream(new File(DEFAULT_GENERATED_CHECKS_FILE_NAME));
+//
+//      } catch (IOException e) {
+//        // TODO Auto-generated catch block
+//        e.printStackTrace();
+//      }
+//    }
 
     // Main.main(ARGS);
 
@@ -1526,7 +1591,7 @@ public class PostProcessingMain {
       System.err.println("Building symbol table and running first pass checks:"
               + new Date(System.currentTimeMillis()));
       STBuilderCheck.setNonInteractive(true);
-      STBuilderCheck.setDoAutoPassChange(false);
+      STBuilderCheck.setDoAutoPassChange(false); // always true
       UNCCheck.setDoNotVisit(true);
       if (!STBuilderCheck.isDoAutoPassChange()) {
         STBuilderCheck.setFirstPass(true);
@@ -1553,15 +1618,16 @@ public class PostProcessingMain {
       
       System.err.println("Finished second pass checks:" + new Date(System.currentTimeMillis()));
       if (isRedirectSecondPassOutput()) {
+        restoreInitialOut();
         outPrintStream.close();
       }
       if (isGenerateChecks()) {
         initGlobals();
 
-        System.err.println("Generating checks" + new Date(System.currentTimeMillis()));
+        System.err.println("Generating checks:" + new Date(System.currentTimeMillis()));
 
         generateChecks(sTTypes);
-        System.err.println("Finished Generating checks" + new Date(System.currentTimeMillis()));
+        System.err.println("Finished Generating checks:" + new Date(System.currentTimeMillis()));
 
       }
     } catch (Exception e) {
@@ -1571,12 +1637,12 @@ public class PostProcessingMain {
       e.printStackTrace();
     }
     if (isGenerateExternals()) {
-      System.err.println("Generating externals" + new Date(System.currentTimeMillis()));
+      System.err.println("Generating externals:" + new Date(System.currentTimeMillis()));
 
       initGlobals();
       // outputExternalReferences(sTTypes);
       outputExternalOrTaggedCallInfos(sTTypes);
-      System.err.println("Finished Generating externals" + new Date(System.currentTimeMillis()));
+      System.err.println("Finished Generating externals:" + new Date(System.currentTimeMillis()));
 
     }
     if (xmlLogger != null)
