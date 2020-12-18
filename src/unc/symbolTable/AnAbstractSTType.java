@@ -495,12 +495,20 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       // if (aMethod.getName().equals(aName)
       // && Arrays.asList(aMethod.getParameterTypes()).equals(Arrays.asList(aParameterTypes)))
       // return aMethod;
+//      if (aMethod.getName().equals(aName)) {
+//        aMatchedNames = nullToNewSet(aMatchedNames);
+//        aMatchedNames.add(aMethod);
+//      }
+//      if (Arrays.asList(aMethod.getParameterTypes()).equals(Arrays.asList(aParameterTypes))) {
+//        return aMethod;
+//      }
       if (aMethod.getName().equals(aName)) {
         aMatchedNames = nullToNewSet(aMatchedNames);
         aMatchedNames.add(aMethod);
-      }
+//      }
       if (Arrays.asList(aMethod.getParameterTypes()).equals(Arrays.asList(aParameterTypes))) {
         return aMethod;
+      }
       }
 
     }

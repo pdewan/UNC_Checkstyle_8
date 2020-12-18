@@ -254,7 +254,7 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 			e.printStackTrace();
 			retVal = aFileName;
 		}
-		if (retVal == null | retVal.isEmpty() || retVal.equals(" ")) {
+		if (retVal == null || retVal.isEmpty() || retVal.equals(" ")) {
 //			System.err.println(" Empty key:" +  retVal);
 		}
 		return retVal;

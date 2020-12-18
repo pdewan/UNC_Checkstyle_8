@@ -40,7 +40,10 @@ public class DictionarySet {
       "util",
       "num",
       "retval",
-      "val"
+      "val",
+      "weka",
+      "nio,",
+      "xml"
   };
   public static Set<String> getDictionary() {
 	  if (dictionarySet == null) {

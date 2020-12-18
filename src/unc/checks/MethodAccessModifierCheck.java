@@ -10,6 +10,7 @@ import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 import unc.symbolTable.APropertyInfo;
 import unc.symbolTable.AccessModifierUsage;
 import unc.symbolTable.STMethod;
+import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
 import unc.symbolTable.SymbolTableFactory;
 
@@ -63,6 +64,7 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 	  if ("static public  main:String[]->void".equals(anSTMethod.toString())) {
 	    return;
 	  }
+	  
 	
 
 		if (anSTMethod == null) {
@@ -142,7 +144,19 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
     if (anSTType.getDeclaredMethods() == null) {
       return;
     }
+    List<STNameable>  anAllInterfaces = anSTType.getAllInterfaces();
+    STNameable[] aDeclaredInterfaces = anSTType.getDeclaredInterfaces();
+    boolean anAllowPublicMethods = anSTType.isAbstract() || 
+            (anAllInterfaces != null && !anAllInterfaces.isEmpty()) ||
+            (aDeclaredInterfaces != null && aDeclaredInterfaces.length != 1);
+    
+    
     for (STMethod anSTMethod:anSTType.getDeclaredMethods()) {
+      if ((anSTMethod.getAccessModifier() == AccessModifier.PUBLIC) && 
+              
+              (anAllowPublicMethods || anSTMethod.isGetter() || anSTMethod.isSetter())) {
+        continue;
+      }
       processMethod(anSTMethod);
     }
   }

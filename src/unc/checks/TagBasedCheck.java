@@ -1599,11 +1599,21 @@ public static List<String> getNonComputedTagsList (STType anSTType) {
 }
 public static Set<STNameable> getAllTags (STType anSTType) {
   Set<STNameable> retVal = new HashSet();
-  
+  if (anSTType == null) {
+    return retVal;
+  }
+  if (anSTType.getDerivedTags() != null) {
   retVal.addAll(Arrays.asList(anSTType.getDerivedTags()));
+  }
+  if (anSTType.getComputedTags() != null ) {
   retVal.addAll(Arrays.asList(anSTType.getConfiguredTags()));
+  }
+  if (anSTType.getTags() != null) {
   retVal.addAll(Arrays.asList(anSTType.getTags()));
+  }
+  if (anSTType.getComputedTags() != null) {
   retVal.addAll(Arrays.asList(anSTType.getComputedTags()));
+  }
   return retVal;
 
 

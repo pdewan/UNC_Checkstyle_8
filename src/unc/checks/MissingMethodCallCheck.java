@@ -257,6 +257,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
           // if (aCalledMethod.getName().contains("reduce")) {
           // System.err.println("found reduce:");
           // }
+//          if (aCalledMethod.getName().contains("ingle")) {
+//            int i = 1;
+//          }
 
           Boolean matches = matches(anSTType, maybeStripComment(aSpecification), aCallingMethod,
                   aCalledMethod);
