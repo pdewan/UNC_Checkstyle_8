@@ -12,6 +12,9 @@ public  class ClassIsGenericCheck extends STClassVisitedComprehensively {
 	 * file.
 	 */
 	public static final String MSG_KEY = "classIsGeneric";
+  public static final String MSG_KEY_WARNING = "classIsNotGeneric";
+  public static final String MSG_KEY_INFO = "classIsGeneric";
+  
 
 //	/** flag to control whether marker interfaces are allowed. */
 //	private boolean allowMarkerInterfaces = true;
@@ -19,6 +22,8 @@ public  class ClassIsGenericCheck extends STClassVisitedComprehensively {
 	public  ClassIsGenericCheck () {
 		
 	}
+	
+	
 //	@Override
 //	public int[] getDefaultTokens() {
 //		return new int[] { TokenTypes.CLASS_DEF };
@@ -56,6 +61,15 @@ public  class ClassIsGenericCheck extends STClassVisitedComprehensively {
 		return MSG_KEY;
 	}
 
+  @Override
+  protected String msgKeyWarning() {
+    return MSG_KEY_WARNING;
+  }
+
+  @Override
+  protected String msgKeyInfo() {
+    return MSG_KEY_INFO;
+  }
 	
 	
 }

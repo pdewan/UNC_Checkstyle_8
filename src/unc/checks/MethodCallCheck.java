@@ -291,7 +291,9 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 //		String aCallingType = toShortTypeOrVariableName(aCallingSTType.getName());
 		String[] aCallerAndRest = aSpecifier.split(CALLER_TYPE_SEPARATOR);
 		String aCaller = MATCH_ANYTHING_REGULAR_EXPERSSION;
-		
+//		if (aSpecifier.contains("get.*") && aCalledMethod.getName().contains("get")) {
+//		  System.err.println("Found offendin match");
+//		}
 		String aNonTargetPart = aSpecifier;
 //		List<String> aCalledParameters = null;
 

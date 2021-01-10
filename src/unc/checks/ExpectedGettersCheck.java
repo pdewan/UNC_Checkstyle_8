@@ -3,12 +3,23 @@ package unc.checks;
 import unc.symbolTable.PropertyInfo;
 
 public class ExpectedGettersCheck extends BeanTypedPropertiesCheck {
-	public static final String MSG_KEY = "expectedGetters";
+	public static final String MSG_KEY = "expectedGetter";
+  public static final String MSG_KEY_WARNING = "missingGetter";
+  public static final String MSG_KEY_INFO = "expectedGetter";
 	@Override
 	protected String msgKey() {
 		// TODO Auto-generated method stub
 		return MSG_KEY;
 	}
+	@Override
+  protected String msgKeyWarning() {
+    return MSG_KEY_WARNING;
+  }
+
+  @Override
+  protected String msgKeyInfo() {
+    return MSG_KEY_INFO;
+  }
 
 
 //	public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {

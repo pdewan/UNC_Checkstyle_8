@@ -101,9 +101,9 @@ public class AnSTType extends AnAbstractSTType implements STType {
 			fileName = aFileName;
 		else
 			fileName = name;
-//		if (name.contains("TrickOrTreatPostProcessingCustomMain")) {
-//			System.err.println (" found TrickOrTreatPostProcessingCustomMain");
-//		}'
+//		if (name.contains("Hallo")) {
+//			System.err.println (" found offending class");
+//		};
 //		if (fileName.contains("Backpress")) {
 //		System.err.println (" found file");
 //		}

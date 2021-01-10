@@ -125,6 +125,9 @@ public class ASymbolTable implements SymbolTable{
 
 //			if (isExternalClass && STBuilderCheck.getImportsAsExistingClasses()) {
 				try {
+				  if (aTypeName.contains("[")) {
+				    return null;
+				  }
 					Class aClass = Class.forName(aTypeName);
 					return STBuilderCheck.addExistingClassSTType(aClass);
 

@@ -33,6 +33,7 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 
   protected STMethod[] declaredMethods; // initialized by subclass
   protected STMethod[] methods; // initialized on demand
+  protected STMethod[] nonExternalMethods; // initialized on demand
   protected STNameable[] allComputedTags; // initialized on demand
   protected STMethod[] declaredConstructors;
   protected STNameable[] declaredInterfaces;
@@ -140,27 +141,29 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       }
     }
     return methods;
-    // List<STMethod> retVal = new ArrayList();
-    // addToList(retVal, getDeclaredMethods());
-    // STNameable aSuperType = getSuperClass();
-    // if (aSuperType != null
-    // && !TagBasedCheck.isExternalClass(aSuperType.getName())) {
-    // STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
-    // .getSTClassByShortName(aSuperType.getName());
-    // if (anSTType == null) {
-    // if (waitForSuperTypeToBeBuilt())
-    // return null;
-    // else
-    // return retVal.toArray(emptyMethods);
-    // }
-    // STMethod[] superTypeMethods = anSTType.getMethods();
-    // if (superTypeMethods == null) // some supertype not compiled
-    // return null;
-    //// addToList(retVal, anSTType.getMethods());
-    // addToList(retVal, superTypeMethods);
-    //
-    // }
-    // return retVal.toArray(emptyMethods);
+  
+  }
+  
+  
+  @Override
+  public STMethod[] getNonExternalMethods() {
+    
+    STMethod[] aMethods = getMethods();
+    if (aMethods == null){
+      return null;
+    }
+    if (aMethods.length == 0) {
+      return emptyMethodArray;
+    }
+    List<STMethod> aListRetVal = new ArrayList();
+    for (STMethod aMethod:aMethods) {
+      if (aMethod.getDeclaringSTType() != null && aMethod.getDeclaringSTType().isExternal()) {
+        continue;
+      }
+      aListRetVal.add(aMethod);
+    }
+    return aListRetVal.toArray(emptyMethodArray);
+  
   }
 
   // static List superType = new ArrayList(1);

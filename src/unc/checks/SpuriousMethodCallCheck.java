@@ -4,9 +4,15 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 import unc.symbolTable.STType;
 
-public class UnexpectedMethodCallCheck extends MissingMethodCallCheck {
-  public static final String MSG_KEY_WARNING = "unexpectedMethodCall";
-  public static final String MSG_KEY_INFO = "noUnexpectedMethodCall";
+/**
+ * 
+ * Like IllegalMethodCall and UnncessaryMethodCall, except they disallow all calls on a class
+ * This one, like MissingMethodCallCheck, is tied to a call rather than a class.
+ *
+ */
+public class SpuriousMethodCallCheck extends MissingMethodCallCheck{
+  public static final String MSG_KEY_WARNING = "spuriousMethodCall";
+  public static final String MSG_KEY_INFO = "noSpuriousMethodCall";
   @Override
   protected String msgKeyWarning() {
     return MSG_KEY_WARNING;
@@ -18,15 +24,17 @@ public class UnexpectedMethodCallCheck extends MissingMethodCallCheck {
   }
   protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
           boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
-    if ((!found && !indirectMethodsNotFullProcessed && isInfo()) || !isInfo() && found) {
-      // if (aSpecification.contains("run")) {
-      // System.out.println ("found specification");
-      // }
+  
+    if ((found && !indirectMethodsNotFullProcessed && !isInfo()) ||
+            isInfo() && !found) {
+//       if (aSpecification.contains("get.*")) {
+//       System.out.println ("found specification");
+//       }
       // String aCallingMethodSignature = getCallingMethod();
 
       String aCaller = aCallingMethodSignature;
       if (aCaller == null) {
-        aCaller = isInfo() ? "Some" : "Any";
+        aCaller = isInfo() ? "No" : "Some";
       }
 
       // log(anAST, aTree, aSpecification, aCallingMethodSignature);
@@ -34,5 +42,4 @@ public class UnexpectedMethodCallCheck extends MissingMethodCallCheck {
 
     }
   }
-
 }

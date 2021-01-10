@@ -19,6 +19,8 @@ import unc.symbolTable.SymbolTableFactory;
 // not really using methods of superclass
 public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 	public static final String MSG_KEY = "peerCommonProperties";
+	public static final String MSG_KEY_INFO = "peerHasCommonProperties";
+  public static final String MSG_KEY_WARNING = "peerDoesNotHaveCommonProperties";
 	String[] includeProperties = {};
 	String[] excludeProperties = {};
 	

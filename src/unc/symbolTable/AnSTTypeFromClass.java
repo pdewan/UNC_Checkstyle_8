@@ -28,6 +28,7 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 //C:\Users\dewan\Downloads\RxJava_java_only\java_only\history\1018-7babfaf1dcf8f20d02e0404c2f13f47c46a55391\commit_changes\rxjava-contrib\rxjava-swing\src\main\java\rx\subscriptions\SwingSubscriptions.java
 	public AnSTTypeFromClass(String aClassName) {
 		super (null, aClassName);
+		System.err.println("Added existing class:" + aClassName);
 //		if (STBuilderCheck.isFirstPass()) {
 //		  System.err.println("Adding class in first pass!" + );
 //		}
@@ -71,7 +72,12 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 		for (int i = 0; i < declaredConstructors.length; i++) {
 			declaredConstructors[i] = new AnSTMethodFromConstructor(aConstructors[i]);
 		}	
+		Package aPackage = aClass.getPackage();
+		if (aPackage == null) {
+		  packageName = "default";
+		} else {
 		packageName = aClass.getPackage().getName();
+		}
 		Class[] anInterfaces = aClass.getInterfaces();
 		declaredInterfaces = new AnSTNameable[anInterfaces.length];
 		for (int i = 0; i < declaredInterfaces.length; i++) {

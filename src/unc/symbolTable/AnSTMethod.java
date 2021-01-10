@@ -151,8 +151,8 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 			Map<Integer, Integer> aTokenTypeCounts,
 			TextBlock aJavaDocComment) {
 		super(ast, name);
-//		if ( name != null && name.contains("setKey")) {
-//			System.err.println("getKey");
+//		if ( name != null && name.contains("setConnectedToSimulation")) {
+//			System.err.println("found preobleantic method");
 //		}
 		this.declaringClass = declaringClass;
 //		if (declaringClass == null) {
@@ -813,7 +813,10 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 				aShortName = ComprehensiveVisitCheck.toShortTypeOrVariableName(anUnknown);
 				replaceKey(anUnknowns, anUnknown, aShortName); // first replacement
 			}
-			if (aShortName.contains(".")) {
+			if (aShortName.endsWith(".class")) {
+			  continue;
+			}
+			if (aShortName.contains(".") ) {
 				unknownsWithLongNamesWithUnknownSTTypes.add(anUnknown);
 			} else {
 			

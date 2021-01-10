@@ -147,6 +147,10 @@ public class ACallInfo implements CallInfo {
 //	}
 	public Set<STMethod> getMatchingCalledMethods() {
 		if (matchingCalledMethods == null) {
+//		  if (callee.contains("setConnectedToSimulation")) {
+//		    System.err.println("Found problemantic call info");
+//		  }
+		         
 			matchingCalledMethods = computingMatchingCalledMethods();
 //			STType aCalledSTType = getCalledSTType();
 //			if (aCalledSTType == null) {
@@ -209,6 +213,7 @@ public class ACallInfo implements CallInfo {
 			}
 			if (retVal.size() == 0) {
 				STMethod anSTMethod = new AnSTMethod(callee, this.actuals.size());
+				anSTMethod.setDeclaringType(aCalledSTType);
 				anSTMethod.setUnresolvedMethod(true);
 				retVal.add(anSTMethod);
 				

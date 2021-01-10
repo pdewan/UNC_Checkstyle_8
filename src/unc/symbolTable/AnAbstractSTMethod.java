@@ -32,7 +32,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 	protected boolean unresolvedMethod;
 
 	
-	Set<STMethod> allCalledMethods;
+	Set<STMethod> allDirectlyOrIndirectlyCalledMethods;
 	Set<STMethod> allInternallyCalledMethods;
 	
 	// to avoid duplicates, set
@@ -209,7 +209,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 			 if (i > 0) {
 				 result.append(PARAMETER_SEPARATOR);
 			 }
-			 result.append(PostProcessingMain.toTaggedType(getParameterTypes()[i]));
+//			 result.append(PostProcessingMain.toTaggedType(getParameterTypes()[i]));
+       result.append(PostProcessingMain.toOutputType(getParameterTypes()[i]));
+
 		 }
 		 return result.toString();
 	 }
@@ -258,6 +260,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		 return checksSignature;
 
 	 }
+	 
 	 protected String checksTaggedSignature;
 
 	 @Override
@@ -273,7 +276,18 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 //		 result.append(toStringParameterTypes());
 		 result.append(PARAMETERS_RETURN_VALUE_SEPARATOR);
 //		 result.append(TypeVisitedCheck.toShortTypeName(getReturnType()));
-		 result.append(TypeVisitedCheck.toShortTypeName(PostProcessingMain.toTaggedType(getReturnType())));
+//		 result.append(TypeVisitedCheck.toShortTypeName(PostProcessingMain.toTaggedType(getReturnType())));
+		 String aReturnType = getReturnType();
+//		 if (aReturnType.contains("Param")) {
+//		   System.err.println("Found untagged type");
+//		 }
+// 	    result.append(TypeVisitedCheck.toShortTypeName(PostProcessingMain.toOutputType(getReturnType())));
+//	     result.append(TypeVisitedCheck.toShortTypeName(PostProcessingMain.toOutputType(aReturnType)));
+		 // why short name for return type?
+       result.append(PostProcessingMain.toOutputType(aReturnType));
+
+
+
 
 		 checksTaggedSignature = result.toString();
 		 }
@@ -371,12 +385,20 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		
 		@Override
 		public Set<STMethod> getAllDirectlyOrIndirectlyCalledMethods() {
-			if (allCalledMethods == null || isIndirectMethodsNotFullProcessed()) {
-				allCalledMethods = computeAllDirectlyOrIndirectlyCalledMethods(new HashSet(), this);
+			if (allDirectlyOrIndirectlyCalledMethods == null || isIndirectMethodsNotFullProcessed()) {
+			  
+				allDirectlyOrIndirectlyCalledMethods = computeAllDirectlyOrIndirectlyCalledMethods(new HashSet(), this);
+//				if (name.equals("main")) {
+//          System.err.println(" main methods of " + declaringSTType + " are " + allDirectlyOrIndirectlyCalledMethods);
+//          if (!allDirectlyOrIndirectlyCalledMethods.toString().contains("fire")) {
+//            System.err.println("Did not find fire");
+//          }
+          
+//        }
 			}
-			if (allCalledMethods != null)
-				addCallerMethod(this, allCalledMethods);
-			return allCalledMethods;
+			if (allDirectlyOrIndirectlyCalledMethods != null)
+				addCallerMethod(this, allDirectlyOrIndirectlyCalledMethods);
+			return allDirectlyOrIndirectlyCalledMethods;
 		}
 		
 //		@Override
@@ -486,8 +508,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 //				System.err.println("Declaring type should not be null");
 //				return null;
 //			}
-//			if (this.getName().contains("join")) {
-//				System.err.println("found join");
+		  
+//			if (this.getName().contains("reduce") && this.getDeclaringSTType().getName().contains("lient")) {
+//				System.err.println("found problemantic method");
 //			}
 			if (result.contains(this)) {
 				return result; // recursive call
@@ -498,6 +521,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 			for (CallInfo aCallInfo:aCalledMethods) {
 //				STMethod[] anAllDirectlyCalledMethods = toSTMethods(aCallInfo);
 //				STMethod[] anAllDirectlyCalledMethods = aCallInfo.getCalledSTMethods();
+			  
 				Set<STMethod> anAllDirectlyCalledMethods = aCallInfo.getMatchingCalledMethods();
 				
 
@@ -513,7 +537,12 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 						continue;
 					}
 //					aDirectlyCalledMethod.addCaller(aMethod);
-					result.add(aDirectlyCalledMethod);
+					
+					if (!aDirectlyCalledMethod.isConstructor()) {
+					  result.add(aDirectlyCalledMethod);
+					} 
+					
+					
 //					if (aDirectlyCalledMethod.getName().contains("export")) {
 //						System.err.println("Export");
 //					}
@@ -521,6 +550,17 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 					if (aDirectlyCalledMethod.isUnresolvedMethod()) {
 						continue;
 					}
+	       STType aCalledSTType = aDirectlyCalledMethod.getDeclaringSTType();
+         if (aCalledSTType != aMethod.getDeclaringSTType() ) {
+          
+      
+        String aTaggedType = PostProcessingMain.toTaggedType(aCalledSTType);
+        if (aTaggedType != null ) {
+          // we do not need to follow its called methods for practical purposes
+          continue;
+        }
+        }
+					
 					Set<STMethod> anAllIndirectlyCalledMethods = computeAllDirectlyOrIndirectlyCalledMethods(result, aDirectlyCalledMethod);
 
 					if (anAllIndirectlyCalledMethods == null) {
@@ -592,6 +632,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 //				System.err.println("Declaring type should not be null");
 //				return null;
 //			}
+//		  if (aMethod.getDeclaringSTType().getName().contains("ontroller")) {
+//		    System.err.println("found method class");
+//		  }
 			CallInfo[] aCalledMethods = aMethod.getCallInfoOfMethodsCalled();
 			for (CallInfo aCallInfo:aCalledMethods) {
 				if (!aMethod.getDeclaringClass().contains(aCallInfo.getCalledType()))
@@ -604,6 +647,16 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 				}
 				if (Character.isLowerCase(aCalledTypeShortName.charAt(0)))
 					continue;
+//				STType aCalledSTType = aCallInfo.getCalledSTType();
+//				if (aCalledSTType != aMethod.getDeclaringSTType() ) {
+//				  
+//			
+//				String aTaggedType = PostProcessingMain.toTaggedType(aCalledSTType);
+//        if (aTaggedType != null ) {
+//          // we do not need to follow its called methods for practical purposes
+//          continue;
+//        }
+//				}
 //				STMethod[] anAllDirectlyCalledMethods = toSTMethods(aCallInfo);
 				STMethod[] anAllDirectlyCalledMethods = aCallInfo.getCalledSTMethods();
 				
@@ -623,6 +676,12 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 						continue;
 					}
 					result.add(aDirectlyCalledMethod);
+//					STType aCalledSType = aDirectlyCalledMethod.getDeclaringSTType();
+//					String aTaggedType = PostProcessingMain.toTaggedType(aCalledSType);
+//					if (aTaggedType != null && aDirectlyCalledMethod.getDeclaringSTType() != aCalledSType) {
+//					  // we do not need to follow its called methods for practical purposes
+//					  continue;
+//					}
 					
 					Set<STMethod> anAllIndirectlyCalledMethods = computeAllInternallyDirectlyOrIndirectlyCalledMethods(result, aDirectlyCalledMethod);
 //							aDirectlyCalledMethod.getAllInternallyDirectlyAndIndirectlyCalledMethods();

@@ -170,10 +170,11 @@ public class MissingMethodCallCheck extends MethodCallCheck {
           break;
         }
       }
+      
       if (!found && !isInfo() || found && isInfo()) {
-        // if (aSpecification.contains("run")) {
-        // System.out.println ("found specification");
-        // }
+         if (aSpecification.contains("egister")) {
+         System.out.println ("found specification");
+         }
 //        Set<String> anIncludeTypeTags = getIncludeTypeTags();
 //        String aTagInformation = anIncludeTypeTags == null || anIncludeTypeTags.isEmpty()?
 //                "No Tag":anIncludeTypeTags.toString();
@@ -219,6 +220,7 @@ public class MissingMethodCallCheck extends MethodCallCheck {
       // }
       boolean found = false;
       STMethod aFoundMethod = null;
+      STMethod aCallerOfFoundMethod = null;
       boolean indirectMethodsNotFullProcessed = false;
       // STMethod aSpecifiedCallingMethod = null;
       // String aCallingMethodSignature = getCallingMethod();
@@ -228,6 +230,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
       //
       //
       // }
+      
+//      if (aSpecification.contains("fire")){
+//        System.err.println("found spec");
+//      }
       for (STMethod aCallingMethod : anAllCallingMethods) {
         if (!checkCallingMethod(aCallingMethod)) {
           continue;
@@ -260,7 +266,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 //          if (aCalledMethod.getName().contains("ingle")) {
 //            int i = 1;
 //          }
-
+//          if (aCalledMethod != null && aCalledMethod.getName().contains("fire") && aSpecification.contains("fire")) {
+//            System.err.println("Should match");
+//          }
           Boolean matches = matches(anSTType, maybeStripComment(aSpecification), aCallingMethod,
                   aCalledMethod);
 
@@ -272,6 +280,7 @@ public class MissingMethodCallCheck extends MethodCallCheck {
             // }
 
             returnNull = true;
+            aCallerOfFoundMethod = aCallingMethod;
             found = true; // we will come back to this
             aFoundMethod = aCalledMethod;
             continue;
@@ -280,6 +289,8 @@ public class MissingMethodCallCheck extends MethodCallCheck {
           if (matches) {
             found = true;
             aFoundMethod = aCalledMethod;
+            aCallerOfFoundMethod = aCallingMethod;
+
 
             // same call may be made directly or indirectly, and can cause problems if
             // removed
@@ -293,7 +304,7 @@ public class MissingMethodCallCheck extends MethodCallCheck {
         }
       }
       processFound(anAST, aTree, anSTType, aSpecification, found, aFoundMethod, returnNull,
-              indirectMethodsNotFullProcessed);
+              indirectMethodsNotFullProcessed, aCallerOfFoundMethod);
       // boolean aFoundOtherConstraints = found && checkOtherConstraints(aFoundMethod, returnNull);
       // // if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) || isInfo() && found ) {
       // //// if (aSpecification.contains("run")) {
@@ -314,26 +325,40 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 
   protected void processFound(DetailAST anAST, DetailAST aTree, STType anSTType,
           String aSpecification, boolean found, STMethod aFoundMethod, boolean returnNull,
-          boolean indirectMethodsNotFullProcessed) {
+          boolean indirectMethodsNotFullProcessed, STMethod aCallingMethod) {
     boolean aFoundOtherConstraints = found && checkOtherConstraints(aFoundMethod, returnNull);
-    // if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) || isInfo() && found ) {
-    //// if (aSpecification.contains("run")) {
-    //// System.out.println ("found specification");
-    //// }
+//     if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) || isInfo() && found ) {
+      if (aSpecification.contains("ControllerClass!")) {
+      System.out.println ("found specification");
+      }
     // String aCallingMethodSignature = getCallingMethod();
     // String aCaller = aCallingMethodSignature == null?"Any":aCallingMethodSignature;
     // log(anAST, aTree, aSpecification, aCallingMethodSignature);
     // }
+//    maybeLog(anAST, aTree, anSTType, aSpecification, aFoundOtherConstraints,
+//            indirectMethodsNotFullProcessed, getCallingMethod());
+    
+    String aSpecifiedCallingMethodSignature = getCallingMethod();
+    String anActualCallingMethodSignature = aCallingMethod == null?null:aCallingMethod.getSimpleChecksSignature();
+    String aCallingMethodOutput =  aSpecifiedCallingMethodSignature != null?"Method:" + aSpecifiedCallingMethodSignature:
+          anActualCallingMethodSignature != null? "Some method (" + anActualCallingMethodSignature + ")" :  "No method";
+    
+    
+//    maybeLog(anAST, aTree, anSTType, aSpecification, aFoundOtherConstraints,
+//            indirectMethodsNotFullProcessed, getCallingMethod());
     maybeLog(anAST, aTree, anSTType, aSpecification, aFoundOtherConstraints,
-            indirectMethodsNotFullProcessed, getCallingMethod());
+            indirectMethodsNotFullProcessed, aCallingMethodOutput);
+//     }
   }
 
   protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
           boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
-    if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) || isInfo() && found) {
-      // if (aSpecification.contains("run")) {
-      // System.out.println ("found specification");
-      // }
+  
+    if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) ||
+            isInfo() && found) {
+//       if (aSpecification.contains("get.*")) {
+//       System.out.println ("found specification");
+//       }
       // String aCallingMethodSignature = getCallingMethod();
 
       String aCaller = aCallingMethodSignature;
@@ -342,14 +367,14 @@ public class MissingMethodCallCheck extends MethodCallCheck {
       }
 
       // log(anAST, aTree, aSpecification, aCallingMethodSignature);
-      doMethodCallLog(anAST, aTree, aSpecification, aCaller);
+      doMethodCallLog(anSTType, anAST, aTree, aSpecification, aCaller);
 
     }
   }
 
-  protected void doMethodCallLog(DetailAST anAST, DetailAST aTree, String aSpecification,
+  protected void doMethodCallLog(STType anSTType, DetailAST anAST, DetailAST aTree, String aSpecification,
           String aCallingMethodSignature) {
-    log(anAST, aTree, aSpecification, aCallingMethodSignature, toTagInformation());
+    log(anAST, aTree, aSpecification, aCallingMethodSignature, anSTType.getName() + ":" + toTagInformation());
 
   }
 

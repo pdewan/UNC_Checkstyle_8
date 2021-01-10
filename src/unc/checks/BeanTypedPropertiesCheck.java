@@ -14,6 +14,7 @@ import unc.symbolTable.STType;
 
 public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 	public static final String MSG_KEY = "beanProperties";
+	
 
 //	protected Map<String, String[]> typeToStrings = new HashMap<>();
 //	protected String[] strings;
@@ -106,7 +107,7 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 	// checkTagsOfType(aSpecifiedType, anSTType);
 	// }
 	// }
-	protected void logPropertyNotMatched(DetailAST aTreeAST, String aProperty,
+	protected void logPropertyMatchedOrNotMatched(DetailAST aTreeAST, String aProperty,
 			String aType) {
 //		System.out.println ("Bean:" + aType + " " + aProperty);
 		log (aTreeAST, aTreeAST, aProperty, aType);
@@ -137,10 +138,10 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 				return null;
 			}
 //			if (!matchProperty(aType, aPropertySpecification, aPropertyInfos)) {
-			if (!matched) {
+			if (!matched && !isInfo() || matched && isInfo()) {
 
-				logPropertyNotMatched(aTreeAST, aPropertySpecification, aType);
-				retVal = false;
+				logPropertyMatchedOrNotMatched(aTreeAST, aPropertySpecification, aType);
+				retVal = false; // does this really matter
 			}
 		}
 		return retVal;
@@ -154,7 +155,7 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 			String aPropertySpecification = aPropertyAndType[0].trim();
 //			String[] aPropertiesPath = aPropertySpecification.split(".");			
 			if (!matchProperty(aType, aPropertySpecification, aPropertyInfos)) {
-				logPropertyNotMatched(aTreeAST, aPropertySpecification, aType);
+				logPropertyMatchedOrNotMatched(aTreeAST, aPropertySpecification, aType);
 				retVal = false;
 			}
 		}

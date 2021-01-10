@@ -35,8 +35,12 @@ public  class ClassHasAtLeastOneInterfaceCheck extends STClassVisitedComprehensi
 //		}
 		if (aSignatures == null)
 			return null;
-		if (aSignatures.size() == 0)
+		if (aSignatures.size() == 0) {
+		  if (isInfo()) {
+		    return false;
+		  }
 			return true;
+		}
 
 		STNameable[] anInterfaces = anSTClass.getDeclaredInterfaces();
 

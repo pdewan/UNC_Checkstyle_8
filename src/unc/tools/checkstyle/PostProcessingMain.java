@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.AutomaticBean.OutputStreamOptions;
 import unc.checks.ClassDefinedCheck;
 import unc.checks.ComprehensiveVisitCheck;
 import unc.checks.MethodCallCheck;
+import unc.checks.MissingMethodCallCheck;
 import unc.checks.MissingMethodTextCheck;
 import unc.checks.MnemonicNameCheck;
 import unc.checks.STBuilderCheck;
@@ -57,6 +58,14 @@ public class PostProcessingMain {
   // static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
   // static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, SOURCE};
   static boolean printOnlyTaggedClasses = false;
+  
+  static Set<String> ignoreExternalTypes = new HashSet<>(
+      Arrays.asList(
+              "java.lang.String", 
+              "java.lang.List",  
+              "java.lang.Map",
+              "java.lang.Throwable"));
+  
 
   static SymbolTable symbolTable;
   static STBuilderCheck sTBuilderCheck;
@@ -238,6 +247,9 @@ public class PostProcessingMain {
   public static void generateChecks(Collection<STType> anSTTypes) {
     Set<String> aTags = new HashSet();
     for (STType anSTType : anSTTypes) {
+//      if (anSTType.getName().contains("lient")) {
+//        System.out.println("found type");
+//      }
       STNameable[] anExplicitTags = anSTType.getTags();
       STNameable[] aConfiguredTags = anSTType.getConfiguredTags();
       for (STNameable aNameable : anExplicitTags) {
@@ -447,11 +459,14 @@ public class PostProcessingMain {
     if (anSTType.isInterface()) {
       return;
     }
-
+//    if (anSTType.getName().contains ("MapperFactory")) {
+//      System.err.println("Found check data class");
+//    }
     printTypeInterfaces(anSTType);
     printTypeSuperTypes(anSTType);
     printTypeIsGeneric(anSTType);
     processTypeProperties(anSTType);
+    processTypeEditableProperties(anSTType);
     // processTypeSuperTypes(anSTType);
     // processTypeCallInfos(anSTType);
     processDeclaredMethods(anSTType);
@@ -498,6 +513,8 @@ public class PostProcessingMain {
     String[] aPropertyNameAndValue = { aPropertyName, aPropertiesAndTypesString.toString() };
 
     printWarningModuleAndProperties(aCheckName, aScopingType, aPropertyNameAndValue);
+    printInfoModuleAndProperties(aCheckName, aScopingType, aPropertyNameAndValue);
+
   }
 
   public static String toChecksList(String[] aList) {
@@ -742,6 +759,8 @@ public class PostProcessingMain {
     }
     printModuleSingleProperty("ExpectedInterfaces", "warning", aTypeOutputName,
             "expectedInterfaces", aRequiredInterfaces.toArray(stringArray));
+    printModuleSingleProperty("ExpectedInterfaces", "info", aTypeOutputName,
+            "expectedInterfaces", aRequiredInterfaces.toArray(stringArray));
 
   }
 
@@ -792,6 +811,8 @@ public class PostProcessingMain {
     }
     printModuleSingleProperty("ExpectedSuperTypes", "warning", aTypeOutputName,
             "expectedSuperTypes", aRequiredClasses.toArray(stringArray));
+    printModuleSingleProperty("ExpectedSuperTypes", "info", aTypeOutputName,
+            "expectedSuperTypes", aRequiredClasses.toArray(stringArray));
 
   }
 
@@ -799,7 +820,14 @@ public class PostProcessingMain {
     // if (!TagBasedCheck.isExplicitlyTagged(anSTType)) {
     // return;
     // }
+    
+//    if (anSTType.getName().contains("ey")) {
+//      System.err.println("found generic class");
+//    }
+    
     String aTypeOutputName = toOutputType(anSTType);
+    
+    
 
     if (aTypeOutputName == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
       return;
@@ -809,6 +837,8 @@ public class PostProcessingMain {
     }
 
     printModuleSingleProperty("ClassIsGeneric", "warning", aTypeOutputName, null, null);
+    printModuleSingleProperty("ClassIsGeneric", "info", aTypeOutputName, null, null);
+
 
   }
 
@@ -1051,6 +1081,8 @@ public class PostProcessingMain {
   }
 
   public static String toTaggedType(String aTypeName) {
+    if (aTypeName.equals("void")) 
+      return aTypeName;
     STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aTypeName);
     if (anSTType == null) {
       return aTypeName;
@@ -1211,6 +1243,51 @@ public class PostProcessingMain {
     printExpectedGetters(aTaggedType, aNamesAndTypes.toArray(stringArray));
 
   }
+  public static void processTypeEditableProperties(STType anSTType) {
+    if (!TagBasedCheck.isExplicitlyTagged(anSTType)) {
+      return;
+    }
+    String aTaggedType = toOutputType(anSTType.getName());
+    Map<String, PropertyInfo> aProperties = anSTType.getPropertyInfos();
+    if (aProperties == null) {
+      aProperties = anSTType.getDeclaredPropertyInfos();
+    }
+    Set<String> aKeys = aProperties.keySet();
+    if (aKeys.size() == 0) {
+      return;
+    }
+    List<String> aNamesAndTypes = new ArrayList(aKeys.size() * 2);
+    // int anIndex = 0;
+    for (String aKey : aKeys) {
+      PropertyInfo aPropertyInfo = aProperties.get(aKey);
+      if (aPropertyInfo.getSetter() != null && aPropertyInfo.getSetter().isPublic()) {
+        String aPropertyName = aPropertyInfo.getName();
+        String aPropertyType = aPropertyInfo.getType();
+        STType aDeclaringType = aPropertyInfo.getDefiningSTType();
+        if (aDeclaringType != anSTType && aDeclaringType != null & aDeclaringType.isExternal()) {
+          continue;
+
+        }
+        // if (aPropertyName.equals("Key")) {
+        // System.err.println("found key");
+        // }
+        String anOutputPropertyType = toOutputType(aPropertyType);
+        aNamesAndTypes.add(aPropertyName);
+        aNamesAndTypes.add(anOutputPropertyType);
+        //
+        // aNamesAndTypes[anIndex] = aPropertyName;
+        // aNamesAndTypes[anIndex+1] = anOutputPropertyType;
+        // anIndex = anIndex + 2;
+        // System.out.println (anSTType.getName() +
+        // "name:" + aPropertyName +
+        // " type:" + anOutputPropertyType);
+
+      }
+    }
+    // printExpectedGetters(anSTType.getName(), aNamesAndTypes);
+    printExpectedSetters(aTaggedType, aNamesAndTypes.toArray(stringArray));
+
+  }
 
   public static void processTypeCallInfos(STType anSTType) {
 
@@ -1251,7 +1328,9 @@ public class PostProcessingMain {
       }
       STMethod aCallingMethod = aCallInfo.getCallingMethod();
       String aCallingMethodSignature = aCallingMethod.isPublic()
-              ? aCallingMethod.getSimpleChecksSignature()
+//              ? aCallingMethod.getSimpleChecksSignature()
+                      ? aCallingMethod.getSimpleChecksTaggedSignature()
+
               : TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION;
       Set<STMethod> aCallMethods = aCallInfo.getMatchingCalledMethods();
       String aCalledMethodSignature = null;
@@ -1260,7 +1339,10 @@ public class PostProcessingMain {
         if (!aCalledMethod.isPublic() || aCalledMethod.isConstructor()) {
           continue;
         }
-        aCalledMethodSignature = aCalledMethod.getSimpleChecksSignature();
+        aCalledMethodSignature = aCalledMethod.getSimpleChecksTaggedSignature();
+//        if (aCalledMethodSignature.contains("setMap")) {
+//          System.err.println("Found wrongly tagged signature");
+//        }
       } else { // we could not really identify the method
         aCalledMethodSignature = AnAbstractSTMethod.getMatchAnyHeader(aCallInfo.getCallee());
         if (Character.isUpperCase(aCalledMethodSignature.charAt(0))) {
@@ -1277,8 +1359,12 @@ public class PostProcessingMain {
     printModuleSingleProperty("MissingMethodCall", "warning", aTypeOutputName, "expectedCalls",
             aCalledTypeAndMethods.toArray(stringArray));
   }
+  
 
   public static void processMethodsCalled(STType anSTType) {
+//    if (anSTType.getName().contains("RMIRegistryMain")) {
+//      System.err.println("Found problematic type");
+//    }
     String aCallingTypeOutputName = toOutputType(anSTType);
     if (aCallingTypeOutputName == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
       return;
@@ -1289,64 +1375,98 @@ public class PostProcessingMain {
     STMethod[] aMethods = getDeclaredOrAllMethods(anSTType);
     Set<String> aCalledTypeAndMethods = new HashSet();
 
-    // for (STMethod aCallingMethod:aMethods) {
-    // String aCallingMethodSignature =
-    // aCallingMethod.isPublic()?
-    // aCallingMethod.getSimpleChecksSignature():
-    // TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION;
-    // Set<STMethod> aCalledMethods = aCallingMethod.getAllDirectlyOrIndirectlyCalledMethods();
-    // if (aCalledMethods == null) {
-    // continue;
-    // }
-    //
+
 
     for (STMethod aCallingMethod : aMethods) {
       String aCallingMethodSignature = aCallingMethod.isPublic()
               ? aCallingMethod.getSimpleChecksTaggedSignature()
               : TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION;
-      Set<STMethod> aCalledMethods = aCallingMethod.getAllDirectlyOrIndirectlyCalledMethods();
+//      if (aCallingMethodSignature.contains("atomicBroad")) {
+//        System.err.println("Found problematic calling method");
+//      }
+      
+//      Set<STMethod> aCalledMethods = aCallingMethod.getAllDirectlyOrIndirectlyCalledMethods();
+              
+      Set<STMethod> aCalledMethods = 
+              MissingMethodCallCheck.isProcessCalledMethodsStatic()?
+              
+              
+              aCallingMethod.getAllDirectlyOrIndirectlyCalledMethods():
+                new HashSet(aCallingMethod.getAllMethodsCalled());
+
       if (aCalledMethods == null) {
         continue;
       }
       for (STMethod aCalledMethod : aCalledMethods) {
-        // if (aCalledMethod.getName().contains("reduce")) {
-        // System.err.println("found reduce:");
-        // }
+//         if (aCalledMethod.getName().contains("educe")) {
+//         System.err.println("found problematic method:");
+//         }
+        
+        
         // if (!aCalledMethod.isPublic()) {
         // continue;
         // }
-        if (!aCalledMethod.isPublic() || aCalledMethod.isConstructor()) {
-          continue;
-        }
         STType aCalledType = aCalledMethod.getDeclaringSTType();
-        if (aCalledType == null || aCalledType == anSTType) {
+        
+        if (aCalledType != null && aCalledType.isExternal()) {
+          if (ignoreExternalTypes.contains(aCalledType.getName())) {
+            continue;
+          }
+        }
+        
+        if (aCalledType != null && !aCalledType.isExternal()) {
+          String aCalledOutputType = toOutputType(aCalledType);
+          if (aCalledOutputType == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
+            continue;
+          }
+        }
+
+        if ((!aCalledMethod.isPublic() && 
+                (aCalledType != null) && 
+                !aCalledType.isExternal()) 
+            || aCalledMethod.isConstructor()) {
           continue;
         }
-        String anOutputType = toOutputSubtypeOrExternalType(aCalledType);
-        if (anOutputType == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
+//        if (!aCalledMethod.isPublic() && 
+//                (aCalledMethod.getDeclaringSTType() != null) && 
+//                !aCalledMethod.getDeclaringSTType().isExternal() 
+//            || aCalledMethod.isConstructor()) {
+//          continue;
+//        }
+//        STType aCalledType = aCalledMethod.getDeclaringSTType();
+//        if (aCalledType == null || aCalledType == anSTType) {
+//          continue;
+//        }
+        
+        if (aCalledType == anSTType) {
           continue;
         }
-        // if (anSTType.getName().contains("CustomGIPCAndRMIAndNIOServerLauncher") &&
-        // aCalledMethod.getName().contains("enablePrint")) {
-        // System.err.println("Found CustomGIPCAndRMIAndNIOServerLauncher --> enablePrint ");
-        // }
+       
+       
+        
+//        String anOutputType = toOutputSubtypeOrExternalType(aCalledType);
+//        if (anOutputType == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
+//          continue;
+//        }
+        
+        String anOutputType = aCalledType == null? 
+                TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION:                  
+                
+                toOutputSubtypeOrExternalType(aCalledType);
+        
+//        if (anOutputType == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
+//          continue;
+//        }
+       
         String aCalledMethodSignature = aCalledMethod.isAmbiguouslyOverloadedMethods()
                 || aCalledMethod.isUnresolvedMethod()
                         ? AnAbstractSTMethod.getMatchAnyHeader(aCalledMethod.getName()) :
-                        // if (Character.isUpperCase(aCalledMethodSignature.charAt(0))) {
-                        // continue;// guess it isconstructor call
-                        // }
+                          aCalledMethod.getSimpleChecksTaggedSignature();
 
-                        aCalledMethod.getSimpleChecksSignature();
-        // String aSubtype = getSubtypeTagged(aCalledType);
-        // if (aSubtype == null) {
-        // aSubtype = getSubtypeExternal(anSTType);
-        // }
-        // if (aCalledMethodSignature.contains("currentThread") &&
-        // (anSTType.getName().contains("Partitioner"))) {
-        // System.err.println("found current thread");
-        // }
-
+//                        aCalledMethod.getSimpleChecksSignature();
+//        if (aCalledMethodSignature.contains("TypeParam")) {
+//          System.err.println("Found wrongly tagged signature");
+//        }
         aCalledTypeAndMethods.add(
                 anOutputType + MethodCallCheck.TYPE_SIGNATURE_SEPARATOR + aCalledMethodSignature);
         // if (aCalledMethodSignature.contains("ABarrier")) {
@@ -1366,6 +1486,8 @@ public class PostProcessingMain {
       return;
     }
     printModuleSingleProperty("MissingMethodCall", "warning", aCallingTypeOutputName,
+            "expectedCalls", aCalledTypeAndMethods.toArray(stringArray));
+    printModuleSingleProperty("MissingMethodCall", "info", aCallingTypeOutputName,
             "expectedCalls", aCalledTypeAndMethods.toArray(stringArray));
 
   }
@@ -1397,10 +1519,17 @@ public class PostProcessingMain {
         continue;
       }
 
+//      aDeclaredSignatures.add(aMethod.getSimpleChecksTaggedSignature());
+      // what is this code doingG
+//      String[] aNormalizedTypes = TagBasedCheck.toNormalizedTypes(aMethod.getParameterTypes());
+//      String aReturnType = aMethod.getReturnType();
+//      String aNormalizedReturnType = TagBasedCheck.toNormalizedType(aReturnType);
+//      if (aReturnType.contains("Linked")) {
+//        System.out.println("Found wrong generated signature");
+//      }
+      
       aDeclaredSignatures.add(aMethod.getSimpleChecksTaggedSignature());
-      String[] aNormalizedTypes = TagBasedCheck.toNormalizedTypes(aMethod.getParameterTypes());
-      String aReturnType = aMethod.getReturnType();
-      String aNormalizedReturnType = TagBasedCheck.toNormalizedType(aReturnType);
+
 
       // System.out.println("Types:" + Arrays.toString(aNormalizedTypes) + " return:"
       // +aNormalizedReturnType);
@@ -1410,6 +1539,8 @@ public class PostProcessingMain {
       return;
     }
     printModuleSingleProperty("ExpectedSignatures", "warning", aCallingTypeOutputName,
+            "expectedSignatures", aDeclaredSignatures.toArray(stringArray));
+    printModuleSingleProperty("ExpectedSignatures", "info", aCallingTypeOutputName,
             "expectedSignatures", aDeclaredSignatures.toArray(stringArray));
 
   }

@@ -353,25 +353,47 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       if (aSpecificationParameterTypes[0].equals(MATCH_ANYTHING))
         return true;
     }
-    if (aSpecificationParameterTypes.length != aMethodParameterTypes.length) {
+//    if (aMethodParameterTypes == null ) {
+//      return false;
+//    }
+    if (aMethodParameterTypes != null && aSpecificationParameterTypes.length != aMethodParameterTypes.length) {
       return false;
+    }
+    if (aMethodParameterTypes == null ) {
+      return true; // parameters unknown, probably correct
+//      return aSpecificationParameterTypes.length == 0 || 
+//              (aSpecificationParameterTypes.length == 1 && 
+//              aSpecificationParameterTypes[0].contentEquals("void"));
+      
     }
     for (int i = 0; i < aSpecificationParameterTypes.length; i++) {
 
-      String aParameterType = aSpecificationParameterTypes[i];
+      String aSpecificationParameterType = aSpecificationParameterTypes[i];
 
-      STNameable[] parameterTags = null;
-      if (aParameterType.startsWith(TAG_STRING)) {
+//      STNameable[] parameterTags = null;
+      STNameable[] methodParameterTags = null;
+      if (aSpecificationParameterType.startsWith(TAG_STRING)) {
 
-        STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable()
-                .getSTClassByShortName(aParameterType.substring(1));
-        if (aParameterSTType == null)
+//        STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable()
+//                .getSTClassByShortName(aSpecificationParameterType.substring(1));
+        STType aMethodParameterSTType = SymbolTableFactory.getOrCreateSymbolTable()
+                .getSTClassByFullName(aMethodParameterTypes[i]);
+//        if (aParameterSTType == null)
+//          return null;
+//        parameterTags = aParameterSTType.getComputedTags();
+        if (aMethodParameterSTType == null)
           return null;
-        parameterTags = aParameterSTType.getComputedTags();
-      }
+//        parameterTags = aParameterSTType.getComputedTags();
+        methodParameterTags = aMethodParameterSTType.getComputedTags();
 
-      if (!unifyingMatchesNameVariableOrTag(aSpecificationParameterTypes[i],
-              aMethodParameterTypes[i], parameterTags)) {
+      }
+      
+      
+
+//      if (!unifyingMatchesNameVariableOrTag(aSpecificationParameterTypes[i],
+//              aMethodParameterTypes[i], parameterTags)) 
+        if (!unifyingMatchesNameVariableOrTag(aSpecificationParameterTypes[i],
+                aMethodParameterTypes[i], methodParameterTags)) {
         // backTrackUnification();
         return false;
       }
@@ -588,7 +610,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     // System.err.println("Illegal signature, missing :" + aSignature);
     // return null;
     // }
-
+//    if (aSignature.contains("get.*")) {
+//      System.err.println("Found offending signature");
+//    }
     String aName = aNameAndRest[0].trim();
     String[] aReturnTypeAndParameters = aNameAndRest[1].split("->");
     if (aReturnTypeAndParameters.length != 2) {
@@ -2150,6 +2174,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   }
 
   protected void addToGlobalsAccessed(String aName, DetailAST anAST) {
+//    if (aName.endsWith(".class")) { // there must be other cases to be ignored
+//      return;
+//    }
     Map<String, Set<DetailAST>> aMap = (currentMethodName == null)
             ? currentStaticBlocks.getGlobalsAccessedMap() : globalsAccessedByCurrentMethod;
     addToKeyToSetMap(aName, anAST, aMap);
@@ -3294,7 +3321,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 
   // move this up to ComprehensiveVisitCheck
   protected void log(DetailAST ast, DetailAST aTreeAST, Object... anExplanations) {
-    String aMsgKey = isInfo() ? msgKeyInfo() : msgKeyWarning();
+    String aMsgKey = isInfo() ? 
+            msgKeyInfo() : 
+              msgKeyWarning();
 
     // log(msgKey(), ast, aTreeAST, anExplanations);
     log(aMsgKey, ast, aTreeAST, anExplanations);
@@ -4342,8 +4371,12 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     this.callingMethodSignature = callingMethodSignature;
     callingMethod = signatureToMethod(callingMethodSignature);
   }
-protected boolean processCalledMethods;
+protected static boolean processCalledMethods;
 public boolean isProcessCalledMethods() {
+  return processCalledMethods;
+}
+
+public static boolean isProcessCalledMethodsStatic() {
   return processCalledMethods;
 }
 

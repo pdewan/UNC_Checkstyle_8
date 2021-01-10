@@ -7,6 +7,24 @@ import unc.symbolTable.STType;
 
 public  class SuperTypesCheck extends ExpectedTypesCheck {
 	public static final String MSG_KEY = "expectedSuperTypes";
+	 public static final String MSG_KEY_INFO = "expectedSuperType";
+   public static final String MSG_KEY_WARNING = "missingSuperType";
+
+   @Override
+   protected String msgKey() {
+     return MSG_KEY;
+   }
+   
+   @Override
+   protected String msgKeyWarning() {
+     return MSG_KEY_WARNING;
+   }
+
+   @Override
+   protected String msgKeyInfo() {
+     return MSG_KEY_INFO;
+   }
+
 	@Override
 	public int[] getDefaultTokens() {
 		return new int[] {
@@ -31,10 +49,6 @@ public  class SuperTypesCheck extends ExpectedTypesCheck {
 	boolean doCheck(STType anSTType) {
 		// TODO Auto-generated method stub
 		return !anSTType.isEnum() && !anSTType.isAnnotation();
-	}
-	@Override
-	protected String msgKey() {
-		return MSG_KEY;
 	}
 
 

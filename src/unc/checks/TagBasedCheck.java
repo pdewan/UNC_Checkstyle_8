@@ -364,12 +364,22 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 	 * looks like this is has some stored tag, should use anded stuff here also
 	 */
 	public static  Boolean hasTag(STNameable[] aStoredTags, String aDescriptor) {
-		return matchesSomeStoredTag(Arrays.asList(aStoredTags), aDescriptor);
-//    	for (STNameable anSTNameable:aTags) {
-//    		if (matchesStoredTag(anSTNameable.getName(), aTag)) return true;
-//    		
-//    	}
-//    	return false;
+	  if (aStoredTags == null) {
+//	    System.err.println("Null stored tags");
+	    return false;
+	  }
+	  List<STNameable> aStoredTagsList = Arrays.asList(aStoredTags);
+	  if (aDescriptor.contains(AND_SYMBOL)) {
+	    //should we check in a loop if one of the anded tags matches?
+	    return matchesAllAndedSpecificationTag(aStoredTagsList, aDescriptor);
+	  } else {
+	    return matchesSomeStoredTag(aStoredTagsList, aDescriptor);
+
+	  }
+	  
+	  
+//		return matchesSomeStoredTag(Arrays.asList(aStoredTags), aDescriptor);
+
     }
 	
 	protected int getInt(String aType) {
@@ -489,13 +499,20 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 
  public  List<String> findMatchingTypes (Collection<String> aTypesToBeMatched, STType anSTType) {
 	 if (anSTType == null) {
-		 System.err.println("Null anSType in findMathcingTypes");
+		 System.err.println("Null anSType in findMatchingTypes");
 		 return null;
+	 }
+	 if (anSTType.getComputedTags() == null) {
+     System.err.println("No computed tags for:" + anSTType);
+     return null;
+
 	 }
 	List<String> retVal = new ArrayList();
 	 for (String aSpecifiedType:aTypesToBeMatched) {
 			matchedTypeOrTagAST = anSTType.getAST();
 //				Boolean matches = matchesTypeUnifying(aSpecifiedType, anSTType.getName());
+			
+			
 				Boolean matches = matchesAllAndedSpecificationTag(Arrays.asList(anSTType.getComputedTags()), aSpecifiedType);
 
 				if (matches == null) {
@@ -599,6 +616,9 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 //				.getSTClassByShortName(aShortClassName);
 	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 	         .getSTClassByFullName(aClassName);
+	 if (anSTType.isExternal()) {
+	   return emptyList;
+	 }
 		if (anSTType == null) {
 			if (isExternalImportCacheCheckingShortName(aClassName)) // check last as we are not really sure about external
 				return emptyList;			
@@ -728,6 +748,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 				return aName.equals(aUnifiedValue);
 			}
 		} else if (aDescriptor.startsWith(TAG_STRING)) {
+		 
 			return hasTag(aTags, aDescriptor);
 		}	else {
 			String aShortName = toShortTypeOrVariableName(aName);
@@ -735,7 +756,10 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			// do not want user scanner to match Scanner class so do not use contains
 			// allow regex
 			try {
-			Boolean retVal = aName.equals(aDescriptor) || aShortName.equals(aDescriptor) || aName.matches(aDescriptor) || aShortName.matches(aDescriptor);
+			Boolean retVal = aName.equals(aDescriptor) ||
+					aShortName.equals(aDescriptor) || 
+					aName.matches(aDescriptor) || 
+					aShortName.matches(aDescriptor);
 //			if (retVal) {
 //				return true;
 //			}
@@ -1222,6 +1246,9 @@ public void maybeVisitTypeTags(DetailAST ast) {
 	} else {
 	typeTags = getArrayLiterals(annotationAST);
 	}
+	if (typeTags.size() > 0) {
+	  return; // do not compute tags if explicit tags provided
+	}
 	computedTypeTags = new ArrayList(typeTags);
 	
 	if (typeNameable == null) {
@@ -1465,6 +1492,8 @@ public static String toShortTypeOrVariableName (String aTypeName) {
 	String aShortTypeName = aTypeName;
 	if (aDotIndex != -1)
 		aShortTypeName = aTypeName.substring(aDotIndex + 1);
+	if (aShortTypeName.startsWith("*"))  // special kludgy handling of .*
+	  aShortTypeName = aTypeName;
 	return aShortTypeName;
 }
 
@@ -1561,6 +1590,9 @@ public static String[] toNormalizedTypes(String[] aTypes) {
 	return retVal;
 }
 public static String toNormalizedType(String aType) {
+  if (aType.equals("void")) {
+    return aType;
+  }
 	if (isExternalType(aType))  {
 		return aType;
 	}

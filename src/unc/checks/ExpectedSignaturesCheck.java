@@ -16,11 +16,23 @@ import unc.symbolTable.SymbolTableFactory;
 import unc.tools.checkstyle.ProjectSTBuilderHolder;
 
 public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
-	public static final String MSG_KEY = "expectedSignatures";
+	public static final String MSG_KEY = "missingSignature";
+  public static final String MSG_KEY_WARNING = "missingSignature";
+  public static final String MSG_KEY_INFO = "expectedSignature";
 
 //	protected Map<String, String[]> typeToStrings = new HashMap<>();
 //	protected String[] strings;
 	protected Map<String, List<STMethod>> typeToMethods = new HashMap<>();
+	
+  @Override
+  protected String msgKeyWarning() {
+    return MSG_KEY_WARNING;
+  }
+
+  @Override
+  protected String msgKeyInfo() {
+    return MSG_KEY_INFO;
+  }
 	protected List<STMethod> methods;
 	@Override
 	// get full name
@@ -75,7 +87,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 //	}
 
 	
-	protected void logSignatureNotMatched(DetailAST anAST, DetailAST aTreeAST, String aSignature) {
+	protected void logSignatureMatchedOrNotMatched(STType anSTType, DetailAST anAST, DetailAST aTreeAST, String aSignature) {
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 //		if (aSignature.contains("map")) {
@@ -83,7 +95,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 //		}
 		String aTypeName = getName(getEnclosingTypeDeclaration(anAST));
 //		super.log(anAST, aTreeAST, aSignature, aTypeName, toTagInformation());
-    super.log(anAST, aTreeAST, aSignature, toTagInformation());
+    super.log(anAST, aTreeAST, aSignature, anSTType.getName() + ":" + toTagInformation());
 
 //		if (aTreeAST == currentTree) {
 //			DetailAST aLoggedAST = aTreeAST;
@@ -95,40 +107,51 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 
 	}
 
-	public Boolean matchSignatures(String[] aSpecifications,
+	public Boolean matchSignatures(STType anSTType, String[] aSpecifications,
 			STMethod[] aMethods, DetailAST aTypeAST, DetailAST aTreeAST) {
 		boolean retVal = true;
 		for (String aSpecification : aSpecifications) {
 		
 //			String[] aPropertiesPath = aPropertySpecification.split(".");			
 			if (!matchSignature(aSpecification, aMethods)) {
-				logSignatureNotMatched(aTypeAST, aTreeAST, aSpecification);
+				logSignatureMatchedOrNotMatched(anSTType, aTypeAST, aTreeAST, aSpecification);
 				retVal = false;
 			}
 		}
 		return retVal;
 	}
-	public Boolean matchMethods(List<STMethod> aSpecifications,
+	public Boolean matchMethods(STType anSTType, List<STMethod> aSpecifications,
 			STMethod[] aMethods, DetailAST aTypeAST, DetailAST aTreeAST) {
+//	  if (anSTType.getName().contains("Relay")) {
+//      System.err.println("Found offendig type");
+//    }
 		boolean retVal = true;
 		List<STMethod> aMethodsCopy = new ArrayList<STMethod>(Arrays.asList(aMethods));
 		for (STMethod aSpecification : aSpecifications) {
-//			if (aSpecification.getName().contains("remote")) {
+		  
+//			if (aSpecification.getName().contains(".*:String;@DistributedTags.CLIENT_REMOTE")) {
 //				System.err.println("found method specified");
 //			}
 //			String[] aPropertiesPath = aPropertySpecification.split(".");	
 			Boolean hasMatched = matchMethod(aSpecification, aMethodsCopy);
+		
 			if (hasMatched == null)
 				return null;
-			if (!hasMatched) {
-				String anOriginalSignature = methodToSignature.get(aSpecification);
-				if (anOriginalSignature == null) {
-					anOriginalSignature = aSpecification.getSignature();
-				}
+			String anOriginalSignature = methodToSignature.get(aSpecification);
+      if (anOriginalSignature == null) {
+        anOriginalSignature = aSpecification.getSignature();
+      }
+   
+      
+			if (!hasMatched && !isInfo() || hasMatched && isInfo()) {
+//				String anOriginalSignature = methodToSignature.get(aSpecification);
+//				if (anOriginalSignature == null) {
+//					anOriginalSignature = aSpecification.getSignature();
+//				}
 //				if (anOriginalSignature.contains("Remote")) {
 //					System.err.println("Found remote");
 //				}
-				logSignatureNotMatched(aTypeAST, aTreeAST, 
+				logSignatureMatchedOrNotMatched(anSTType, aTypeAST, aTreeAST, 
 						anOriginalSignature
 //						aSpecification.getSignature()
 						);
@@ -265,7 +288,8 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 			if (aParameterType.startsWith(TAG_STRING)) {
 				
 //				STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aParameterType.substring(1));
-				STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aMethodParameterTypes[i]);
+//				STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aMethodParameterTypes[i]);
+        STType aParameterSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aMethodParameterTypes[i]);
 
 				if (aParameterSTType == null)
 					return null;
@@ -284,7 +308,8 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 	}
 	
 	protected STMethod[] getMatchedMethods(STType anSTType) {
-		return anSTType.getMethods();
+//		return anSTType.getMethods();
+		return anSTType.getNonExternalMethods();
 	}
 	
 	public Boolean matchSignatures(STType anSTType, String[] aSpecifiedSignatures, DetailAST aTree) {
@@ -292,7 +317,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 		STMethod[] aMethods = getMatchedMethods(anSTType);
 		if (aMethods == null) 
 			return null;
-		return matchSignatures(aSpecifiedSignatures, aMethods, anSTType.getAST(), aTree);
+		return matchSignatures(anSTType, aSpecifiedSignatures, aMethods, anSTType.getAST(), aTree);
 	}
 
 	public Boolean matchMethods(STType anSTType, List<STMethod> aSpecifiedSignatures, DetailAST aTree) {
@@ -300,7 +325,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 		STMethod[] aMethods = getMatchedMethods(anSTType);
 		if (aMethods == null) 
 			return null;
-		return matchMethods(aSpecifiedSignatures, aMethods, anSTType.getAST(), aTree);
+		return matchMethods(anSTType, aSpecifiedSignatures, aMethods, anSTType.getAST(), aTree);
 	}
 	public Boolean matchSignatures(String aTypeName, String[] aSpecifiedSignatures, DetailAST aTree) {
 		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()

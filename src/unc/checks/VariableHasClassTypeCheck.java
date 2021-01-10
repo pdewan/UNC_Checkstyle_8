@@ -260,9 +260,9 @@ public final class VariableHasClassTypeCheck extends ComprehensiveVisitCheck imp
 //				getSTClassByShortName(aLongTypeName);
 		STType anSTClass = SymbolTableFactory.getOrCreateSymbolTable().
 		        getSTClassByFullName(aLongTypeName);
-    if (anSTClass.getName().contains("ClassAsType")) {
-      int i = 0;
-    }
+//    if (anSTClass.getName().contains("ClassAsType")) {
+//      int i = 0;
+//    }
 
 	
 		if (anSTClass instanceof AnSTTypeFromClass)

@@ -45,6 +45,7 @@ public abstract class UNCCheck extends AbstractCheck {
 	protected static String consentFileName;
 	protected static boolean consentFormSigned;
 	protected static boolean consentFormShown;
+	protected static boolean firstProject = true;
 	static Integer sequenceNumber;
 	static Integer numFilesInLastPhase;
 	static Set<String> filesInCurrentPhase = new HashSet();
@@ -408,8 +409,11 @@ public abstract class UNCCheck extends AbstractCheck {
 			checkAndFileDescription = "Check:" + this + " ast:" + ast + " "
 					+ aFileName;
 
-			maybeSaveProjectDirectory(aFileName);
-			doPostProjectDirectorySteps();
+			boolean aNewDirectory = maybeSaveProjectDirectory(aFileName);
+			if (firstProject || aNewDirectory) {
+			  doPostProjectDirectorySteps();
+			  firstProject = false;
+			}
 			
 			if (!isAutoBuild) {
 				maybeAskForConsent();

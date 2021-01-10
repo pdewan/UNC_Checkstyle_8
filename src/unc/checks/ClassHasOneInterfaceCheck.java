@@ -65,17 +65,21 @@ public class ClassHasOneInterfaceCheck extends STClassVisitedComprehensively {
 		}
 		
 		if (!isInfo()) {
-		  return anInterfaces.length <= 1;
+		  return anInterfaces.length <= 1; // == 0 will be caught by at least one interface
 		} else {
 		  if (anInterfaces.length != 1) {
-		    return false;
+
+		    return false; // static methods or multiple interfaces, do not congratulate
 		  }
+//	    return (anInterfaces.length == 1);
+	    // having exactly one interface is a big deal only if it extends multiple interfacees
 		  String anInterfaceName = anInterfaces[0].getName();
 		  STType anInterfaceSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(anInterfaceName);
 		  if (anInterfaceSTType == null) {
 		    return null;
 		  }
-		  return anInterfaceSTType.getDeclaredInterfaces().length > 0;
+		  return !anInterfaceSTType.isExternal() && anInterfaceSTType.getDeclaredInterfaces().length > 0;
+		  // end of commentin
 		}
 		
 //		String anInterfaceName

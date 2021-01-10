@@ -63,8 +63,25 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
-static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/unc_checks.xml";
-static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/";
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/unc_checks.xml";
+public static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A1.xml";
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A2.xml";
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A3.xml";
+
+//static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/";
+//static final String SOURCE = "C:/Users/dewan/Downloads/Comp533Assignments/S20/Assignment 1/Wortas, Andrew(ajwortas)/Submission attachment(s)/Assignment1 - Andrew Wortas/Assignment1/src";
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src";
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment2/src";
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment3/src";
+public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment4/src";
+
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Ram533Assignment3/src";
+
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Ram533Assignment2/src";
+
+
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Ram533Assignment1/src";
+
 
 //static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_decomposition_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "testChecks/class_interfaces_checks.xml";

@@ -75,7 +75,7 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   static String[] externalPackagePrefixes = {};
 
   static String[] builtInExternalPackagePrefixes = { "java", "com.google", "com.sun", "org.apache",
-      "org.eclipse", "bus.uigen", "util", "gradingTools", "weka" };
+      "org.eclipse", "bus.uigen", "util", "gradingTools", "weka", "stringProcessors" };
   static String[] externalMethodRegularExpressions = { "trace.*" };
   static String[] externalClassRegularExpressions = { ".*utton.*" };
 
@@ -406,9 +406,10 @@ maybeProcessConfigurationFileName();
     // SymbolTableFactory.getOrCreateSymbolTable().clear();
 
   }
-
+  protected List<String> duplicateTags= new ArrayList();
   protected void maybeProcessConfigurationFileName() {
     classToConfiguredClass.clear();
+    duplicateTags.clear();
     String aProjectDirectory = ProjectDirectoryHolder.getCurrentProjectDirectory();
     if (aProjectDirectory == null || configurationFileName == null) {
       return;
@@ -417,14 +418,29 @@ maybeProcessConfigurationFileName();
     Scanner aScanner;
     try {
       aScanner = new Scanner(new File(configurationFileFullName));
-
+      
       while (aScanner.hasNext()) {
         String aLine = aScanner.nextLine();
         String[] aLineTokens = aLine.split(",");
         if (aLineTokens.length != 2) {
           return;
         }
-        classToConfiguredClass.put(aLineTokens[0], aLineTokens[1]);
+        String aClass = aLineTokens[0];
+        String aTag = aLineTokens[1];
+//        classToConfiguredClass.put(aLineTokens[0], aLineTokens[1]);
+        if (duplicateTags.contains(aClass)) {
+          continue;
+        }
+        if (classToConfiguredClass.get(aClass) != null) {
+          classToConfiguredClass.remove(aClass);
+          duplicateTags.add(aClass);
+          continue;
+        }
+        classToConfiguredClass.put(aClass, aTag);
+//        if (aClass.contains("lient")) {
+//          System.err.println("found class");
+//        }
+
       }
     } catch (FileNotFoundException e) {
       return;
@@ -1175,7 +1191,11 @@ maybeProcessConfigurationFileName();
     List<STNameable> derivedTags = derivedTags(typeAST,
             anIsInterface ? INTERFACE_START : CLASS_START);
 //    String aConfiguredName = classToConfiguredClass.get(shortTypeName);
-    String aConfiguredName = classToConfiguredClass.get(getFullTypeName());
+    String aTypeName = getFullTypeName();
+    if (aTypeName.startsWith("default.")) {
+      aTypeName = shortTypeName;
+    }
+    String aConfiguredName = classToConfiguredClass.get(aTypeName);
 
 
     addAllNoDuplicates(result, new HashSet(derivedTags));
@@ -1394,46 +1414,32 @@ maybeProcessConfigurationFileName();
     // List<DetailAST> aModifiers = findAllInOrderMatchingNodes(typeAST, TokenTypes.MODIFIERS);
     DetailAST modifierAST = typeAST.findFirstToken(TokenTypes.MODIFIERS);
     Set<Integer> aModifiers = extractModifiers(modifierAST);
+//    List<STNameable> aTypeTags = typeTags();
     STType anSTClass = new AnSTType(currentFullFileName, typeAST, getFullTypeName(), // may be an
             // inner class
             currentStaticBlocks, aMethods, aConstructors, interfaces, superClass, packageName,
-            // isInterface,
             typeType, isGeneric, isElaboration,
-            // isEnum,
-            // isAnnotation,
+         
             structurePattern,
-            // propertyNames.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(propertyNames),
-            // editablePropertyNames.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(editablePropertyNames),
-            // typeTags().toArray( dummyArray),
             AnSTNameable.toSTNameableArray(typeTags()),
-            // computedTypeTags().toArray(dummyArray),
-            // computedAndDerivedTypeTags().toArray(dummyArray),
+//            AnSTNameable.toSTNameableArray(aTypeTags),
+
+            
             AnSTNameable.toSTNameableArray(computedAndDerivedTypeTags()),
-            // configuredTags.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(configuredTags),
-            // derivedTags.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(derivedTags),
-            // allImportsOfThisClass.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(allImportsOfThisClass),
-            // globalVariables.toArray(dummyArray),
             AnSTNameable.toSTNameableArray(globalVariables),
-            // new HashMap<>( globalVariableToCall),
             AnSTNameable.copy(globalVariableToCall),
-            // new HashMap<>(globalVariableToType),
-            // new HashMap<>(globalVariableToRHS),
-            // new ArrayList<>(typesInstantiated),
+
             AnSTNameable.copy(typesInstantiated),
-            // new ArrayList(globalSTVariables),
             AnSTNameable.copy(globalSTVariables),
-            // new HashMap<>(globalIdentToLHS),
             AnSTNameable.copy(globalIdentToLHS),
-            // new HashMap<>(globalIdentToRHS),
             AnSTNameable.copy(globalIdentToRHS),
 
             aModifiers,
-            // new ArrayList(typeParameterNames)
             AnSTNameable.copy(typeParameterNames),
             AnSTNameable.copy(innerTypeASTs),
             AnSTNameable.copy(innerTypeNames)

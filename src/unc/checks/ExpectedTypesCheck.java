@@ -81,7 +81,7 @@ public abstract class ExpectedTypesCheck extends ComprehensiveVisitCheck {
 
 	}
 	
-	protected void logTypeNotMatched(DetailAST aTypeAST, DetailAST aTreeAST, String aType) {
+	protected void logTypeMatchedOrNotMatched(DetailAST aTypeAST, DetailAST aTreeAST, String aType) {
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 		String aTypeName = getName(getEnclosingTypeDeclaration(aTypeAST));
@@ -157,8 +157,15 @@ public abstract class ExpectedTypesCheck extends ComprehensiveVisitCheck {
 //				logTypeNotMatched(aTreeAST, aSpecification);
 //				retVal = false;
 //			}
-			if ((!hasMatched && logOnNoMatch()) || (hasMatched && !logOnNoMatch())) {
-				logTypeNotMatched(aTypeAST, aTreeAST, aSpecification);
+//			if (!hasMatched) {
+//			  System.err.println("Did not find matched");
+//			}
+//			if (anSTType.getName().contains("Relay")) {
+//			  System.err.println("Found offendig type");
+//			}
+	    if ((!hasMatched && !isInfo()) || (hasMatched && isInfo())) {
+//			if ((!hasMatched && logOnNoMatch()) || (hasMatched && !logOnNoMatch())) {
+				logTypeMatchedOrNotMatched(aTypeAST, aTreeAST, aSpecification);
 				if (retVal != null)
 					retVal = false;
 			}

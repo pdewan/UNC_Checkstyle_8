@@ -184,4 +184,5 @@ public interface STType extends STNameable{
   void setRecursive(boolean isRecursive);
   List<DetailAST> getInnerTypesAST();
   List<String> getInnerTypeNames();
+  STMethod[] getNonExternalMethods();
 }
