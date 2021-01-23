@@ -306,7 +306,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     return false;
   }
-  static STNameable[] nameables = {};
+//  static STNameable[] nameables = {};
 
   public Boolean matchReturnType(String aSpecifiedReturnType, String aMethodReturnType) {
     STNameable[] typeTags = null;
@@ -3248,6 +3248,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     List<STNameable> explicitTags = getExplicitTags(ast);
     STNameable aVariableNameable = new AnSTNameable(aNameAST, aNameAST.getText());
     STNameable aTypeNameable = new AnSTNameable(aTypeName);
+    if (explicitTags == emptyNameableList) {
+      explicitTags = new ArrayList();
+    }
     explicitTags.add(aVariableNameable);
     explicitTags.add(aTypeNameable);
     return explicitTags;

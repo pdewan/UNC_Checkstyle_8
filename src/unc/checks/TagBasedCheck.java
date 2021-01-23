@@ -62,7 +62,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 
 	protected List<STNameable> currentMethodComputedTags;
 	static STNameable[] emptyNameableArray = {};
- 	static List<STNameable> emptyNameableList =new ArrayList();
+ 	static List<STNameable> emptyNameableList = Arrays.asList( emptyNameableArray);
 	protected DetailAST currentTree;
 	protected Map<String, Integer> typeToInt = new Hashtable<>();
 	protected Map<String, String> specificationVariablesToUnifiedValues = new Hashtable<>();
@@ -185,7 +185,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 	};
 
 	
-	static List<STNameable> emptyList = new ArrayList();
+	static List<STNameable> emptyList = Arrays.asList(emptyNameableArray);
 
 	protected static Set<String> allProjectExternalImports = new HashSet();
 	protected static Set<String> allProjectExternalImportsShortName = new HashSet();
@@ -791,6 +791,8 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 	 }
 	 variablesAdded.clear();
  }
+ static STNameable[] nameables = {};
+
 //for some reason this is not supposed to call matchedMyType with clas name
 	public Boolean matchesMyType(String aDescriptor) {
 //		String aClassName = shortTypeName;
@@ -802,7 +804,8 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 				return false;
 			}
 //			STNameable[] checkTags = anSTType.getAllComputedTags();
-			STNameable[] checkTags = anSTType.getComputedTags();
+//			STNameable[] checkTags = anSTType.getComputedTags();
+			STNameable[] checkTags = getAllTags(anSTType).toArray(nameables);
 
 //			String aTag = aDescriptor.substring(1);
 //			return contains(typeTags(), aDescriptor, shortTypeName);
@@ -1247,6 +1250,7 @@ public void maybeVisitTypeTags(DetailAST ast) {
 	typeTags = getArrayLiterals(annotationAST);
 	}
 	if (typeTags.size() > 0) {
+	  computedTypeTags = emptyNameableList;
 	  return; // do not compute tags if explicit tags provided
 	}
 	computedTypeTags = new ArrayList(typeTags);

@@ -852,7 +852,8 @@ maybeProcessConfigurationFileName();
 
         extendibleLog(0,
 
-                EXPECTED_TYPES, new String[] { EXPECTED_TYPES + ":", expectedTypes.toString() }
+//                EXPECTED_TYPES, new String[] { EXPECTED_TYPES + ":", expectedTypes.toString() }
+        EXPECTED_TYPES, expectedTypes.toString()
 
         );
       }
@@ -1865,7 +1866,7 @@ maybeProcessConfigurationFileName();
       }
     }
     if (aFoundMatch) {
-      log (TAG, ast,  aTags.toString());
+      log (TAG, ast, currentSTType.getName(), aTags.toString());
     } else if (logNoMatches) {
       log (TAG, ast, "None" );
     }

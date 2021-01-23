@@ -246,12 +246,18 @@ public class PostProcessingMain {
 
   public static void generateChecks(Collection<STType> anSTTypes) {
     Set<String> aTags = new HashSet();
+    Set<String> anAndedTagsList = new HashSet();
     for (STType anSTType : anSTTypes) {
 //      if (anSTType.getName().contains("lient")) {
 //        System.out.println("found type");
 //      }
       STNameable[] anExplicitTags = anSTType.getTags();
       STNameable[] aConfiguredTags = anSTType.getConfiguredTags();
+      String anAndedTags = toTaggedType(anSTType);
+      if (anAndedTags != null) {
+//        System.err.println ("An anded string:" + anAndedTags);
+        anAndedTagsList.add(anAndedTags);
+      }
       for (STNameable aNameable : anExplicitTags) {
         aTags.add(TagBasedCheck.TAG_CHAR + aNameable.getName());
       }
@@ -264,7 +270,10 @@ public class PostProcessingMain {
 //    printModuleSingleProperty(aModule, aSeverity, aScopingType, aProperty, aPropertyValues);("expectedTypes", aTags.toArray(emptyStrings));
 
     printModuleSingleProperty("ClassDefined", "info", null,
-            "expectedTypes", aTags.toArray(emptyStrings));
+            "expectedTypes", 
+//            aTags.toArray(emptyStrings)
+            anAndedTagsList.toArray(emptyStrings)
+            );
     for (STType anSTType : anSTTypes) {
       generateCheckData(anSTType);
 
