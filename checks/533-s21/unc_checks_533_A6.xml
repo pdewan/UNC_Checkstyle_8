@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This configuration file was written by the eclipse-cs plugin configuration 
+	editor -->
+<!-- Checkstyle-Configuration: Test Description: none -->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+
+<module name="unc.tools.checkstyle.AnExtendibleChecker">
+
+
+	<property name="severity" value="warning" />
+
+
+	<module name="unc.tools.checkstyle.AnExtendibleTreeWalker">
+		<property name="severity" value="info" />
+
+		<module name="STBuilder">
+			<property name="configurationFileName"
+				value="ClassRegistry.csv" />
+			<property name="includeTypeTags" value="*" />
+			<property name="severity" value="info" />
+			<property name="logNoMatches" value="false" />
+			<property name="importsAsExistingClasses" value="true" />
+			<property name="logAggregateStatistics" value="false" />
+
+			<property name="logMethodsDeclared" value="false" />
+			<property name="logVariablesDeclared" value="false" />
+			<property name="logPropertiesDeclared" value="false" />
+			<property name="logAccessModifiersUsed" value="false" />
+			<property name="logSuperTypes" value="false" />
+			<property name="logInnerTypes" value="false" />
+			<property name="logInterfaces" value="false" />
+			<property name="trackTokenTypesUsedInMethods" value="true" />
+			<property name="trackJavaDocComments" value="true" />
+			<property name="processCalledMethods" value="true" />			
+						
+
+
+			<property name="excludeClassRegularExpressions"
+				value="
+				checkstyle.*,
+				test.simulation.*
+			" />
+			<property name="externalPackagePrefixes"
+				value="								
+								assignments.util,
+								java.io,
+								gradingTools,
+								port, 
+								inputport, 
+								multiserverport,
+								stringProcessors
+							" />
+			<property name="expectedTypes" value="
+			
+					
+			@DistributedTags.SERVER_CONFIGURER+@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO,
+			@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO+@DistributedTags.CLIENT,
+			@DistributedTags.CLIENT_OUT_COUPLER+@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO,
+			@DistributedTags.SERVER_REMOTE_INTERFACE+@DistributedTags.RMI+@DistributedTags.GIPC,
+			@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO,
+			@DistributedTags.REGISTRY+@DistributedTags.RMI,
+			@DistributedTags.CLIENT_REMOTE_INTERFACE+@DistributedTags.RMI,
+			@DistributedTags.CLIENT_REMOTE_INTERFACE+@DistributedTags.GIPC,
+			@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO+@DistributedTags.SERVER,
+			@DistributedTags.CLIENT_REMOTE_OBJECT+@DistributedTags.RMI+@DistributedTags.GIPC,
+			@DistributedTags.SERVER_REMOTE_OBJECT+@DistributedTags.RMI+@DistributedTags.GIPC,
+			
+			
+		"/>
+			
+			
+							
+
+			</module>
+			
+
+
+	</module>
+
+
+	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
+		<property name="severity" value="warning" />
+		
+			
+		<module name="DuplicateShortTypeName">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="*" />
+		</module>
+
+		<module name="FunctionAssignsGlobal">
+			<property name="severity" value="warning" />
+			<property name="excludeMethodTags"
+				value="
+					next(.*), 
+					pop(.*), 
+					delete(.*), 
+					remove(.*), 
+					read(.*), 					
+					set(.*), 
+					process(.*), 
+					scan(.*), 
+					(.*)create(.*), 					 
+					parse(.*),
+					(.*)actory(.*),
+					fetch(.*),
+					run(.*),
+					update(.*),
+					add(.*),
+					
+					" />
+		</module>
+		
+		<module name="SetterAssignsGlobal">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="BulkierThen">
+			<property name="severity" value="warning" />
+			<property name="minThenElseRatio" value="1" />
+			<property name="maxElsePartSize" value="1" />
+		</module>
+		
+		<module name="ThenBranching">
+			<property name="severity" value="warning" />
+
+		</module>
+
+		<module name="LiberalMagicNumber">
+			<property name="severity" value="warning" />
+			<property name="allowedSiblings" value="Math.(.*)" />
+
+		</module>
+		
+		<module name="MethodAccessModifier">
+			<property name="severity" value="info" />
+		</module>
+		
+		<module name="MethodAccessModifier">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="info" />
+		</module>
+		
+		<module name="ClassHasOneInterface">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="ClassHasOneInterface">
+			<property name="severity" value="info" />
+		</module>
+		
+		<module name="ClassHasAtLeastOneInterface">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="ClassHasAtLeastOneInterface">
+			<property name="severity" value="info" />
+		</module>
+		
+		<module name="VariableHasClassType">
+			<property name="severity" value="warning" />
+		</module>
+		
+		<module name="VariableHasClassType">
+			<property name="severity" value="info" />
+		</module>
+		
+		<module name="PeerCommonProperties">
+			<property name="severity" value="warning" />
+
+		</module>
+		
+		<module name="PeerCommonProperties">
+			<property name="severity" value="info" />
+
+		</module>
+
+		<module name="ConstantDefined">
+			<property name="severity" value="info" />
+		</module>
+
+	
+		<module name="BulkierElse">
+			<property name="severity" value="info" />
+			<property name="minElseThenRatio" value="1" />
+		</module>
+		<module name="ElseBranching">
+			<property name="severity" value="info" />
+		</module>
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="warning" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					nio,
+					xml,
+					mvc,
+			" />
+
+		</module>
+		
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="info" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					
+					nio,
+					xml,
+					mvc,
+			" />
+
+		</module>
+		
+		<module name="FinalParameterDefined">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="MethodBlockLimit">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedBlockDepth">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="info" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="ClassDecomposition">
+			<property name="severity" value="warning" />
+		</module>
+
+	<module name="ExpectedInterfaces">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedInterfaces" value="
+			examples.nio.manager.print.NIOManagerPrintServer,
+			inputport.nio.manager.listeners.SocketChannelAcceptListener,
+			inputport.nio.manager.listeners.SocketChannelReadListener,
+			inputport.nio.manager.listeners.SocketChannelWriteListener,
+			java.lang.Runnable,
+		"/>
+	</module>
+	<module name="ExpectedInterfaces">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedInterfaces" value="
+			examples.nio.manager.print.NIOManagerPrintServer,
+			inputport.nio.manager.listeners.SocketChannelAcceptListener,
+			inputport.nio.manager.listeners.SocketChannelReadListener,
+			inputport.nio.manager.listeners.SocketChannelWriteListener,
+			java.lang.Runnable,
+		"/>
+	</module>
+	<module name="ExpectedSignatures">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedSignatures" value="
+			written:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,			
+			socketChannelAccepted:java.nio.channels.ServerSocketChannel;java.nio.channels.SocketChannel->void,
+			
+			socketChannelRead:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,
+		"/>
+	</module>
+	<module name="ExpectedSignatures">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedSignatures" value="
+			written:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,			
+			socketChannelAccepted:java.nio.channels.ServerSocketChannel;java.nio.channels.SocketChannel->void,
+			
+			socketChannelRead:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,
+		"/>
+	</module>
+	<module name="MissingMethodCall">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="			
+			java.nio.channels.ServerSocketChannel!open:->ServerSocketChannel,
+			java.nio.Buffer!position:->int,			
+			util.trace.port.nio.SocketChannelBound!newCase:Object;java.nio.channels.spi.AbstractSelectableChannel;java.net.InetSocketAddress->SocketChannelBound,
+			java.lang.Thread!setName:String->void,
+			java.util.concurrent.ArrayBlockingQueue!take:->Object,
+			assignments.util.MiscAssignmentUtils!deepDuplicate:java.nio.ByteBuffer->ByteBuffer,
+			util.trace.port.nio.NIOTraceUtility!setTracing:->void,			
+			inputport.nio.manager.NIOManager!addReadListener:java.nio.channels.SocketChannel;inputport.nio.manager.listeners.SocketChannelReadListener->void,
+			inputport.nio.manager.NIOManager!write:*->.*,			
+			java.util.concurrent.ArrayBlockingQueue!add:Object->boolean,
+			java.lang.Thread!start:->void,
+			java.nio.channels.ServerSocketChannel!bind:*->.*,			
+			java.nio.channels.ServerSocketChannel!socket:->ServerSocket,
+			assignments.util.mainArgs.ServerArgsProcessor!getNIOServerPort:String[]->int,		
+			inputport.nio.manager.NIOManager!enableListenableAccepts:java.nio.channels.ServerSocketChannel;inputport.nio.manager.listeners.SocketChannelAcceptListener[]->void,
+		"/>
+	</module>
+	<module name="MissingMethodCall">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.SERVER_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="			
+			java.nio.channels.ServerSocketChannel!open:->ServerSocketChannel,
+			java.nio.Buffer!position:->int,			
+			util.trace.port.nio.SocketChannelBound!newCase:Object;java.nio.channels.spi.AbstractSelectableChannel;java.net.InetSocketAddress->SocketChannelBound,
+			java.lang.Thread!setName:String->void,
+			java.util.concurrent.ArrayBlockingQueue!take:->Object,
+			assignments.util.MiscAssignmentUtils!deepDuplicate:java.nio.ByteBuffer->ByteBuffer,
+			util.trace.port.nio.NIOTraceUtility!setTracing:->void,			
+			inputport.nio.manager.NIOManager!addReadListener:java.nio.channels.SocketChannel;inputport.nio.manager.listeners.SocketChannelReadListener->void,
+			inputport.nio.manager.NIOManager!write:*->.*,			
+			java.util.concurrent.ArrayBlockingQueue!add:Object->boolean,
+			java.lang.Thread!start:->void,
+			java.nio.channels.ServerSocketChannel!bind:*->.*,			
+			java.nio.channels.ServerSocketChannel!socket:->ServerSocket,
+			assignments.util.mainArgs.ServerArgsProcessor!getNIOServerPort:String[]->int,		
+			inputport.nio.manager.NIOManager!enableListenableAccepts:java.nio.channels.ServerSocketChannel;inputport.nio.manager.listeners.SocketChannelAcceptListener[]->void,
+		"/>
+	</module>
+	<module name="MissingMethodCall">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_OUT_COUPLER+@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="			,
+			java.lang.String!getBytes:->byte[],			
+			inputport.nio.manager.NIOManager!write:*->.*,
+			java.nio.ByteBuffer!wrap:[B->ByteBuffer,
+		"/>
+	</module>
+	
+	<module name="MissingMethodCall">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_OUT_COUPLER+@DistributedTags.RMI+@DistributedTags.GIPC+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="			,
+			java.lang.String!getBytes:->byte[],			
+			inputport.nio.manager.NIOManager!write:*->.*,
+			java.nio.ByteBuffer!wrap:[B->ByteBuffer,
+		"/>
+	</module>
+	
+	<module name="ExpectedInterfaces">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedInterfaces" value="
+			inputport.nio.manager.listeners.SocketChannelConnectListener,
+			inputport.nio.manager.listeners.SocketChannelWriteListener,
+			inputport.nio.manager.listeners.SocketChannelReadListener,
+		"/>
+	</module>
+	
+	<module name="ExpectedInterfaces">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedInterfaces" value="
+			inputport.nio.manager.listeners.SocketChannelConnectListener,
+			inputport.nio.manager.listeners.SocketChannelWriteListener,
+			inputport.nio.manager.listeners.SocketChannelReadListener,
+		"/>
+	</module>
+	
+	<module name="ExpectedSignatures">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedSignatures" value="
+			written:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,			
+			connected:java.nio.channels.SocketChannel->void,
+			socketChannelRead:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,
+			nioInit:String[]->void,			
+			notConnected:java.nio.channels.SocketChannel;Exception->void,
+		"/>
+	</module>	
+	<module name="ExpectedSignatures">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedSignatures" value="
+			written:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,			
+			connected:java.nio.channels.SocketChannel->void,
+			socketChannelRead:java.nio.channels.SocketChannel;java.nio.ByteBuffer;int->void,
+			nioInit:String[]->void,			
+			notConnected:java.nio.channels.SocketChannel;Exception->void,
+		"/>
+	</module>
+	<module name="MissingMethodCall">
+		<property name="severity" value="warning"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="
+			inputport.nio.manager.factories.selectors.ConnectCommandFactorySelector!setFactory:inputport.nio.manager.factories.ConnectCommandFactory->void,
+			assignments.util.MiscAssignmentUtils!deepDuplicate:java.nio.ByteBuffer->ByteBuffer,			
+			assignments.util.mainArgs.ClientArgsProcessor!getServerHost:String[]->String,
+			java.nio.channels.SocketChannel!open:->SocketChannel,
+			java.util.concurrent.ArrayBlockingQueue!add:Object->boolean,			
+			java.net.InetAddress!getByName:String->InetAddress,
+			inputport.nio.manager.NIOManager!connect:java.nio.channels.SocketChannel;java.net.InetAddress;int;inputport.nio.manager.listeners.SocketChannelConnectListener[]->void,
+			java.util.concurrent.ArrayBlockingQueue!remainingCapacity:->int,
+			assignments.util.mainArgs.ClientArgsProcessor!getClientName:String[]->String,			
+			java.lang.Thread!setName:String->void,			
+			util.trace.port.nio.NIOTraceUtility!setTracing:->void,
+			inputport.nio.manager.NIOManager!addReadListener:java.nio.channels.SocketChannel;inputport.nio.manager.listeners.SocketChannelReadListener->void,			
+			
+		"/>
+	</module>
+		<module name="MissingMethodCall">
+		<property name="severity" value="info"/>
+		<property name="includeTypeTags" value="@DistributedTags.CLIENT_CONFIGURER+@DistributedTags.NIO"/>
+		<property name="expectedCalls" value="
+			inputport.nio.manager.factories.selectors.ConnectCommandFactorySelector!setFactory:inputport.nio.manager.factories.ConnectCommandFactory->void,
+			assignments.util.MiscAssignmentUtils!deepDuplicate:java.nio.ByteBuffer->ByteBuffer,			
+			assignments.util.mainArgs.ClientArgsProcessor!getServerHost:String[]->String,
+			java.nio.channels.SocketChannel!open:->SocketChannel,
+			java.util.concurrent.ArrayBlockingQueue!add:Object->boolean,			
+			java.net.InetAddress!getByName:String->InetAddress,
+			inputport.nio.manager.NIOManager!connect:java.nio.channels.SocketChannel;java.net.InetAddress;int;inputport.nio.manager.listeners.SocketChannelConnectListener[]->void,
+			java.util.concurrent.ArrayBlockingQueue!remainingCapacity:->int,
+			assignments.util.mainArgs.ClientArgsProcessor!getClientName:String[]->String,			
+			java.lang.Thread!setName:String->void,			
+			util.trace.port.nio.NIOTraceUtility!setTracing:->void,
+			inputport.nio.manager.NIOManager!addReadListener:java.nio.channels.SocketChannel;inputport.nio.manager.listeners.SocketChannelReadListener->void,			
+			
+		"/>
+	</module>
+	
+	
+	</module>
+	
+	
+	
+	
+	<module name="TreeWalker">
+		<module name="EqualsAvoidNull" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="NestedForDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedIfDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="PackageDeclaration" />
+		<module name="HiddenField" />
+
+
+		<module name="VisibilityModifier">
+			<property name="packageAllowed" value="true" />
+			<property name="protectedAllowed" value="true" />
+		</module>
+		<module name="ConstantName" />
+		<module name="TypeName" />
+		<module name="MethodName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="StaticVariableName" />
+		<module name="NeedBraces" />
+		<module name="MultipleStringLiterals" />
+		<module name="OuterTypeFilename" />
+
+
+		<module name="OneTopLevelClass" />
+		<module name="EmptyBlock">
+			<property name="option" value="TEXT" />
+			<property name="tokens"
+				value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH" />
+		</module>
+		<module name="NeedBraces" />
+		<module name="ArrayTypeStyle" />
+		<module name="MissingSwitchDefault" />
+		<module name="FallThrough" />
+
+		
+		<module name="TypeName">
+
+		</module>
+		<module name="MemberName">
+
+		</module>
+		<module name="ParameterName">
+		</module>
+		<module name="LambdaParameterName"/>
+
+	
+		<module name="LocalVariableName">
+
+		</module>
+		<module name="ClassTypeParameterName">
+
+		</module>
+		<module name="MethodTypeParameterName">
+
+		</module>
+		<module name="InterfaceTypeParameterName"/>
+
+		
+		<module name="AbbreviationAsWordInName">
+			<property name="ignoreFinal" value="false" />
+			<property name="allowedAbbreviationLength" value="1" />
+		</module>
+		<module name="AvoidStarImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
+		
+		<module name="MethodName">
+			
+		</module>
+
+		<module name="EmptyCatchBlock">
+			<property name="exceptionVariableName" value="expected" />
+		</module>
+
+		<module name="BooleanExpressionComplexity">
+			<property name="max" value="3" />
+		</module>
+		<module name="ClassDataAbstractionCoupling">
+			<property name="max" value="7" />
+		</module>
+		<module name="ClassFanOutComplexity">
+			<property name="max" value="20" />
+		</module>
+		<module name="CyclomaticComplexity">
+			<property name="max" value="10" />
+		</module>
+		<module name="JavaNCSS">
+			<property name="methodMaximum" value="50" />
+			<property name="classMaximum" value="1500" />
+			<property name="fileMaximum" value="2000" />
+		</module>
+
+		<module name="MissingOverride" />
+		<module name="AvoidNestedBlocks" />
+		
+		<module name="InterfaceIsType" />
+		<module name="ThrowsCount">
+			<property name="max" value="4" />
+		</module>
+		<module name="CovariantEquals" />	
+		<module name="FinalLocalVariable" />
+		<module name="IllegalThrows" />
+		<module name="IllegalType" />
+		<module name="InnerAssignment" />
+		<module name="ModifiedControlVariable" />
+		<module name="NestedTryDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="ParameterAssignment" />
+		
+		<module name="FinalParameters" />
+
+
+	</module>
+</module>
+
+

@@ -830,12 +830,37 @@ maybeProcessConfigurationFileName();
     // super.log(ast, "testing st builder");
 
   }
+  static protected boolean expectedTypesPrinted = false;
+  
+  protected void maybePrintExpectedTypes() {
+    if (isFirstPass()) {
+      return;
+    }
+    if (expectedTypesPrinted) {
+      return;
+    }
+    expectedTypesPrinted = true;
+    printExpectedTypes();
+  }
+  
+  protected void printExpectedTypes() {
+    if (expectedTypes.size() > 0) {
 
+      extendibleLog(0,
+
+//              EXPECTED_TYPES, new String[] { EXPECTED_TYPES + ":", expectedTypes.toString() }
+      EXPECTED_TYPES, expectedTypes.toString()
+
+      );
+    }
+  }
+  
   public void doBeginTree(DetailAST ast) {
     // if (!isFirstPass()) {
     // return;
     // }
     super.doBeginTree(ast);
+    maybePrintExpectedTypes();
     astToFileContents.put(ast, getFileContents());
     // System.err.println("STBuilder" + checkAndFileDescription);
     currentSTType = null;
@@ -847,16 +872,16 @@ maybeProcessConfigurationFileName();
     // print once per each sequence number
     // if (isNewSequenceNumber() && !isAutoBuild()) {
     if (sequenceNumber > lastSequenceNumberOfExpectedTypes && !isAutoBuild()) {
-
-      if (expectedTypes.size() > 0) {
-
-        extendibleLog(0,
-
-//                EXPECTED_TYPES, new String[] { EXPECTED_TYPES + ":", expectedTypes.toString() }
-        EXPECTED_TYPES, expectedTypes.toString()
-
-        );
-      }
+        printExpectedTypes();
+//      if (expectedTypes.size() > 0) {
+//
+//        extendibleLog(0,
+//
+////                EXPECTED_TYPES, new String[] { EXPECTED_TYPES + ":", expectedTypes.toString() }
+//        EXPECTED_TYPES, expectedTypes.toString()
+//
+//        );
+//      }
       lastSequenceNumberOfExpectedTypes = sequenceNumber;
 
     }
