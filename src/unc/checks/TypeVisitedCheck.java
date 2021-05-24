@@ -433,7 +433,9 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 		return fullTypeName;
 	}
 	protected void setFullTypeName(String newVal) {
-	  
+	  if (fullTypeName == newVal) {
+	    return;
+	  }
 		this.fullTypeName = newVal;
 	}
 	public String getShortTypeName() {

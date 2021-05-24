@@ -715,8 +715,18 @@ public class EqualsAvoidedNullCheck extends UNCCheck {
      */
     private static String getFieldType(DetailAST field) {
         String fieldType = null;
-        final DetailAST identAst = field.findFirstToken(TokenTypes.TYPE)
-                .findFirstToken(TokenTypes.IDENT);
+        if (field == null) {
+          return fieldType;
+        }
+        DetailAST aDetailAST = field.findFirstToken(TokenTypes.TYPE);
+        if (aDetailAST == null) {
+          System.err.println("No TYPE token for field:" + field);
+          return fieldType;
+        }
+        DetailAST identAst = aDetailAST.findFirstToken(TokenTypes.IDENT);
+        
+//        final DetailAST identAst = field.findFirstToken(TokenTypes.TYPE)
+//                .findFirstToken(TokenTypes.IDENT);
         if (identAst != null) {
             fieldType = identAst.getText();
         }

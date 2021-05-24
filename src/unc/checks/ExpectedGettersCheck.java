@@ -1,11 +1,21 @@
 package unc.checks;
 
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
 import unc.symbolTable.PropertyInfo;
+import unc.tools.checkstyle.ProjectSTBuilderHolder;
 
 public class ExpectedGettersCheck extends BeanTypedPropertiesCheck {
 	public static final String MSG_KEY = "expectedGetter";
   public static final String MSG_KEY_WARNING = "missingGetter";
   public static final String MSG_KEY_INFO = "expectedGetter";
+  public ExpectedGettersCheck() {
+    super();
+  }
+  @Override
+  public int[] getDefaultTokens() {
+    return super.getDefaultTokens();
+  }
 	@Override
 	protected String msgKey() {
 		// TODO Auto-generated method stub
@@ -49,5 +59,30 @@ public class ExpectedGettersCheck extends BeanTypedPropertiesCheck {
 //		return matchGetter(aSpecifiedType, aProperty);
 	}
 
+	 public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
+	    return super.doPendingCheck(anAST, aTree);
+	 }
+	 
+	 public void doFinishTree(DetailAST ast) {
+//	    // STType anSTType =
+//	    // SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(fullTypeName);
+//	    // for (STMethod aMethod: anSTType.getMethods()) {
+//	    // visitMethod(anSTType, aMethod);
+//	    // }
+//	    if (!ProjectSTBuilderHolder.getSTBuilder().getVisitInnerClasses()) {
+//
+//	    maybeAddToPendingTypeChecks(ast);
+//	    }
+	    super.doFinishTree(ast);
 
+	  }
+	 protected void visitClass(DetailAST ast) {
+	   super.visitClass(ast);
+	 }
+	 public void doVisitToken(DetailAST ast) {
+	   super.doVisitToken(ast);
+	 }
+	  public void visitToken(DetailAST ast) {
+	    super.visitToken(ast);
+	  }
 }

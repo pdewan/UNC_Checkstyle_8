@@ -185,4 +185,8 @@ public interface STType extends STNameable{
   List<DetailAST> getInnerTypesAST();
   List<String> getInnerTypeNames();
   STMethod[] getNonExternalMethods();
+  STNameable[] getAllTags();
+  void setAllTags(STNameable[] newVal);
+  void setAllTagsSet(Set<STNameable> newVal);
+  Set<STNameable> getAllTagsSet();
 }

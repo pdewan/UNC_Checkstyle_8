@@ -327,7 +327,6 @@
 		<property name="includeTypeTags" value="@ModelClass"/>
 		<property name="expectedCalls" value="
 			java.util.Map!putAll:java.util.Map->void,
-			java.util.List!addAll:java.util.Collection->boolean,
 			java.util.List!clear:->void,
 			java.lang.Thread!interrupt:->void,
 			java.util.Map!clear:->void,
@@ -584,12 +583,12 @@
 			java.lang.Object!wait:->void,
 			java.util.AbstractCollection!add:*->.*,
 			@BarrierClass!barrier:*->.*,
-			@ModelClass!getReductionQueueList:int->java.util.List,
+			@ModelClass!getReductionQueueList:->java.util.List,
 			java.util.concurrent.ArrayBlockingQueue!take:->Object,
 			@KeyValueClass!getValue:->TypeParam1,
 			java.util.AbstractList!add:*->.*,
 			java.util.AbstractQueue!add:*->.*,
-			@ModelClass!getKeyValueQueue:->java.util.concurrent.ArrayBlockingQueue,
+			@ModelClass!getKeyValueQueue:->java.util.concurrent.BlockingQueue,
 			java.util.List!add:*->.*,
 			java.lang.Throwable!printStackTrace:->void,
 			@JoinerClass!finished:*->.*,
@@ -615,12 +614,12 @@
 			java.lang.Object!wait:->void,
 			java.util.AbstractCollection!add:*->.*,
 			@BarrierClass!barrier:*->.*,
-			@ModelClass!getReductionQueueList:int->java.util.List,
+			@ModelClass!getReductionQueueList:->java.util.List,
 			java.util.concurrent.ArrayBlockingQueue!take:->Object,
 			@KeyValueClass!getValue:->TypeParam1,
 			java.util.AbstractList!add:*->.*,
 			java.util.AbstractQueue!add:*->.*,
-			@ModelClass!getKeyValueQueue:->java.util.concurrent.ArrayBlockingQueue,
+			@ModelClass!getKeyValueQueue:->java.util.concurrent.BlockingQueue,
 			java.util.List!add:*->.*,
 			java.lang.Throwable!printStackTrace:->void,
 			@JoinerClass!finished:*->.*,
@@ -656,14 +655,14 @@
 		<property name="severity" value="warning"/>
 		<property name="includeTypeTags" value="@PartitionerFactory"/>
 		<property name="expectedProperties" value="
-			Paritioner:@PartitionerClass,
+			Partitioner:@PartitionerClass,
 		"/>
 	</module>
 	<module name="ExpectedSetters">
 		<property name="severity" value="info"/>
 		<property name="includeTypeTags" value="@PartitionerFactory"/>
 		<property name="expectedProperties" value="
-			Paritioner:@PartitionerClass,
+			Partitioner:@PartitionerClass,
 		"/>
 	</module>
 	

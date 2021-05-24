@@ -571,7 +571,9 @@ maybeProcessConfigurationFileName();
       // STType anSTType = new AnSTTypeFromClass(aClass);
       // anSTType.setExternal(true);
       // addAndUpateCurrentSTTType(anSTType);
-    } catch (ClassNotFoundException e) {
+    } catch (Throwable e) {
+
+//    } catch (ClassNotFoundException e) {
       // if (existingClassesCollection.contains(aClassName))
       // System.err.println("Could not make existing class from: "
       // + aClassName );
@@ -1213,7 +1215,7 @@ maybeProcessConfigurationFileName();
       return emptyList;
     }
     boolean anIsInterface = (typeType == TypeType.INTERFACE);
-    List<STNameable> result = computedTypeTags();
+    List<STNameable> result = new ArrayList (computedTypeTags());
     List<STNameable> derivedTags = derivedTags(typeAST,
             anIsInterface ? INTERFACE_START : CLASS_START);
 //    String aConfiguredName = classToConfiguredClass.get(shortTypeName);

@@ -61,22 +61,32 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 //static final String CHECKSTYLE_CONFIGURATION = "checks/533-s20/unc_checks_533_A6.xml";
 //C:\Users\dewan\Downloads\RxJava-3.x\src\main\java\io\reactivex\rxjava3\internal\schedulers\SchedulerPoolFactory.java (null st method)
 
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/301-ss21/unc_checks_301_A1.xml";
+static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/grail13/Logs/LocalChecks/unc_checks_301_A1.xml";
+
+//static final String SOURCE = "D:/dewan_backup/Java/grail13/src";
+//static final String SOURCE = "D:/dewan_backup/Java/grail13/src/shapes/AFork.java";
+static final String SOURCE = "D:/dewan_backup/Java/grail13/src/shapes";
+
+
+
+  
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/unc_checks.xml";
 //public static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A1.xml";
-public static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A7.xml";
+//public static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A7.xml";
 
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A2.xml";
+
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533-s21/unc_checks_533_A3.xml";
 
 //static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/";
 //static final String SOURCE = "C:/Users/dewan/Downloads/Comp533Assignments/S20/Assignment 1/Wortas, Andrew(ajwortas)/Submission attachment(s)/Assignment1 - Andrew Wortas/Assignment1/src";
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src";
-//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment2/src";
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment3/src";
 //public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment4/src";
-public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment7/src";
+//public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment7/src";
 
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Ram533Assignment7/src";
 

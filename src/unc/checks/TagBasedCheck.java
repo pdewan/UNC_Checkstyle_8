@@ -611,6 +611,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			Arrays.asList(anArray);
 	 
  }
+ 
  public List<STNameable> lookupTags(String aClassName)  {
 //	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 //				.getSTClassByShortName(aShortClassName);
@@ -625,7 +626,7 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			return null;
 		}		
 //		return Arrays.asList(anSTType.getComputedTags());
-		return asListOrNull(anSTType.getComputedTags());
+		return asListOrNull(getAllTagsAsArray(anSTType));
 
  }
  static List<STNameable> allTags = new ArrayList();
@@ -633,7 +634,9 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
    STType anSTType = null;
    anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(getFullTypeName());
    if (anSTType != null) {
-     return asListOrNull(anSTType.getComputedTags());
+//     return asListOrNull(anSTType.getComputedTags());
+//     TagBasedCheck.getAllTags(anSTType); //initialize sttype tags if necessary
+     return asListOrNull(TagBasedCheck.getAllTagsAsArray(anSTType));
 
 //     return asListOrNull(anSTType.getConfiguredTags());
    }
@@ -752,14 +755,18 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			return hasTag(aTags, aDescriptor);
 		}	else {
 			String aShortName = toShortTypeOrVariableName(aName);
+			boolean aContainsSquareBracket = aName.contains("[") || aDescriptor.contains("[");
 //			return aName.matches(aDescriptor) || aName.contains(aDescriptor); // allow regex
 			// do not want user scanner to match Scanner class so do not use contains
 			// allow regex
 			try {
 			Boolean retVal = aName.equals(aDescriptor) ||
 					aShortName.equals(aDescriptor) || 
+					(!aContainsSquareBracket && 
+					        (
 					aName.matches(aDescriptor) || 
-					aShortName.matches(aDescriptor);
+					aShortName.matches(aDescriptor)
+					));
 //			if (retVal) {
 //				return true;
 //			}
@@ -1250,6 +1257,7 @@ public void maybeVisitTypeTags(DetailAST ast) {
 	typeTags = getArrayLiterals(annotationAST);
 	}
 	if (typeTags.size() > 0) {
+	  
 	  computedTypeTags = emptyNameableList;
 	  return; // do not compute tags if explicit tags provided
 	}
@@ -1633,10 +1641,18 @@ public static List<String> getNonComputedTagsList (STType anSTType) {
 
 
 }
+public static STNameable[] getAllTagsAsArray (STType anSTType) {
+  getAllTags(anSTType);
+  return anSTType.getAllTags();
+  
+}
 public static Set<STNameable> getAllTags (STType anSTType) {
   Set<STNameable> retVal = new HashSet();
   if (anSTType == null) {
     return retVal;
+  }
+  if (anSTType.getAllTagsSet() != null) {
+    return anSTType.getAllTagsSet();
   }
   if (anSTType.getDerivedTags() != null) {
   retVal.addAll(Arrays.asList(anSTType.getDerivedTags()));
@@ -1650,6 +1666,7 @@ public static Set<STNameable> getAllTags (STType anSTType) {
   if (anSTType.getComputedTags() != null) {
   retVal.addAll(Arrays.asList(anSTType.getComputedTags()));
   }
+  anSTType.setAllTagsSet(retVal);
   return retVal;
 
 

@@ -46,6 +46,8 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	protected Set<Integer> modifiers;
 	protected String fileName;
 	protected String matchedTags;
+	protected STNameable[] allTags;
+	protected Set<STNameable> allTagsSet;
 	
 	
 
@@ -352,6 +354,25 @@ public class AnSTType extends AnAbstractSTType implements STType {
 	public STNameable[] getDerivedTags() {
 		return derivedTags;
 	}
+	@Override
+	public STNameable[] getAllTags() {
+	  return allTags;
+	}
+	
+  @Override
+  public void  setAllTags(STNameable[] newVal) {
+     allTags = newVal;
+  }
+  STNameable[] dummy = {};
+  @Override
+  public void  setAllTagsSet(Set<STNameable> newVal) {
+     allTagsSet = newVal;
+     allTags =  newVal.toArray(dummy);
+  }
+  @Override
+  public Set<STNameable> getAllTagsSet() {
+    return allTagsSet;
+  }
 	@Override
 	public STNameable[] getImports() {
 		return imports;

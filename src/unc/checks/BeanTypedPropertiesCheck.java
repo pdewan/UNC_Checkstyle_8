@@ -107,10 +107,12 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 	// checkTagsOfType(aSpecifiedType, anSTType);
 	// }
 	// }
-	protected void logPropertyMatchedOrNotMatched(DetailAST aTreeAST, String aProperty,
+	protected void logPropertyMatchedOrNotMatched(STType anSTType, DetailAST aTreeAST, String aProperty,
 			String aType) {
+	  String aMatchedTags = anSTType.getMatchedTags();
+	  String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
 //		System.out.println ("Bean:" + aType + " " + aProperty);
-		log (aTreeAST, aTreeAST, aProperty, aType);
+		log (aTreeAST, aTreeAST, aProperty, aType, aTypeOrTag);
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 //		if (aTreeAST == currentTree) {
@@ -125,7 +127,7 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 
 	}
 
-	public Boolean matchProperties(String[] aSpecifiedProperties,
+	public Boolean matchProperties(STType anSTType, String[] aSpecifiedProperties,
 			Map<String, PropertyInfo> aPropertyInfos, DetailAST aTreeAST) {
 		boolean retVal = true;
 		for (String aSpecifiedProperty : aSpecifiedProperties) {
@@ -140,13 +142,13 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 //			if (!matchProperty(aType, aPropertySpecification, aPropertyInfos)) {
 			if (!matched && !isInfo() || matched && isInfo()) {
 
-				logPropertyMatchedOrNotMatched(aTreeAST, aPropertySpecification, aType);
+				logPropertyMatchedOrNotMatched(anSTType, aTreeAST, aPropertySpecification, aType);
 				retVal = false; // does this really matter
 			}
 		}
 		return retVal;
 	}
-	public Boolean matchProperties(String[] aSpecifiedProperties,
+	public Boolean matchProperties(STType anSTType, String[] aSpecifiedProperties,
 			Collection <PropertyInfo> aPropertyInfos, DetailAST aTreeAST) {
 		boolean retVal = true;
 		for (String aSpecifiedProperty : aSpecifiedProperties) {
@@ -155,7 +157,7 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 			String aPropertySpecification = aPropertyAndType[0].trim();
 //			String[] aPropertiesPath = aPropertySpecification.split(".");			
 			if (!matchProperty(aType, aPropertySpecification, aPropertyInfos)) {
-				logPropertyMatchedOrNotMatched(aTreeAST, aPropertySpecification, aType);
+				logPropertyMatchedOrNotMatched(anSTType, aTreeAST, aPropertySpecification, aType);
 				retVal = false;
 			}
 		}
@@ -348,7 +350,7 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 			return null;
 
 		Map<String, PropertyInfo> anUmmatchedPropertyInfos = new HashMap(aPropertyInfos);
-		return matchProperties(aStrings, anUmmatchedPropertyInfos, aTree);
+		return matchProperties(anSTType, aStrings, anUmmatchedPropertyInfos, aTree);
 	}
 
 	@Override

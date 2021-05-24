@@ -515,6 +515,26 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
     // TODO Auto-generated method stub
     return null;
   }
+  @Override
+  public STNameable[] getAllTags() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  @Override
+  public void setAllTags(STNameable[] newVal) {
+    // TODO Auto-generated method stub
+    
+  }
+  @Override
+  public void setAllTagsSet(Set<STNameable> newVal) {
+    // TODO Auto-generated method stub
+    
+  }
+  @Override
+  public Set<STNameable> getAllTagsSet() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 
 //

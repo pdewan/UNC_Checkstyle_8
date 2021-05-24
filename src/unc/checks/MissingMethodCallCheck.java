@@ -328,9 +328,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
           boolean indirectMethodsNotFullProcessed, STMethod aCallingMethod) {
     boolean aFoundOtherConstraints = found && checkOtherConstraints(aFoundMethod, returnNull);
 //     if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) || isInfo() && found ) {
-      if (aSpecification.contains("ControllerClass!")) {
-      System.out.println ("found specification");
-      }
+//      if (aSpecification.contains("ControllerClass!")) {
+//      System.out.println ("found specification");
+//      }
     // String aCallingMethodSignature = getCallingMethod();
     // String aCaller = aCallingMethodSignature == null?"Any":aCallingMethodSignature;
     // log(anAST, aTree, aSpecification, aCallingMethodSignature);
@@ -385,6 +385,12 @@ public class MissingMethodCallCheck extends MethodCallCheck {
   public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
     return doStringArrayBasedPendingCheck(anAST, aTree);
   }
+  public void doPendingChecks() {
+    super.doPendingChecks();
+  }
+//  public Boolean doStringArrayBasedPendingCheck(DetailAST anAST, DetailAST aTree) {
+//    return super.doStringArrayBasedPendingCheck(anAST, aTree);
+//  }
 
   // public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
   // if (fullTypeName == null)
