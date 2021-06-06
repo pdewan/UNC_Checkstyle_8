@@ -2483,5 +2483,6 @@ public static String[] dictionary =
 	 "gyros",
 	 "gyroscope",
 	 "gyroscopes",
+	 "galahad"
 	};
 }

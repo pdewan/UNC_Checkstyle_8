@@ -6,16 +6,29 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import unc.symbolTable.STMethod;
+import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
 import unc.tools.checkstyle.ProjectSTBuilderHolder;
 
 public abstract  class ClassInstantiatedCheck extends ComprehensiveVisitCheck {
 	// move this to a super class
 	public static final String CALLER_TYPE_SEPARATOR = "#";
-	public static final String MSG_KEY = "classInstantiated";
+//	public static final String MSG_KEY = "classInstantiated";
+	 public static final String MSG_KEY_INFO = "expectedInstantiation";
+	 public static final String MSG_KEY_WARNING = "missingInstantiation";
+
 	public static final String MULTIPLE_INSTANTIATING_CODE = "multipleInstantiatingMethods";
 	
 
+  @Override
+  protected String msgKeyWarning() {
+    return MSG_KEY_WARNING;
+  }
+
+  @Override
+  protected String msgKeyInfo() {
+    return MSG_KEY_INFO;
+  }
 
 
 //	protected Map<String, String[]> typeToSpecifications = new HashMap<>();
@@ -46,10 +59,16 @@ public abstract  class ClassInstantiatedCheck extends ComprehensiveVisitCheck {
 
 	
 	public void setInstantiations(String[] aPatterns) {
-		for (String aPattern : aPatterns) {
-			setSpecificationsOfType(aPattern);
-		}
+	  super.setExpectedStrings(aPatterns);
+//		for (String aPattern : aPatterns) {
+//			setSpecificationsOfType(aPattern);
+//		}
 	}
+	public void setInstantiationsOld(String[] aPatterns) {
+    for (String aPattern : aPatterns) {
+      setSpecificationsOfType(aPattern);
+    }
+  }
 	
 	protected String msgKey() {
 		return MSG_KEY;
@@ -63,8 +82,55 @@ public abstract  class ClassInstantiatedCheck extends ComprehensiveVisitCheck {
 		return true;
 	}
 	
-// move to super type at some points
+
 	public Boolean doPendingCheck(DetailAST anAST, DetailAST aTree) {
+	    return super.doStringArrayBasedPendingCheck(anAST, aTree);
+	}
+	
+//	protected void logInstantaitedOrNot (STType anSTType, DetailAST aTreeAST, String aMethod, String anInstiatedType)
+//	       {
+//	      String aMatchedTags = anSTType.getMatchedTags();
+//	      String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+////	      System.out.println ("Bean:" + aType + " " + aProperty);
+//	      log (aTreeAST, aTreeAST, anInstiatedType, aMethod, aTypeOrTag);
+////	      String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
+////	          .getFilename());
+////	      if (aTreeAST == currentTree) {
+////	        DetailAST aLoggedAST = aTreeAST;
+//	  //
+////	        aLoggedAST = aTreeAST;
+//	  //
+////	        log (aLoggedAST.getLineNo(), msgKey(), aProperty, aType, aSourceName);
+////	      } else {
+////	        log(0, msgKey(), aProperty, aType, aSourceName);
+////	      }
+//
+//	    }
+	
+	protected boolean processString(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecifiedType, String aString) {
+   List<STMethod> aMethods = anSTType.getInstantiatingMethods(aString);
+   boolean found = aMethods != null && aMethods.size() > 0;
+   if ((isInfo() && found) || (!isInfo() && !found) ) {
+     String aMethodsText = found?aMethods.toString(): "no method";
+   
+
+	  log (aTree, aTree, aString, toTypeOrTag(anSTType), aMethodsText );
+   }
+   return found;
+
+	}
+
+	protected  Boolean processStrings(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecifiedType, String[] aStrings) {
+	  List<STNameable> anInstantiatedTypes = anSTType.getTypesInstantiated();
+	  for (String aString:aStrings) {
+	    processString(anAST, aTree, anSTType,  aSpecifiedType, aString);
+	  }
+
+	  return true;
+	}
+	
+// move to super type at some points
+	public Boolean doPendingCheckOld(DetailAST anAST, DetailAST aTree) {
 		specifiedType = null;
 //		STType anSTType = SymbolTableFactory.getOrCreateSymbolTable()
 //				.getSTClassByShortName(

@@ -2,23 +2,36 @@ package unc.checks;
 
 import java.util.List;
 
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
 import unc.symbolTable.STMethod;
 import unc.symbolTable.STType;
 
 public  class ExpectedConstructorsCheck extends ExpectedSignaturesCheck {
 	public static final String MSG_KEY = "expectedConstructors";
 
-	
+	public ExpectedConstructorsCheck() {
+	  super();
+	}
 	@Override
 	// get full name
+//	public int[] getDefaultTokens() {
+//		return new int[] {
+////				 TokenTypes.PACKAGE_DEF,
+////				TokenTypes.CLASS_DEF
+//
+//				};
+//
+//	}
 	public int[] getDefaultTokens() {
-		return new int[] {
-//				 TokenTypes.PACKAGE_DEF,
-//				TokenTypes.CLASS_DEF
+    return new int[] {
+         TokenTypes.PACKAGE_DEF,
+        TokenTypes.CLASS_DEF
 
-				};
+        };
 
-	}
+  }
 	@Override
 	protected STMethod[] getMatchedMethods(STType anSTType) {
 //		if (anSTType.getName().contains("Say")) {
@@ -109,7 +122,9 @@ public  class ExpectedConstructorsCheck extends ExpectedSignaturesCheck {
 		
 	}
 	
-	
+	 protected void maybeAddToPendingTypeChecks(DetailAST ast) {
+	   super.maybeAddToPendingTypeChecks(ast);
+	 }
 	@Override
 	protected String msgKey() {
 		// TODO Auto-generated method stub

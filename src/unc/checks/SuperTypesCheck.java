@@ -2,6 +2,8 @@ package unc.checks;
 
 import java.util.List;
 
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
 import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
 
@@ -28,8 +30,9 @@ public  class SuperTypesCheck extends ExpectedTypesCheck {
 	@Override
 	public int[] getDefaultTokens() {
 		return new int[] {
-//				TokenTypes.CLASS_DEF,
-//				TokenTypes.INTERFACE_DEF
+		    TokenTypes.PACKAGE_DEF,
+				TokenTypes.CLASS_DEF,
+				TokenTypes.INTERFACE_DEF
 				};
 	}
 	public void setExpectedSuperTypes(String[] aSpecifications) {

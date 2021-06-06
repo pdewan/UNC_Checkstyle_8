@@ -6936,5 +6936,8 @@ public static String[] dictionary =
 	 "cathy",
 	 "comp",
 	 "coupler",
+	 "cmd",
+	 "clearable",
+	 "ch"
 	};
 }

@@ -1,5 +1,7 @@
 package unc.checks;
 
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
 import unc.symbolTable.STType;
 
 public  class ExpectedSuperTypesCheck extends SuperTypesCheck {
@@ -40,6 +42,25 @@ public  class ExpectedSuperTypesCheck extends SuperTypesCheck {
 		// TODO Auto-generated method stub
 		return super.doCheck(anSTType) && !anSTType.isInterface();
 	}
+  protected void maybeAddToPendingTypeChecks(DetailAST ast) {
+//System.err.println("Type processed:" + aFullTypeName);
+//if (aFullTypeName != null && aFullTypeName.contains("ClassAsType") && !isFirstPass()) {
+//  int i = 1;
+//}
+//    String aFullTypeName = getFullTypeName();
 
+//if (aFullTypeName != null && aFullTypeName.equals("shapes.AShape") ) {
+//  if (includeTypeTags.toString().contains("BOUNDED") ) {
+//    int i = 0;
+//    i++;
+//  }
+//
+//}
+//    if (includeTypeTags.toString().contains("BOUNDED") ) {
+//      int i = 0;
+//      i++;
+//    }
+  super.maybeAddToPendingTypeChecks(ast);
+}
 
 }

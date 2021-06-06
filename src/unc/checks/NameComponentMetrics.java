@@ -34,6 +34,7 @@ public static NameComponentMetrics computeComponentMetrics(String aName) {
 //	retVal.isDictionaryWord = retVal.numDigits > 0 || DictionarySet.getDictionary().contains(aName);
 
 	retVal.numChars = aName.length();
+	
 	return retVal;
 }
 }

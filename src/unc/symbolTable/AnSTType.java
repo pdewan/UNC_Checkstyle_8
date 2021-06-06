@@ -1130,21 +1130,26 @@ public class AnSTType extends AnAbstractSTType implements STType {
 		List<STMethod> aMethodsAndConstructors = new ArrayList();
 		aMethodsAndConstructors.addAll(Arrays.asList(anAllMethods));
 		aMethodsAndConstructors.addAll(Arrays.asList(anAllConstructors));
+		boolean aFoundNull = false;
 		for (STMethod aMethod:aMethodsAndConstructors) {
+//		  if (aMethod.isConstructor()) {
+//		    int i = 0;
+//		  }
 			Boolean instantiates = aMethod.instantiatesType(aTypeName);
-			if (instantiates == null)
-				return null;
+			if (instantiates == null && result.isEmpty())
+				aFoundNull = true;
 //			if (aMethod.instantiatesType(aTypeName)) {
-			if (instantiates) {
+			if (instantiates != null && instantiates) {
 
 				result.add(aMethod);
 			}
 		}
+		
 //		int i = 0;
 		Boolean instantiates = instantiatesType(aTypeName);
-		if (instantiates == null)
+		if (instantiates == null && result.isEmpty() )
 			return null;
-		if (instantiates) {
+		if (instantiates != null && instantiates) {
 			result.add(NoMethod.getInstance());
 		}
 		return result;

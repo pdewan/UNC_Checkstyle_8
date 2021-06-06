@@ -90,7 +90,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 	protected void logSignatureMatchedOrNotMatched(STType anSTType, DetailAST anAST, DetailAST aTreeAST, String aSignature) {
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
-//		if (aSignature.contains("map")) {
+//		if (aSignature.contains("failed")) {
 //			System.err.println("found map signature");
 //		}
 		String aTypeName = getName(getEnclosingTypeDeclaration(anAST));
@@ -184,6 +184,10 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 //			if (aMethod.getName().contains("parseSleep")) {
 //				System.out.println ("found candidate method");
 //			}
+//		  if (aMethod.getName().contains("approach")) {
+//		    int i = 0;
+//		    i++;
+//		  }
 			Boolean hasMatched = matchSignature(aSpecification, aMethod);
 			if (hasMatched == null)
 				return null;
@@ -293,7 +297,10 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 
 				if (aParameterSTType == null)
 					return null;
-				parameterTags = aParameterSTType.getComputedTags();
+				TagBasedCheck.getAllTags(aParameterSTType);
+//				parameterTags = aParameterSTType.getComputedTags();
+        parameterTags = aParameterSTType.getAllTags();
+
 			}
 			
 			if (!unifyingMatchesNameVariableOrTag(aSpecificationParameterTypes[i], aMethodParameterTypes[i], parameterTags)) {

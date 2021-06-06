@@ -1722,5 +1722,6 @@ public static String[] dictionary =
 	 "oyster",
 	 "oysters",
 	 "ozone",
+	 "obj",
 	};
 }

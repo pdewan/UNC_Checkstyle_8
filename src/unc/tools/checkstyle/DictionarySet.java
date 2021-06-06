@@ -45,36 +45,44 @@ public class DictionarySet {
       "nio,",
       "xml"
   };
+  
+  public static String[] toLowerCase(String[] aMixedCaseArray) {
+    for (int i = 0; i < aMixedCaseArray.length; i++) {
+      aMixedCaseArray[i] = aMixedCaseArray[i].toLowerCase();
+    }
+    return aMixedCaseArray;
+    
+  }
   public static Set<String> getDictionary() {
 	  if (dictionarySet == null) {
 		  dictionarySet = new HashSet();
-		  dictionarySet.addAll(Arrays.asList(DictionaryA.dictionary));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryA.dictionary)));
 		  dictionarySet.addAll(Arrays.asList(DictionaryB.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryC.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryD.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryE.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryF.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryG.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryH.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryI.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryJ.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryK.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryL.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryM.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryN.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryO.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryP.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryQ.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryR.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryS.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionarySPlus.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryT.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryU.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryV.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryW.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryX.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryY.dictionary));
-		  dictionarySet.addAll(Arrays.asList(DictionaryZ.dictionary));		  
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryC.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryD.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryE.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryF.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryG.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryH.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryI.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryJ.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryK.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryL.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryM.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryN.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryO.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryP.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryQ.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryR.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryS.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionarySPlus.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryT.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryU.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryV.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryW.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryX.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryY.dictionary)));
+		  dictionarySet.addAll(Arrays.asList(toLowerCase(DictionaryZ.dictionary)));		  
 		  dictionarySet.addAll(Arrays.asList(extraWords));  
 	  }
 	  return dictionarySet;

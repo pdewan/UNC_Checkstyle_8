@@ -1,5 +1,7 @@
 package unc.checks;
 
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
 import unc.symbolTable.PropertyInfo;
 
 public class ExpectedSettersCheck extends BeanTypedPropertiesCheck {
@@ -36,7 +38,24 @@ public class ExpectedSettersCheck extends BeanTypedPropertiesCheck {
 	@Override
 	public Boolean matchType(String aSpecifiedType, PropertyInfo aProperty) {
 		// TODO Auto-generated method stub
+//	  if (aSpecifiedType.contains("AShape")) {
+//	    int i = 0;
+//	    i++;
+//	  }
 		return matchSetter(aSpecifiedType, aProperty);
 	}
+  protected void maybeAddToPendingTypeChecks(DetailAST ast) {
+//    String aFullTypeName = getFullTypeName();
+//  System.err.println("Type processed:" + aFullTypeName);
+//  if (aFullTypeName != null && aFullTypeName.contains("ClassAsType") && !isFirstPass()) {
+//    int i = 1;
+//  }
+//  if (aFullTypeName != null && aFullTypeName.equals("shapes.AShape") ) {
+//    int i = 0;
+//    i++;
+//  }
+    super.maybeAddToPendingTypeChecks(ast);
+  }
+
 
 }

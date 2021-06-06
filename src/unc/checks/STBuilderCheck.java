@@ -547,6 +547,9 @@ maybeProcessConfigurationFileName();
   }
 
   public static STType addExistingClassSTType(String aClassName) {
+//    if (aClassName.contains("Line")) {
+//      int i = 0;
+//    }
 
     STType anSTType = new AnSTTypeFromClass(aClassName);
     // STType anSTType = new AnSTTypeFromClass(aClassName);
@@ -625,6 +628,10 @@ maybeProcessConfigurationFileName();
         final FileContents contents = getFileContents();
           aTextBlock = contents.getJavadocBefore(currentMethodAST.getLineNo());
       }
+//      if (currentMethodName.contains("getLeftLine")) {
+//        int i = 0;
+//        i++;
+//      }
       // Set<DetailAST> anAnnotations = extractAnnotations(modifierAST);
       STMethod anSTMethod = new AnSTMethod(currentMethodAST, currentMethodName, getFullTypeName(),
               aParameterNames, aLongParameterTypes,

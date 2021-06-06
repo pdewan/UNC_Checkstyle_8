@@ -2401,5 +2401,7 @@ public static String[] dictionary =
 	 "lyricist",
 	 "lyricists",
 	 "lyrics",
+	 "lancelot",
+	 "locatable"
 	};
 }

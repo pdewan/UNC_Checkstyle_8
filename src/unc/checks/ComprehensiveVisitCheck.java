@@ -2869,7 +2869,10 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 //    if (aFullTypeName != null && aFullTypeName.contains("ClassAsType") && !isFirstPass()) {
 //      int i = 1;
 //    }
-    
+//    if (aFullTypeName != null && aFullTypeName.equals("shapes.AShape") && this.toString().contains("SuperTypes") ) {
+//      int i = 0;
+//      i++;
+//    }
     if (!checkIncludeExcludeTagsOfCurrentType())
       return;
     specificationVariablesToUnifiedValues.clear();

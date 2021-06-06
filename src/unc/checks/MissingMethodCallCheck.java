@@ -1,6 +1,7 @@
 package unc.checks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -171,10 +172,15 @@ public class MissingMethodCallCheck extends MethodCallCheck {
         }
       }
       
+//      if (!found) {
+//        int i = 0;
+//        i++;
+//      }
+      
       if (!found && !isInfo() || found && isInfo()) {
-         if (aSpecification.contains("egister")) {
-         System.out.println ("found specification");
-         }
+//         if (aSpecification.contains("egister")) {
+//         System.out.println ("found specification");
+//         }
 //        Set<String> anIncludeTypeTags = getIncludeTypeTags();
 //        String aTagInformation = anIncludeTypeTags == null || anIncludeTypeTags.isEmpty()?
 //                "No Tag":anIncludeTypeTags.toString();
@@ -188,6 +194,8 @@ public class MissingMethodCallCheck extends MethodCallCheck {
   }
 
 //  protected Set<STMethod> aMethodsCalledSet = new HashSet<>();
+  
+  protected List<STMethod> methodsAndConstructors = new ArrayList();
 
   /**
    * This is ignoring aSpecifiedType It should look for calls in specified type rather than
@@ -201,40 +209,45 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 
     // STMethod[] anAllCallingMethods = anSTType.getMethods();
     STMethod[] anAllCallingMethods = anSTType.getMethods();
+    STMethod[] aConstructors = anSTType.getDeclaredConstructors();
+   
+
 
     // maybe have a separate check for local calls?
     // List<CallInfo> aCalls = anSTType.getAllMethodsCalled();
 
     // for efficiency, let us remove mapped calls
 
-    if (anAllCallingMethods == null)
+    if (anAllCallingMethods == null && aConstructors == null)
       return null;
     // List<CallInfo> aCallsToBeChecked = new ArrayList(aCalls);
+    methodsAndConstructors.clear();
+    if (anAllCallingMethods != null) {
+    methodsAndConstructors.addAll(Arrays.asList(anAllCallingMethods));
+    }
+    if (aConstructors != null) {
+    methodsAndConstructors.addAll(Arrays.asList(aConstructors));
+    }
 
     String[] aSpecifications = aStrings;
     boolean returnNull = false;
     // int i = 0;
     for (String aSpecification : aSpecifications) {
-      // if (aSpecification.contains("createRegistr")) {
-      // System.out.println ("found specification:");
-      // }
+//       if (aSpecification.contains("legs")) {
+//       System.out.println ("found specification:");
+//       }
       boolean found = false;
       STMethod aFoundMethod = null;
       STMethod aCallerOfFoundMethod = null;
       boolean indirectMethodsNotFullProcessed = false;
-      // STMethod aSpecifiedCallingMethod = null;
-      // String aCallingMethodSignature = getCallingMethod();
-      // if (aCallingMethodSignature != null) {
-      // aSpecifiedCallingMethod = signatureToMethod(aCallingMethodSignature);
-      //
-      //
-      //
-      // }
+    
       
 //      if (aSpecification.contains("fire")){
 //        System.err.println("found spec");
 //      }
-      for (STMethod aCallingMethod : anAllCallingMethods) {
+//      for (STMethod aCallingMethod : anAllCallingMethods) {
+      for (STMethod aCallingMethod : methodsAndConstructors) {
+
         if (!checkCallingMethod(aCallingMethod)) {
           continue;
         }
@@ -353,7 +366,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 
   protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
           boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
-  
+    if (!found) {
+      int i = 0;
+      i++;
+    }
     if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) ||
             isInfo() && found) {
 //       if (aSpecification.contains("get.*")) {

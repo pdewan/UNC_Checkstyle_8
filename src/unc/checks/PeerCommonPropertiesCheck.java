@@ -52,6 +52,14 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 	protected String msgKey() {
 		return MSG_KEY;
 	}
+	@Override
+  protected String msgKeyInfo() {
+    return MSG_KEY_INFO;
+  }
+	 @Override
+	  protected String msgKeyWarning() {
+	    return MSG_KEY_WARNING;
+	  }
 	public void setIncludeProperties(String[] aProperties) {
 		includeProperties = aProperties;
 	}
@@ -64,7 +72,7 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 		super.doFinishTree(ast);
 
 	}
-    protected void logPeerPropertyNotMatched(DetailAST aTreeAST, PropertyInfo aPropertyInfo, String aRemoteTypeName) {
+    protected void logPeerProperty(DetailAST aTreeAST, PropertyInfo aPropertyInfo, String aRemoteTypeName) {
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 		String aTypeName = getName(getEnclosingTypeDeclaration(aTreeAST));
@@ -79,6 +87,11 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 
 	}
     public Boolean compareCommonProperties(STType anSTType, String aPeerType, DetailAST aTree) {
+      STType aPeerSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aPeerType);
+      if (aPeerSTType != null && aPeerSTType.isExternal()) {
+        return true;
+      }
+              
     	Boolean result = true;
     	Collection<PropertyInfo> aCommonProperties = filterByIncludeAndExcludeProperties(anSTType.propertiesCommonWith(aPeerType));
 		if (aCommonProperties == null)
@@ -93,10 +106,17 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 			Boolean aHasProperty =  AnSTType.containsProperty(aCommonSuperTypes, aProperty);
 			if (aHasProperty == null)
 				return null;
-			if (aHasProperty)
+			if (aHasProperty) {
+        if (isInfo()) {
+          logPeerProperty(aTree, aProperty, aPeerType);
+
+        }
 				continue;
+			}
 			result = false;
-			logPeerPropertyNotMatched(aTree, aProperty, aPeerType);			
+			if (!isInfo()) {
+			logPeerProperty(aTree, aProperty, aPeerType);	
+			}
 		}	
 		return result;    	
     }
@@ -121,7 +141,7 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 			return true;
 		}
 
-		if (anSTType.isEnum() || anSTType.isInterface() || anSTType.isAnnotation()) // no point duplicating interface checks
+		if (anSTType.isEnum() || anSTType.isInterface() || anSTType.isAnnotation() || anSTType.isExternal()) // no point duplicating interface checks
 			return true;
 //		List<String> aTypes = anSTType.getAllTypeNames();
 //		if (aTypes == null) 

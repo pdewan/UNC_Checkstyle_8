@@ -2,7 +2,7 @@ package unc.tools.checkstyle.dictionary ;
 public class DictionaryI {
 public static String[] dictionary =
 	{
-//	 "I",
+	 "i",
 	 "IBM",
 	 "ING",
 	 "Iaccoca",
@@ -2838,5 +2838,8 @@ public static String[] dictionary =
 	 "ivory",
 	 "ivy",
 	 "int",
+	 "img",
+	 "iter",
+	 "impl"
 	};
 }

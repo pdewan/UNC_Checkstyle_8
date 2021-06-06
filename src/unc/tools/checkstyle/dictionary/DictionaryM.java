@@ -4153,5 +4153,7 @@ public static String[] dictionary =
 	 "myths",
 	 "mapreduce",
 	 "mvc",
+	 "min",
+	 "max"
 	};
 }

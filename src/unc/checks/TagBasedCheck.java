@@ -1023,9 +1023,12 @@ public static Boolean matchesType(String aDescriptor, String aShortClassName) {
 	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aShortClassName);
 	if (anSTType == null)
 		return null;
-	List<STNameable> aTags = Arrays.asList(anSTType.getComputedTags());
+//	List<STNameable> aTags = Arrays.asList(anSTType.getComputedTags());
+	 List<STNameable> aTags = asListOrNull(anSTType.getAllTags());
+
 	if (aTags == null)
-		return null;
+	  return null;
+//		return null;
 		// this should be changed back to null at some point
 //		return false;
 
@@ -1131,6 +1134,10 @@ public boolean checkIncludeTagsOfCurrentType() {
 		return false;
 //	return checkTags(includeTags, computedTypeTags());
 //	return matchesSomeSpecificationTags(computedTypeTags(), includeTypeTags);
+//	if (includeTypeTags.toString().contains("BOUNDED")) {
+//	  int i = 0;
+//	  i++;
+//	}
 	return matchesSomeSpecificationTags(lookupTagsOfCurrentTree(), includeTypeTags);
 	
 
@@ -1229,6 +1236,9 @@ public static List<STNameable> getArrayLiterals (DetailAST parentOfArrayInitiali
 	 
 	 while (anArrayElementExpression != null) {
 		 DetailAST anArrayElementAST = anArrayElementExpression.getFirstChild();
+		 if (anArrayElementAST == null || anArrayElementAST.getParent() == null){
+		   break;
+		 }
 		 FullIdent aFullIdent = FullIdent.createFullIdentBelow(anArrayElementAST.getParent());
 
 //		 result.add(new AnSTNameable(anArrayElementAST, anArrayElementAST.getText()));
@@ -2294,6 +2304,11 @@ protected  Boolean processStrings(DetailAST anAST, DetailAST aTree, STType anSTT
  protected boolean doCheck(STType anSTType) {
 	return true;
 }
+ public static String toTypeOrTag(STType anSTType) {
+   String aMatchedTags = anSTType.getMatchedTags();
+   String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+   return aTypeOrTag;
+ }
 
 public Boolean doStringArrayBasedPendingCheck(DetailAST anAST, DetailAST aTree) {
 	STType anSTType = null;

@@ -4396,5 +4396,6 @@ public static String[] dictionary =
 	 "byword",
 	 "bywords",
 	 "bob",
+	 "btn"
 	};
 }

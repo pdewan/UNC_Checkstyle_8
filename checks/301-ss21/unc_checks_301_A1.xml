@@ -15,15 +15,15 @@
 		<property name="severity" value="info" />
 
 		<module name="STBuilder">
-		<property name="checksName"
-				value="301_ss21_A1" />
-		<property name="expectedTypes" value="
+			<property name="checksName" value="301_ss21_A1" />
+			<property name="expectedTypes"
+				value="
 			@Comp301Tags.ROTATING_LINE,
 			@Comp301Tags.ANGLE,
 			@Comp301Tags.AVATAR,
 			@Comp301Tags.BRIDGE_SCENE,
 		" />
-		
+
 			<property name="includeTypeTags" value="*" />
 			<property name="severity" value="info" />
 			<property name="logNoMatches" value="true" />
@@ -38,7 +38,7 @@
 			<property name="logInnerTypes" value="true" />
 			<property name="logInterfaces" value="true" />
 			<property name="trackTokenTypesUsedInMethods" value="true" />
-			
+
 
 
 			<property name="excludeClassRegularExpressions"
@@ -46,10 +46,11 @@
 				checkstyle.*,
 				test.simulation.*
 			" />
-			<property name="projectPackagePrefixes" value="test,lectures, main, mp, grail" />
+			<property name="projectPackagePrefixes"
+				value="test,lectures, main, mp, grail" />
 			<property name="existingClasses"
 				value="java.util.List, java.util.ArrayList, java.util.Vector, java.util.HashMap" />
-			
+
 			<property name="externalPackagePrefixes"
 				value="								
 								assignments.util,
@@ -64,44 +65,295 @@
 
 	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
 		<property name="severity" value="warning" />
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+		
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+		</module>
+		
+		<module name="ExpectedSetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+		
+		</module>
+		
+		<module name="ExpectedSetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+		
+		</module>
 		
 		<module name="ExpectedSignatures">
 			<property name="severity" value="warning" />
-			<property name="includeTypeTags" value="@Comp301Tags.GREETING_MAIN" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
 			<property name="expectedSignatures"
 				value="
-			main:String[]->void,
-		" />
+			rotate:int->void,
+			move:int;int->void
+			" />
 		</module>
-			<module name="ExpectedSignatures">
+
+		<module name="ExpectedSignatures">
 			<property name="severity" value="info" />
-			<property name="includeTypeTags" value="@Comp301Tags.GREETING_MAIN" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
 			<property name="expectedSignatures"
 				value="
-			main:String[]->void,
-		" />
+			rotate:int->void,
+			move:int;int->void,
+			" />
 		</module>
-		<module name="MissingMethodCall">
+
+		<module name="ExpectedGetters">
 			<property name="severity" value="warning" />
-			<property name="includeTypeTags" value="@Comp301Tags.GREETING_MAIN" />
-			<property name="callingMethod" value="main:String[]->void"/>
-			
-			<property name="expectedCalls"
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedProperties"
 				value="
-			java.io.PrintStream!println:*->.*,
+			LeftLine:@Comp301Tags.ROTATING_LINE,
+			RightLine:@Comp301Tags.ROTATING_LINE
 		" />
 		</module>
-		<module name="MissingMethodCall">
+
+		<module name="ExpectedGetters">
 			<property name="severity" value="info" />
-			<property name="includeTypeTags" value="@Comp301Tags.GREETING_MAIN" />
-			<property name="callingMethod" value="main:String[]->void"/>
-			
-			<property name="expectedCalls"
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedProperties"
 				value="
-			java.io.PrintStream!println:*->.*,
+			LeftLine:@Comp301Tags.ROTATING_LINE,
+			RightLine:@Comp301Tags.ROTATING_LINE
 		" />
 		</module>
 		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ANGLE" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+			" />
+		</module>
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ANGLE" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+			" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedProperties"
+				value="
+			StringShape:@STRING_PATTERN, 
+			Head:@IMAGE_PATTERN, 
+			Arms:@Comp301Tags.ANGLE,
+			Legs:@Comp301Tags.ANGLE
+		" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedProperties"
+				value="
+			StringShape:@STRING_PATTERN, 
+			Head:@IMAGE_PATTERN, 
+			Arms:@Comp301Tags.ANGLE,
+			Legs:@Comp301Tags.ANGLE
+		" />
+		</module>
+		
+	
+		
+		
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.AVATAR" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+				scale:double->void//EC
+			" />
+		</module>
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.AVATAR" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+				scale:double->void//EC
+			" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedProperties"
+				value="
+			Arthur:@Comp301Tags.AVATAR,			
+			Galahad:@Comp301Tags.AVATAR,
+			Lancelot:@Comp301Tags.AVATAR,
+			Robin:@Comp301Tags.AVATAR,
+		    Guard:@Comp301Tags.AVATAR,
+		" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedProperties"
+				value="
+			Arthur:@Comp301Tags.AVATAR,			
+			Galahad:@Comp301Tags.AVATAR,
+			Lancelot:@Comp301Tags.AVATAR,
+			Robin:@Comp301Tags.AVATAR,
+		    Guard:@Comp301Tags.AVATAR,
+		" />
+		</module>
+
+
+	
+		
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.AVATAR,
+						
+				" />
+		 </module>
+		 
+		 <module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.AVATAR,
+						
+				" />
+		 </module>
+		 
+		  <module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.ANGLE,
+						
+				" />
+		 </module>
+		 
+		  <module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.ROTATING_LINE,
+						
+				" />
+		 </module>
+		 
+		 <module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.BRIDGE_SCENE,
+						
+				" />
+		 </module>
+		 	 <module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+						
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.BRIDGE_SCENE,
+						
+				" />
+		 </module>
+		 
+		 <module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+			<property name="processCalledMethods" value="true" /> 
+			<property name="callingMethod" value="main:String[]->void"/>
+			
+			<property name="expectedCalls"
+				value="
+			(.*)!sleep:long->void,
+		" />
+		</module>
+		   
+		   <module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+			<property name="processCalledMethods" value="true" /> 			
+			<property name="callingMethod" value="main:String[]->void"/>
+			
+			<property name="expectedCalls"
+				value="
+			(.*)!sleep:long->void,
+		" />
+		</module>
+		   
+
 		<module name="DuplicateShortTypeName">
 			<property name="severity" value="warning" />
 			<property name="includeTypeTags" value="*" />
@@ -184,7 +436,7 @@
 			<property name="severity" value="info" />
 		</module>
 
-	
+
 
 
 		<module name="BulkierElse">
@@ -215,7 +467,7 @@
 			" />
 
 		</module>
-		
+
 		<module name="FinalParameterDefined">
 			<property name="severity" value="info" />
 		</module>
@@ -291,7 +543,7 @@
 		<module name="MissingSwitchDefault" />
 		<module name="FallThrough" />
 
-		
+
 		<module name="TypeName">
 
 		</module>
@@ -300,9 +552,9 @@
 		</module>
 		<module name="ParameterName">
 		</module>
-		<module name="LambdaParameterName"/>
+		<module name="LambdaParameterName" />
 
-	
+
 		<module name="LocalVariableName">
 
 		</module>
@@ -312,9 +564,9 @@
 		<module name="MethodTypeParameterName">
 
 		</module>
-		<module name="InterfaceTypeParameterName"/>
+		<module name="InterfaceTypeParameterName" />
 
-		
+
 		<module name="AbbreviationAsWordInName">
 			<property name="ignoreFinal" value="false" />
 			<property name="allowedAbbreviationLength" value="1" />
@@ -322,9 +574,9 @@
 		<module name="AvoidStarImport" />
 		<module name="RedundantImport" />
 		<module name="UnusedImports" />
-		
+
 		<module name="MethodName">
-			
+
 		</module>
 
 		<module name="EmptyCatchBlock">
@@ -351,12 +603,12 @@
 
 		<module name="MissingOverride" />
 		<module name="AvoidNestedBlocks" />
-		
+
 		<module name="InterfaceIsType" />
 		<module name="ThrowsCount">
 			<property name="max" value="4" />
 		</module>
-		<module name="CovariantEquals" />	
+		<module name="CovariantEquals" />
 		<module name="FinalLocalVariable" />
 		<module name="IllegalThrows" />
 		<module name="IllegalType" />
@@ -366,7 +618,7 @@
 			<property name="max" value="1" />
 		</module>
 		<module name="ParameterAssignment" />
-		
+
 		<module name="FinalParameters" />
 
 

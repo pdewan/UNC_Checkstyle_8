@@ -445,17 +445,28 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 		out.flush();
 	}
 	
+	void maybeCreateAppendableFile(String aFileName){
+	  String aFullFileName = aFileName;
+    File aFile = new File(aFullFileName);
+    boolean aNewFile = !aFile.exists();
+    if (aNewFile) {
+      boolean retVal = aFile.getParentFile().mkdirs();
+      int i = 0;
+    }
+	}
+	
 	
 	 void maybeCreateOrLoadAppendableFile(String aFileName) {
 		 if (out != null && bufWriter != null) {
 			 return;
 		 }
+		 maybeCreateAppendableFile(aFileName);
 	        String aFullFileName = aFileName;
-	        File aFile = new File(aFullFileName);
-	        boolean aNewFile = !aFile.exists();
-	        if (aNewFile) {
-	        	aFile.getParentFile().mkdirs();
-	        }
+//	        File aFile = new File(aFullFileName);
+//	        boolean aNewFile = !aFile.exists();
+//	        if (aNewFile) {
+//	        	aFile.getParentFile().mkdirs();
+//	        }
 	        try {
 	            bufWriter
 	                    = Files.newBufferedWriter(
@@ -507,18 +518,18 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 	@Override
 	public void maybeNewProjectDirectory(String aProjectDirectory, String aChecksName) {
 		// This is where the null pointer exception occurs
+	  if (aProjectDirectory != null) {
+	    logFileName = logDirectory(aProjectDirectory) + "/" + AConsentFormVetoer.LOG_DIRECTORY + "/" + aChecksName + ".csv";
+//	    maybeCreateOrLoadAppendableFile(logFileName);
+//	    maybeCreateAppendableFile(logFileName);
+	  }
 		if (aProjectDirectory == null || aProjectDirectory.equals(projectDirectry))
 			return;
 		reset();
 		projectDirectry = aProjectDirectory;
 //		if (logFileName == null)
-		logFileName = logDirectory(aProjectDirectory) + "/" + AConsentFormVetoer.LOG_DIRECTORY + "/" + aChecksName + ".csv";
-//		out = null;
-//		bufWriter = null;
-//		mergeWithLastPhase();
-//		fileNameToLastPhaseMessages.clear();
-//		fileNameToMessages.clear();
-//		reset();
+//		logFileName = logDirectory(aProjectDirectory) + "/" + AConsentFormVetoer.LOG_DIRECTORY + "/" + aChecksName + ".csv";
+
 		readLogFile();
 	}
 	

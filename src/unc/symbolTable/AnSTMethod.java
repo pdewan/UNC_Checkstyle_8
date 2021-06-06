@@ -665,9 +665,16 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 	// }
 	@Override
 	public Boolean instantiatesType(String aShortOrLongName) {
+	  if (typesInstantiated == null) {
+	    return false;
+	  }
 		for (STNameable anInsantiatedNameable : typesInstantiated) {
-			String anInstantiatedType = ComprehensiveVisitCheck.toShortTypeOrVariableName(anInsantiatedNameable.getName());
-			String anExpectedType = ComprehensiveVisitCheck.toShortTypeOrVariableName(aShortOrLongName);
+//			String anInstantiatedType = ComprehensiveVisitCheck.toShortTypeOrVariableName(anInsantiatedNameable.getName());
+      String anInstantiatedType = anInsantiatedNameable.getName();
+
+			//			String anExpectedType = ComprehensiveVisitCheck.toShortTypeOrVariableName(aShortOrLongName);
+	     String anExpectedType = aShortOrLongName;
+
 			Boolean result = ComprehensiveVisitCheck.matchesType(anExpectedType, anInstantiatedType);
 			if (result == null)
 				return null;

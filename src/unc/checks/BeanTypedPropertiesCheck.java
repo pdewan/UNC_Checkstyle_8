@@ -107,12 +107,18 @@ public abstract class BeanTypedPropertiesCheck extends BeanPropertiesCheck {
 	// checkTagsOfType(aSpecifiedType, anSTType);
 	// }
 	// }
+	
+//	public static String toTypeOrTag(STType anSTType) {
+//	  String aMatchedTags = anSTType.getMatchedTags();
+//    String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+//    return aTypeOrTag;
+//	}
 	protected void logPropertyMatchedOrNotMatched(STType anSTType, DetailAST aTreeAST, String aProperty,
 			String aType) {
-	  String aMatchedTags = anSTType.getMatchedTags();
-	  String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+//	  String aMatchedTags = anSTType.getMatchedTags();
+//	  String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
 //		System.out.println ("Bean:" + aType + " " + aProperty);
-		log (aTreeAST, aTreeAST, aProperty, aType, aTypeOrTag);
+		log (aTreeAST, aTreeAST, aProperty, aType, toTypeOrTag(anSTType));
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 //		if (aTreeAST == currentTree) {

@@ -794,7 +794,10 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   // }
 
   protected void maybeProcessGetter(STMethod anSTMethod) {
-
+    if (name.contains("Angle")) {
+      int i = 0;
+      i++;
+    }
     // if (!anSTMethod.isPublicGetter())
     // return;
     if (!anSTMethod.isGetter())
@@ -831,6 +834,10 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   // "void".equals(anSTMethod.getReturnType());
   // }
   protected void maybeProcessSetter(STMethod anSTMethod) {
+//    if (name.contains("Angle")) {
+//      int i = 0;
+//      i++;
+//    }
 
     // if (!anSTMethod.isPublicSetter())
     // return;

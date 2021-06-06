@@ -81,11 +81,13 @@ public abstract class ExpectedTypesCheck extends ComprehensiveVisitCheck {
 
 	}
 	
-	protected void logTypeMatchedOrNotMatched(DetailAST aTypeAST, DetailAST aTreeAST, String aType) {
+	protected void logTypeMatchedOrNotMatched(DetailAST aTypeAST, DetailAST aTreeAST, String aType, STType aMatchedType) {
 //		String aSourceName = shortFileName(astToFileContents.get(aTreeAST)
 //				.getFilename());
 		String aTypeName = getName(getEnclosingTypeDeclaration(aTypeAST));
-		super.log(aTypeAST, aTreeAST, aType, aTypeName);
+//		super.log(aTypeAST, aTreeAST, aType, aTypeName);
+		super.log(aTypeAST, aTreeAST, aType,  toTypeOrTag(aMatchedType));
+	
 //		if (aTreeAST == currentTree) {
 //			DetailAST aLoggedAST = aTreeAST;
 //			log(aLoggedAST.getLineNo(),  msgKey(), aSignature, aTypeName, aSourceName);
@@ -165,7 +167,7 @@ public abstract class ExpectedTypesCheck extends ComprehensiveVisitCheck {
 //			}
 	    if ((!hasMatched && !isInfo()) || (hasMatched && isInfo())) {
 //			if ((!hasMatched && logOnNoMatch()) || (hasMatched && !logOnNoMatch())) {
-				logTypeMatchedOrNotMatched(aTypeAST, aTreeAST, aSpecification);
+				logTypeMatchedOrNotMatched(aTypeAST, aTreeAST, aSpecification, anSTType);
 				if (retVal != null)
 					retVal = false;
 			}
