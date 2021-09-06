@@ -109,7 +109,7 @@ public abstract class MethodCallVisitedCheck extends ComprehensiveVisitCheck {
 	
 	protected void log(DetailAST ast, DetailAST aTreeAST, String aShortMethodName,
 		String aLongMethodName, CallInfo aCallInfo) {
-		log(ast, aTreeAST, aCallInfo.toString());
+		log(ast, aTreeAST, aLongMethodName, aCallInfo.toString());
 		
 	}
 

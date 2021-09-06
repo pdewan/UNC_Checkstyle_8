@@ -8,6 +8,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import unc.symbolTable.STMethod;
 import unc.symbolTable.STNameable;
 import unc.symbolTable.STType;
+import unc.symbolTable.SymbolTableFactory;
 import unc.tools.checkstyle.ProjectSTBuilderHolder;
 
 public abstract  class ClassInstantiatedCheck extends ComprehensiveVisitCheck {
@@ -106,10 +107,28 @@ public abstract  class ClassInstantiatedCheck extends ComprehensiveVisitCheck {
 ////	      }
 //
 //	    }
-	
+//	protected boolean processSupertypes = true;
+//	public boolean isProcessSupertypes() {
+//	  return processSupertypes;
+//	}
+//	public void setProcessSupertypes(boolean newVal) {
+//	  processSupertypes = newVal;
+//	}
 	protected boolean processString(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecifiedType, String aString) {
    List<STMethod> aMethods = anSTType.getInstantiatingMethods(aString);
    boolean found = aMethods != null && aMethods.size() > 0;
+   if (!found) {
+     if (isProcessSupertypes()) {
+       STNameable  aSuperTypeName = anSTType.getSuperClass();
+       if (aSuperTypeName != null) {
+         STType aSuperSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aSuperTypeName.getName());
+         if (aSuperSTType != null && !aSuperSTType.isExternal()) {
+           return processString(anAST, aTree, aSuperSTType, aSpecifiedType, aString);
+         }
+       }
+     }
+     
+   }
    if ((isInfo() && found) || (!isInfo() && !found) ) {
      String aMethodsText = found?aMethods.toString(): "no method";
    

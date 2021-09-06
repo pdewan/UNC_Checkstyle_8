@@ -41,9 +41,9 @@ public class PeerCommonPropertiesCheck extends BeanTypedPropertiesCheck{
 	
 	public int[] getDefaultTokens() {
 		return new int[] { 
-//				TokenTypes.PACKAGE_DEF,
-//				TokenTypes.CLASS_DEF,
-//				TokenTypes.INTERFACE_DEF
+				TokenTypes.PACKAGE_DEF,
+				TokenTypes.CLASS_DEF,
+				TokenTypes.INTERFACE_DEF
 				
 		};
 	}

@@ -17,24 +17,8 @@ public class DuplicateShortTypeNameCheck extends ComprehensiveVisitCheck {
 //				TokenTypes.ANNOTATION
 				};
 	}
-//	public void doVisitToken(DetailAST ast) {
-////    	System.out.println("Check called:" + msgKey());
-//
-//		if (maybeVisitPackage(ast) ) 
-//			return;
-//		
-//		DetailAST aTypeNameAST = ast.findFirstToken(TokenTypes.IDENT);
-//		String aTypeName = aTypeNameAST.getText();
-//		String aFullTypeName = packageName + "." + aTypeName;
-//		SymbolTable aSymbolTable = SymbolTableFactory.getOrCreateSymbolTable();
-//		if (aSymbolTable.matchingFullSTTypeNames(aTypeName).size() > 1) {
-//			System.out.println("dupliicateshortname:" + aFullTypeName);
-//			log(aTypeNameAST.getLineNo(), aTypeNameAST.getColumnNo(), msgKey(),
-//					aTypeNameAST.getText());
-//		}			
-////		SymbolTableFactory.getOrCreateSymbolTable().getInterfaceNameToAST().put(packageName + "." + aTypeName, ast);
-//		
-//	}
+		
+
 	public void visitType(DetailAST ast) {
 //    	System.out.println("Check called:" + msgKey());
 

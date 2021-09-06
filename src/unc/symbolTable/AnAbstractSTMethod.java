@@ -232,7 +232,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		 result.append(NAME_PARAMETER_SEPARATOR);
 		 result.append(toStringParameterTypes());
 		 result.append(PARAMETERS_RETURN_VALUE_SEPARATOR);
-		 result.append(TypeVisitedCheck.toShortTypeName(getReturnType()));
+//		 result.append(TypeVisitedCheck.toShortTypeName(getReturnType()));
+	    result.append(getReturnType());
+
 		 return result.toString();
 
 	 }

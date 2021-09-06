@@ -142,7 +142,10 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
         anOriginalSignature = aSpecification.getSignature();
       }
    
-      
+      if (!hasMatched) {
+        int i = 0;
+        i++;
+      }
 			if (!hasMatched && !isInfo() || hasMatched && isInfo()) {
 //				String anOriginalSignature = methodToSignature.get(aSpecification);
 //				if (anOriginalSignature == null) {
@@ -181,7 +184,7 @@ public  class ExpectedSignaturesCheck extends ComprehensiveVisitCheck {
 	public Boolean matchMethod(
 			STMethod aSpecification, List<STMethod> aMethods) {
 		for (STMethod aMethod : aMethods) {
-//			if (aMethod.getName().contains("parseSleep")) {
+//			if (aMethod.getName().contains("nheriting") && aSpecification.toString().contains("nheriting")) {
 //				System.out.println ("found candidate method");
 //			}
 //		  if (aMethod.getName().contains("approach")) {

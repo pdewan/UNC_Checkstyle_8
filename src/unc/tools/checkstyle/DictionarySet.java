@@ -43,7 +43,8 @@ public class DictionarySet {
       "val",
       "weka",
       "nio,",
-      "xml"
+      "xml",
+      "durations"
   };
   
   public static String[] toLowerCase(String[] aMixedCaseArray) {

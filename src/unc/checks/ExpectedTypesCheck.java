@@ -142,6 +142,10 @@ public abstract class ExpectedTypesCheck extends ComprehensiveVisitCheck {
 		aSingleElementCollection.add("");
 		STType anSTType = getSTType(aTypeAST);
 		for (String aSpecification : aSpecifications) {
+//		  if (aSpecification.contains("ouse")) {
+//		    int i = 0;
+//		     i++;
+//		  }
 			aSingleElementCollection.set(0, aSpecification);
 			if (findMatchingType (aSingleElementCollection, anSTType) != null) {
 				// cannot be subtype of yourself

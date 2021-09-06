@@ -409,7 +409,9 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   public Boolean matchSignature(STMethod aSpecification, STMethod aMethod) {
     // let someone else add this , some instance method that calls it
     variablesAdded.clear();
-
+    if (aSpecification == null) {
+      return true;
+    }
     String aDescriptor = aSpecification.getName();
     String aName = aMethod.getName();
     // New replacement lines
@@ -581,8 +583,13 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
   static Map<String, STMethod> signatureToSTMethod = new HashMap();
 
   public static STMethod signatureToMethod(String aSignature) {
+    
     STMethod retVal = signatureToSTMethod.get(aSignature);
     if (retVal == null) {
+      if (aSignature.contains("301Tags")) {
+        int i = 0;
+        i++;
+      }
       retVal = createMethodFromSignature(aSignature);
       signatureToSTMethod.put(aSignature, retVal);
     }
@@ -748,6 +755,10 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     while (anExtendedType != null) {
       if (anExtendedType.getType() == TokenTypes.IDENT) {
         String aDeclaredName = anExtendedType.getText();
+//        if (aDeclaredName.contains("Key")) {
+//          int i = 0;
+//          i++;
+//        }
         if (getShortTypeName().equals(aDeclaredName)) {
           System.err.println ("Setting Recursive super class:" + aDeclaredName);
         }
@@ -4370,7 +4381,12 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     return callingMethod;
   }
   protected  boolean checkCallingMethod(STMethod anActualMethod) {
-    return callingMethod == null || matchSignature(callingMethod, anActualMethod);
+    if (callingMethod == null) {
+      return true;
+    }
+    Boolean aMatchSignature = matchSignature(callingMethod, anActualMethod);
+    return aMatchSignature != null && aMatchSignature;
+//    return callingMethod == null || matchSignature(callingMethod, anActualMethod);
   }
 
   public void setCallingMethod(String callingMethodSignature) {

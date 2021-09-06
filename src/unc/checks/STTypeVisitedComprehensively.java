@@ -72,7 +72,7 @@ public abstract class STTypeVisitedComprehensively extends ComprehensiveVisitChe
             !aTypeCheck;
 //    if (!aTypeCheck)
     if (aDoLog)
-        log(ast, aTreeAST, anSTType.getName());
+        log(ast, aTreeAST, anSTType.getName(), toTagInformation());
     return aTypeCheck;
 	}
 	@Override

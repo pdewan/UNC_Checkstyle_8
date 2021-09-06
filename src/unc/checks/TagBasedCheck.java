@@ -590,7 +590,14 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
  
  public static boolean isExternalClass(String aFullClassName) {
 //	STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullClassName);
-	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullClassName);
+//	 STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullClassName);
+ STType anSTType = null;
+ if (aFullClassName.contains(".")) {
+   anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullClassName);
+ } else {
+   anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aFullClassName);
+
+ }
 
 	if (anSTType != null // what if we create existing classes, we may not have the external class in our path
 			)
@@ -1524,8 +1531,15 @@ public static  STType fromVariableToSTType(String aVariableName) {
 	if (aTypeName == null) {
 		return null;
 	}
+	 STType retVal = null;
+	if (aTypeName.contains(".")) {
+	  retVal = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aTypeName);
+	} else {
+	   retVal = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aTypeName);
+
+	}
 //	STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByShortName(aTypeName);
-	 STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aTypeName);
+	// STType retVal = SymbolTableFactory.getSymbolTable().getSTClassByFullName(aTypeName);
 	return retVal;
 }
 
@@ -2363,7 +2377,13 @@ public Boolean doStringArrayBasedPendingCheck(DetailAST anAST, DetailAST aTree) 
 //	return processStrings(anAST, aTree, anSTType, aStrings);
 	return retVal;
 }
-
+protected boolean processSupertypes = false;
+public boolean isProcessSupertypes() {
+  return processSupertypes;
+}
+public void setProcessSupertypes(boolean newVal) {
+  processSupertypes = newVal;
+}
 
  static {
  	javaLangTypesSet = new HashSet();

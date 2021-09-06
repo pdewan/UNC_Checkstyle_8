@@ -65,10 +65,12 @@ public class ASymbolTable implements SymbolTable{
 
 	@Override
 	public STType getSTClassByShortName(String aTypeName) {
+	  if (aTypeName.contains(".")) {
 		STType retVal = getSTClassByFullName(aTypeName);
 		if (retVal != null) {
 			return retVal;
 		}
+	  }
 		List<String> aFullNames =  matchingFullSTTypeNames(aTypeName);
 		if (aFullNames.size() == 0) {
 //			System.err.println("No full type name with short name" + aTypeName);
@@ -144,9 +146,9 @@ public class ASymbolTable implements SymbolTable{
 	@Override
 	public STType putSTType(String aName, STType anSTType) {
 		packageNames.add(aName);
-//		if (aName.equals("io.reactivex.rxjava3.internal.util.NotificationLite")) {
-//		  System.err.println("Found target type");
-//		}
+		if (aName.equals("SafeSocializationModel")) {
+		  System.err.println("Found target type");
+		}
 		if (aName.equals("java.lang.Object")) {
 		  objectType = anSTType;
 		}

@@ -417,8 +417,10 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 	public static int KEY_INDEX = 4;
 	public static int ARGS_INDEX = 5;
 
+	protected boolean errorGiven = false;
 
 	protected  void readLogFile() {
+	  try {
 		 List<String> aLines = toTextLines(logFileName);
 		 for (String aLine:aLines) {
 			 String[] aParts = aLine.split(",");
@@ -437,6 +439,12 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 			 readLog(anIsAddition, aSequenceNumber, keyName(false, aFileName, anArgs), aKey, anArgs);
 			 
 		 }
+	  } catch (Error e) {
+	    if (!errorGiven) {
+	      errorGiven = true;
+	      System.err.println("Read log error:" + e.getLocalizedMessage());
+	    }
+	  }
 	 }
 	void appendLine(String aLine) {
 //		System.out.println("logging:" + aLine);

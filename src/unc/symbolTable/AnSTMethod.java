@@ -676,8 +676,10 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 	     String anExpectedType = aShortOrLongName;
 
 			Boolean result = ComprehensiveVisitCheck.matchesType(anExpectedType, anInstantiatedType);
-			if (result == null)
-				return null;
+			if (result == null) {
+			  continue; // second pass, do not worry
+//				return null;
+			}
 			if (result)
 				return result;
 			// return result;

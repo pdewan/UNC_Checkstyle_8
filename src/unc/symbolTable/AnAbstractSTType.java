@@ -1707,7 +1707,10 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     }
     List<STNameable> retVal = null;
     if (allInterfaces == null) {
-
+      if (name.contains("ontroller")) { 
+        int i  = 0;
+        i++;
+      };
       // List<STNameable> result = new ArrayList();
       retVal = getAllInterfaces(this);
       if (retVal == null) {

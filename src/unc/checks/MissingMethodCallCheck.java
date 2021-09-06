@@ -137,9 +137,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
     boolean returnNull = false;
     // int i = 0;
     for (String aSpecification : aSpecifications) {
-      // if (aSpecification.contains("say")) {
-      // System.out.println ("found specification:");
-      // }
+//       if (aSpecification.contains("bridge")) {
+//       System.out.println ("found specification:");
+//       }
       boolean found = false;
       for (CallInfo aCallInfo : aCallsToBeChecked) {
         String aNormalizedLongName = toLongName(aCallInfo.getNormalizedCall());
@@ -233,8 +233,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
     boolean returnNull = false;
     // int i = 0;
     for (String aSpecification : aSpecifications) {
-//       if (aSpecification.contains("legs")) {
-//       System.out.println ("found specification:");
+//       if (aSpecification.contains("draw")) {
+//         int i = 0;
+//         i++;
 //       }
       boolean found = false;
       STMethod aFoundMethod = null;
@@ -265,6 +266,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
         } else {
 
           anAllCalledMethods = aCallingMethod.getAllDirectlyOrIndirectlyCalledMethods();
+//          if (aCallingMethod.getName().contains("paint") && aCallingMethod.getParameters() != null && aCallingMethod.getParameters().size() == 2) {
+//            int i = 0;
+//            i++;
+//          }
           if (aCallingMethod.isIndirectMethodsNotFullProcessed()) {
             indirectMethodsNotFullProcessed = true;
           }
@@ -273,9 +278,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
         // System.out.println ("found move");
         // }
         for (STMethod aCalledMethod : anAllCalledMethods) {
-          // if (aCalledMethod.getName().contains("reduce")) {
-          // System.err.println("found reduce:");
-          // }
+//           if (aCalledMethod.getName().contains("draw")) {
+//           System.err.println("found method:");
+//           }
 //          if (aCalledMethod.getName().contains("ingle")) {
 //            int i = 1;
 //          }
@@ -366,10 +371,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 
   protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
           boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
-    if (!found) {
-      int i = 0;
-      i++;
-    }
+//    if (!found) {
+//      int i = 0;
+//      i++;
+//    }
     if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) ||
             isInfo() && found) {
 //       if (aSpecification.contains("get.*")) {
