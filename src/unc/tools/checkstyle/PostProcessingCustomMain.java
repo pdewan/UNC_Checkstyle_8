@@ -69,7 +69,7 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String SOURCE = "D:/dewan_backup/Java/Assignment12Daniel/src/mp/scanner/ScanningIterator.java";
 //static final String SOURCE = "D:/dewan_backup/Java/Assignment12Daniel/src";
-static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A1.xml";
+static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A2.xml";
 
 static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src";
 //static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/safeSocialization/util/SafeSocializationUtil.java";

@@ -17,6 +17,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 
 public abstract class AnAbstractSTMethod extends AnSTNameable implements STMethod {
+  private static  boolean doNotFollowCallsIntoTaggedTypes = false;
 private static final String PARAMETERS_RETURN_VALUE_SEPARATOR = "->";
 private static final String NAME_PARAMETER_SEPARATOR = ":";
 //	final String declaringClass;
@@ -388,14 +389,15 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		@Override
 		public Set<STMethod> getAllDirectlyOrIndirectlyCalledMethods() {
 			if (allDirectlyOrIndirectlyCalledMethods == null || isIndirectMethodsNotFullProcessed()) {
-			  
+			  if (name.equals("main")) {
+          int i = 0;       
+        }
 				allDirectlyOrIndirectlyCalledMethods = computeAllDirectlyOrIndirectlyCalledMethods(new HashSet(), this);
 //				if (name.equals("main")) {
 //          System.err.println(" main methods of " + declaringSTType + " are " + allDirectlyOrIndirectlyCalledMethods);
 //          if (!allDirectlyOrIndirectlyCalledMethods.toString().contains("fire")) {
 //            System.err.println("Did not find fire");
-//          }
-          
+//          }          
 //        }
 			}
 			if (allDirectlyOrIndirectlyCalledMethods != null)
@@ -557,7 +559,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
           
       
         String aTaggedType = PostProcessingMain.toTaggedType(aCalledSTType);
-        if (aTaggedType != null ) {
+        if (aTaggedType != null && doNotFollowCallsIntoTaggedTypes ) {
           // we do not need to follow its called methods for practical purposes
           continue;
         }

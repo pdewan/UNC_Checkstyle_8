@@ -371,10 +371,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 
   protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
           boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
-//    if (!found) {
-//      int i = 0;
-//      i++;
-//    }
+    if (!found) {
+      int i = 0;
+      i++;
+    }
     if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) ||
             isInfo() && found) {
 //       if (aSpecification.contains("get.*")) {

@@ -115,6 +115,38 @@ public class MissingCommonMethodCallCheck extends MissingMethodCallCheck {
     maybeLog(anAST, aTree, anSTType, aSpecification, aMatchedAllMethods, indirectMethodsNotFullProcessed, aCallingMethods);
 
   }
+  public Boolean doPendingCheck(DetailAST ast, DetailAST aTreeAST) {
+    return super.doPendingCheck(ast, aTreeAST);
+  }
+  
+  protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
+          boolean found, boolean indirectMethodsNotFullProcessed, String aCallingMethodSignature) {
+//    if (!found) {
+//      int i = 0;
+//      i++;
+//    }
+    if ((!found && !indirectMethodsNotFullProcessed && !isInfo()) ||
+            isInfo() && found) {
+//       if (aSpecification.contains("get.*")) {
+//       System.out.println ("found specification");
+//       }
+      // String aCallingMethodSignature = getCallingMethod();
+
+      String aCaller = aCallingMethodSignature;
+      if (aCaller == null) {
+        aCaller = isInfo() ? "Some" : "Any";
+      }
+      log(anAST, aTree, aSpecification, aCallingMethodSignature, otherMethodSignatures, anSTType.getName() + ":" + toTagInformation());
+      // log(anAST, aTree, aSpecification, aCallingMethodSignature);
+//      doMethodCallLog(anSTType, anAST, aTree, aSpecification, aCaller, otherMethodSignatures);
+
+    }
+  }
+//  public void doFinishTree(DetailAST ast) {
+//    
+//    super.doFinishTree(ast);
+//
+//  }
 
 //  protected void maybeLog(DetailAST anAST, DetailAST aTree, STType anSTType, String aSpecification,
 //          boolean found, boolean indirectMethodsNotFullProcessed, STMethod anOtherMethod) {
