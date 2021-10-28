@@ -512,8 +512,13 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 			matchedTypeOrTagAST = anSTType.getAST();
 //				Boolean matches = matchesTypeUnifying(aSpecifiedType, anSTType.getName());
 			
-			
-				Boolean matches = matchesAllAndedSpecificationTag(Arrays.asList(anSTType.getComputedTags()), aSpecifiedType);
+			 STNameable[] aComputedTags = anSTType.getComputedTags();
+			 if (aComputedTags == null) {
+			   return null;
+			 }
+       Boolean matches = matchesAllAndedSpecificationTag(Arrays.asList(aComputedTags), aSpecifiedType);
+
+//				Boolean matches = matchesAllAndedSpecificationTag(Arrays.asList(anSTType.getComputedTags()), aSpecifiedType);
 
 				if (matches == null) {
 					return null;

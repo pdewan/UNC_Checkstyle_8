@@ -4393,17 +4393,19 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     this.callingMethodSignature = callingMethodSignature;
     callingMethod = signatureToMethod(callingMethodSignature);
   }
-protected static boolean processCalledMethods;
+protected  boolean processCalledMethods;
+protected static boolean lastProcessCalledMethods;
 public boolean isProcessCalledMethods() {
   return processCalledMethods;
 }
 
 public static boolean isProcessCalledMethodsStatic() {
-  return processCalledMethods;
+  return lastProcessCalledMethods;
 }
 
-public void setProcessCalledMethods(boolean processCalledMethods) {
-  this.processCalledMethods = processCalledMethods;
+public void setProcessCalledMethods(boolean newVal) {
+  this.processCalledMethods = newVal;
+  lastProcessCalledMethods = newVal;
 }
   
   //Compiling the regular expression

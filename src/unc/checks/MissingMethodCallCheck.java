@@ -26,6 +26,16 @@ public class MissingMethodCallCheck extends MethodCallCheck {
   public static final String MSG_KEY_INFO = "expectedMethodCall";
 
   public static final String WRONG_CALLER = "wrongCaller";
+  
+  protected boolean ignoreExternalMethods = false;
+
+  public boolean isIgnoreExternalMethods() {
+    return ignoreExternalMethods;
+  }
+
+  public void setIgnoreExternalMethods(boolean ignoreExternalMethods) {
+    this.ignoreExternalMethods = ignoreExternalMethods;
+  }
 
   @Override
   public int[] getDefaultTokens() {
@@ -203,6 +213,9 @@ public class MissingMethodCallCheck extends MethodCallCheck {
    */
   protected Boolean processStrings(DetailAST anAST, DetailAST aTree, STType anSTType,
           String aSpecifiedType, String[] aStrings) {
+//    if (aSpecifiedType != null && aSpecifiedType.contains("ontroller")) {
+//      int i = 0;
+//    }
     if (isProcessCalledMethods() && isFirstPass()) {
       return null;
     }
@@ -287,6 +300,10 @@ public class MissingMethodCallCheck extends MethodCallCheck {
 //          if (aCalledMethod != null && aCalledMethod.getName().contains("fire") && aSpecification.contains("fire")) {
 //            System.err.println("Should match");
 //          }
+          STType aCalledSTType = aCalledMethod.getDeclaringSTType();
+          if (isIgnoreExternalMethods() && aCalledSTType != null && aCalledSTType.isExternal()) {
+            continue;
+          }
           Boolean matches = matches(anSTType, maybeStripComment(aSpecification), aCallingMethod,
                   aCalledMethod);
 

@@ -218,7 +218,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 	 }
 	 String toStringMethod() {
 		 StringBuilder result = new StringBuilder();
-		 String aStatic = isInstance()?"":"static ";
+		 String aStatic = isInstance()?
+		         "":
+		           "static ";
 //		 String aPublic = isPublic()?"public":"";
 		 result.append(aStatic);
 		 String aSynchronized = isSynchronized()?"synchronized ": "";
@@ -389,9 +391,9 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		@Override
 		public Set<STMethod> getAllDirectlyOrIndirectlyCalledMethods() {
 			if (allDirectlyOrIndirectlyCalledMethods == null || isIndirectMethodsNotFullProcessed()) {
-			  if (name.equals("main")) {
-          int i = 0;       
-        }
+//			  if (name.equals("main")) {
+//          int i = 0;       
+//        }
 				allDirectlyOrIndirectlyCalledMethods = computeAllDirectlyOrIndirectlyCalledMethods(new HashSet(), this);
 //				if (name.equals("main")) {
 //          System.err.println(" main methods of " + declaringSTType + " are " + allDirectlyOrIndirectlyCalledMethods);

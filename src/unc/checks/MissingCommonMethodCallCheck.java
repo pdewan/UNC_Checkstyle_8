@@ -24,6 +24,10 @@ public class MissingCommonMethodCallCheck extends MissingMethodCallCheck {
   protected String otherMethodSignatures;
   protected STMethod[] otherSpecifiedSTMethods;
   protected List<STMethod> otherFoundSTMethods;
+  
+  public  MissingCommonMethodCallCheck() {
+    setIgnoreExternalMethods(true);
+  }
 
   @Override
   protected String msgKeyWarning() {

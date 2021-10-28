@@ -67,7 +67,9 @@ public class STBuilderCheck extends ComprehensiveVisitCheck {
   public static String configurationFileFullName;
   // protected static STType objectSTType;
 
-  public static final Map<String, String> classToConfiguredClass = new HashMap();
+//  public static final Map<String, String> classToConfiguredClass = new HashMap();
+  public static final Map<String, List<String>> classToConfiguredTags = new HashMap();
+
   static String[] projectPackagePrefixes = { "assignment", "project", "homework", "test", "comp",
       "proj", "ass", "hw" };
   static String[] excludeClassRegularExpressions = {};
@@ -406,9 +408,20 @@ maybeProcessConfigurationFileName();
     // SymbolTableFactory.getOrCreateSymbolTable().clear();
 
   }
+  protected void addConfiguredTagName(String aClass, String aTag) {
+    List<String> aTags = classToConfiguredTags.get(aClass);
+    if (aTags == null) {
+      aTags = new ArrayList();
+      classToConfiguredTags.put(aClass, aTags);
+    }
+    if (aTags.contains(aTag)) {
+      return;
+    }
+    aTags.add(aTag);
+  }
   protected List<String> duplicateTags= new ArrayList();
   protected void maybeProcessConfigurationFileName() {
-    classToConfiguredClass.clear();
+    classToConfiguredTags.clear();
     duplicateTags.clear();
     String aProjectDirectory = ProjectDirectoryHolder.getCurrentProjectDirectory();
     if (aProjectDirectory == null || configurationFileName == null) {
@@ -427,16 +440,19 @@ maybeProcessConfigurationFileName();
         }
         String aClass = aLineTokens[0];
         String aTag = aLineTokens[1];
-//        classToConfiguredClass.put(aLineTokens[0], aLineTokens[1]);
-        if (duplicateTags.contains(aClass)) {
-          continue;
-        }
-        if (classToConfiguredClass.get(aClass) != null) {
-          classToConfiguredClass.remove(aClass);
-          duplicateTags.add(aClass);
-          continue;
-        }
-        classToConfiguredClass.put(aClass, aTag);
+        // no longer expecting a single unique tag for class
+        
+//        if (duplicateTags.contains(aClass)) {
+//          continue;
+//        }
+//        if (classToConfiguredTags.get(aClass) != null) {
+//          classToConfiguredTags.remove(aClass);
+//          duplicateTags.add(aClass);
+//          continue;
+//        }
+//        classToConfiguredClass.put(aClass, aTag);
+        
+        addConfiguredTagName(aClass, aTag);
 //        if (aClass.contains("lient")) {
 //          System.err.println("found class");
 //        }
@@ -1230,17 +1246,36 @@ maybeProcessConfigurationFileName();
     if (aTypeName.startsWith("default.")) {
       aTypeName = shortTypeName;
     }
-    String aConfiguredName = classToConfiguredClass.get(aTypeName);
-
-
     addAllNoDuplicates(result, new HashSet(derivedTags));
+
+//    String aConfiguredName = classToConfiguredClass.get(aTypeName);
+//
+//
+////    addAllNoDuplicates(result, new HashSet(derivedTags));
+//    // moving this up
+//    configuredTags.clear();
+//    if (aConfiguredName != null) {
+//      STNameable aNameable = new AnSTNameable(aConfiguredName);
+//      configuredTags.add(aNameable);
+//      result.add(aNameable);
+//    }
+    result = addConfiguredTags(result, aTypeName);
+    return result;
+  }
+  
+  protected List<STNameable>  addConfiguredTags (List<STNameable> result, String aTypeName) {
     configuredTags.clear();
-    if (aConfiguredName != null) {
+    List<String> aConfiguredNames = classToConfiguredTags.get(aTypeName);
+    if (aConfiguredNames == null) {
+      return result;
+    }
+    for (String aConfiguredName:aConfiguredNames) {
       STNameable aNameable = new AnSTNameable(aConfiguredName);
       configuredTags.add(aNameable);
       result.add(aNameable);
     }
     return result;
+
   }
 
   protected List<STNameable> computedAndDerivedMethodTags() {
@@ -2044,7 +2079,7 @@ maybeProcessConfigurationFileName();
   // }
 
   public static void reset() {
-    STBuilderCheck.classToConfiguredClass.clear();
+    STBuilderCheck.classToConfiguredTags.clear();
     STBuilderCheck.configurationFileFullName = null;
     STBuilderCheck.configurationFileName = null;
     setFirstPass(true);
