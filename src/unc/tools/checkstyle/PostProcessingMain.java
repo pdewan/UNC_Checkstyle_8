@@ -481,6 +481,7 @@ public class PostProcessingMain {
     processDeclaredMethods(anSTType);
     processMethodsCalled(anSTType);
     processUnknownVariablesAccessed(anSTType);
+    processClassInstantiations(anSTType);
 //    processAccessModifiersUsed(anSTType);
     // processReferencesPerVariable(anSTType);
 
@@ -928,6 +929,42 @@ public class PostProcessingMain {
 
     }
   }
+  public static void processClassInstantiations(STType anSTType) {
+    String aTypeOutputName = toOutputType(anSTType);
+    if (aTypeOutputName == TagBasedCheck.MATCH_ANYTHING_REGULAR_EXPERSSION) {
+      return;
+    }
+    if (!TagBasedCheck.isExplicitlyTagged(anSTType)) {
+      return;
+    }
+    List<STNameable> aTypesInstantiated = anSTType.getTypesInstantiated();
+    if (aTypesInstantiated == null || aTypesInstantiated.size() == 0) {
+      return;
+    }
+    List<String> aClassesInstantiated = new ArrayList();
+    for (STNameable anInstantiatedType : aTypesInstantiated) {
+     
+      String anInstantiatedTypeName = anInstantiatedType.getName();
+      STType anInstatiatedSTType = SymbolTableFactory.getSymbolTable().getSTClassByFullName(anInstantiatedTypeName);
+       if (anInstatiatedSTType == null) {
+         anInstatiatedSTType = SymbolTableFactory.getSymbolTable().getSTClassByShortName(anInstantiatedTypeName);
+       }
+      if (anInstatiatedSTType == null || 
+              (!TagBasedCheck.isExplicitlyTagged(anSTType)) && !anSTType.isExternal()) { 
+                                                                
+        continue;
+      }
+      aClassesInstantiated.add(anInstantiatedTypeName);
+    }
+    printModuleSingleProperty("ExpectedClassInstantiations", "warning", aTypeOutputName, "instantiations",
+            aClassesInstantiated.toArray(stringArray));
+
+    printModuleSingleProperty("ExpectedClassInstantiations", "info", aTypeOutputName, "instantiations",
+            aClassesInstantiated.toArray(stringArray)); 
+ 
+  }
+  
+  
 
   protected static String getSubtypeTagged(STType anSTType) {
     if (TagBasedCheck.isExplicitlyTagged(anSTType)) {
@@ -1366,6 +1403,8 @@ public class PostProcessingMain {
       return;
     }
     printModuleSingleProperty("MissingMethodCall", "warning", aTypeOutputName, "expectedCalls",
+            aCalledTypeAndMethods.toArray(stringArray));
+    printModuleSingleProperty("MissingMethodCall", "info", aTypeOutputName, "expectedCalls",
             aCalledTypeAndMethods.toArray(stringArray));
   }
   
