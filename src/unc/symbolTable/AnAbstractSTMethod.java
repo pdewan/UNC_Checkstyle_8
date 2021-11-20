@@ -61,8 +61,103 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 	public  static final String SET = "set";
 	public static final String INIT = "init";
 	protected List<AccessModifierUsage> accessModifierUsage;
+  protected List<AccessModifierUsage> inheritedAccessModifierUsage;
+
+  
+	protected List<STMethod> overridingSubtypeMethods;
+	 protected List<STMethod> overridenSupertypeMethods;
+	 protected List<STType> overridenSupertypes;
+	 protected List<STType> overridingSubtypes;
+
+	 
+
+	@Override
+  public void addOverridingSubtypeMethod(STMethod anSTMethod) {
+     if (overridingSubtypeMethods == null) {
+       overridingSubtypeMethods = new ArrayList<>();
+       overridingSubtypes = new ArrayList();
+     }
+//     if (overridingSubtypeMethods.contains(anSTMethod)) {
+//       return;
+//     }
+     overridingSubtypeMethods.add(anSTMethod);
+     overridingSubtypes.add(anSTMethod.getDeclaringSTType());
+  }
+	
+  @Override
+  public void addOverridenSupertypeMethod(STMethod anSTMethod) {
+     if (overridenSupertypeMethods == null) {
+       overridenSupertypeMethods = new ArrayList<>();
+       overridenSupertypes = new ArrayList();
+     }
+//     if (overridingSubtypeMethods.contains(anSTMethod)) {
+//       return;
+//     }
+     overridenSupertypeMethods.add(anSTMethod);
+     overridenSupertypes.add(anSTMethod.getDeclaringSTType());
+  }
+	
+	public static boolean isSubtype (String aPotentialSubtype, String aPotentialSupertype) {
+	  
+	  if (aPotentialSubtype == aPotentialSupertype ||	          
+	          ((aPotentialSubtype != null ) && aPotentialSubtype.equals(aPotentialSupertype))) {
+	    return true;
+	  }	  
+	  if (aPotentialSubtype == null || aPotentialSupertype == null ) {
+	    return false;
+	  }
+	  STType aPotentialSTSubtype = 
+	          SymbolTableFactory.getOrCreateSymbolTable().
+	            getSTClassByFullName(aPotentialSubtype);
+	
+	  if (aPotentialSTSubtype == null ) {
+	    return false;
+	  }
+	  List<String> aPotentialSubtypeSupertypes = aPotentialSTSubtype.getSuperTypeNames();
+	  return (aPotentialSubtypeSupertypes != null && aPotentialSubtypeSupertypes.contains(aPotentialSupertype));
+	   
+	}
+	@Override
+	public boolean overrides(STMethod aSuperMethod) {
+	  if (!aSuperMethod.getName().equals(getName()) ||
+	          aSuperMethod.getNumParameters() != getNumParameters()) {
+	    return false;
+	  } 	  	  
+	  String myReturnType = getReturnType();
+	  String superMethodReturnType = aSuperMethod.getReturnType();
+	  if (!isSubtype(myReturnType, superMethodReturnType)) {
+	    return false;
+	  }
+	  for (int aParameterIndex = 0; aParameterIndex < getNumParameters(); aParameterIndex++ ) {
+	    String myParameterType = getParameterTypes()[aParameterIndex];
+	    String superParameterType = aSuperMethod.getParameterTypes()[aParameterIndex];
+	    if (!isSubtype(superParameterType, myParameterType)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	    
+	  
+	  
+	}
 	
 	
+  @Override
+  public List<STType> getOverridingSubtypes() {
+    return overridingSubtypes;
+  }
+  @Override
+  public List<STMethod> getOverridingSubtypeMethods() {
+    return overridingSubtypeMethods;
+  }  
+  @Override
+  public List<STType> getOverridenSupertypes() {
+    return overridenSupertypes;
+  }
+  @Override
+  public List<STMethod> getOverridenSupertypeMethods() {
+    return overridenSupertypeMethods;
+  }
 	public AnAbstractSTMethod(DetailAST ast, String name) {
 		super(ast, ComprehensiveVisitCheck.toShortTypeOrVariableName(name));
 		
@@ -420,6 +515,56 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 		public Set<STType> getCallingTypes() {
 			return callingTypes;
 		}
+		
+		protected void amplifyCallsToMe(
+		        List<AccessModifierUsage> anInheritedAccessModifiersUsed) {
+		  List<AccessModifierUsage> anAccessModifiersUsed = getAccessModifiersUsed();
+		  if (anAccessModifiersUsed == null) {
+		    return;
+		  }
+		  for (AccessModifierUsage anAccessModifierUsage:anAccessModifiersUsed) {
+		    anInheritedAccessModifiersUsed.add(anAccessModifierUsage.amplifyToProtectedIfPrivate());
+	      
+		  }
+		}
+		
+	  protected void addCallsToOverridenByMeMethod(
+            List<AccessModifierUsage> anInheritedAccessModifiersUsed, STMethod anOverridenMethod) {
+	    List<AccessModifierUsage> anAccessModifiersUsed = anOverridenMethod.getInheritedAccessModifiersUsed();
+	    if (anAccessModifiersUsed == null) return;
+	    for (AccessModifierUsage anAccessModifierUsage:anAccessModifiersUsed) {
+        anInheritedAccessModifiersUsed.add(anAccessModifierUsage);        
+      }
+    }
+	  
+	  protected void addCallsToOverridenByMeMethods(
+            List<AccessModifierUsage> anInheritedAccessModifiersUsed) {
+	    if (getOverridenSupertypeMethods() == null) return;
+	    for (STMethod anOverridenMethod:getOverridenSupertypeMethods()) {
+	      addCallsToOverridenByMeMethod(anInheritedAccessModifiersUsed, anOverridenMethod);
+	    }
+    }
+		
+	  @Override
+    public List<AccessModifierUsage> getInheritedAccessModifiersUsed() {
+//      if (STBuilderCheck.isFirstPass()) {
+//        return null;
+//      }
+		  if ((overridingSubtypeMethods == null || overridingSubtypeMethods.size() == 0) &&
+		       (overridenSupertypeMethods == null || overridenSupertypeMethods.size() == 0)) {
+		    return getAccessModifiersUsed();
+		  }		
+      if (inheritedAccessModifierUsage == null) {
+        inheritedAccessModifierUsage = new ArrayList();
+        amplifyCallsToMe(inheritedAccessModifierUsage);
+        addCallsToOverridenByMeMethods(inheritedAccessModifierUsage);        
+      }
+      return inheritedAccessModifierUsage;
+//      return AnSTVariable.getAccessModifiersUsed (this, getAccessModifier(), this.getDeclaringSTType(), callingTypes, getCallingMethods());
+      
+    }
+		
+	
 		@Override
 		public List<AccessModifierUsage> getAccessModifiersUsed() {
 //		  if (STBuilderCheck.isFirstPass()) {

@@ -86,6 +86,14 @@ public interface STMethod extends STNameable{
   Map<Integer, Integer> getTokenTypeCounts();
   TextBlock getJavaDocComment();
   void setJavaDocComment(TextBlock javaDocComment);
+  void addOverridingSubtypeMethod(STMethod anSTMethod);
+  List<STType> getOverridingSubtypes();
+  List<STMethod> getOverridingSubtypeMethods();
+  boolean overrides(STMethod aSuperMethod);
+  void addOverridenSupertypeMethod(STMethod anSTMethod);
+  List<STType> getOverridenSupertypes();
+  List<STMethod> getOverridenSupertypeMethods();
+  List<AccessModifierUsage> getInheritedAccessModifiersUsed();
 
 
 }

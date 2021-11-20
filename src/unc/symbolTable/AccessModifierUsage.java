@@ -59,6 +59,17 @@ public class AccessModifierUsage {
 	public String toString() {
 		return "(" + subject + ", " +  declared + ", " + used  + ", " + getDifference() + ", " + typeReferencing + ", " +  methodsReferencing + " )";
 	}
+	public AccessModifierUsage clone() {
+   
+    return new AccessModifierUsage(subject, declared, used, typeReferencing, methodsReferencing);
+  }
+	
+	public AccessModifierUsage amplifyToProtectedIfPrivate() {
+	  if (used != AccessModifier.PRIVATE) {
+	    return this;
+	  }
+	  return new AccessModifierUsage(subject, declared, AccessModifier.PROTECTED, typeReferencing, methodsReferencing);
+	}
 	
 
 }

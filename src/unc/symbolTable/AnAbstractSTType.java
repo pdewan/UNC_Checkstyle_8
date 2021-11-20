@@ -27,6 +27,8 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   protected boolean external = false;
 
   protected STMethod staticBlocks;
+  
+//  protected Map<STMethod, List<STType>> methodToOverriddingType;
 
   protected STMethod[] initMethods;
   // protected List<STVariable> globalSTVariables;
@@ -78,7 +80,12 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
 
   // Set<STType> superTypes = new HashSet();
 
- 
+//  public Map<STMethod, List<STType>> getMethodToOverriddingType() {
+//    if (methodToOverriddingType == null) {
+//      methodToOverriddingType = new HashMap<>();
+//    }
+//    return methodToOverriddingType;
+//  }
 
   public AnAbstractSTType(DetailAST ast, String name) {
     super(ast, name);
@@ -1959,6 +1966,30 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     // result.remove(getShortName());
     return nullToEmptyList(result);
   }
+  
+  protected void maybeAddOverridingMethods(STType anSTType) {
+    
+  }
+  
+  protected void setMethodOverridenBy(STMethod anSTMethod, STType aSubSTType) {
+    STMethod[] aSubSTMethods = aSubSTType.getDeclaredMethods();
+    for (STMethod aSubSTMethod:aSubSTMethods) {
+        if (aSubSTMethod.overrides(anSTMethod)) {
+          
+          anSTMethod.addOverridingSubtypeMethod(aSubSTMethod);
+          aSubSTMethod.addOverridenSupertypeMethod(anSTMethod);
+          return;
+        }
+    }
+   
+  }
+  
+  protected void setMethodsOverridenBy(STType aSubSTType) {
+    STMethod[] anSTMethods = getDeclaredMethods();
+    for (STMethod anSTMethod:anSTMethods) {
+        setMethodOverridenBy(anSTMethod, aSubSTType);       
+    }   
+  }
 
   public List<String> computeSubTypes() {
 
@@ -1991,9 +2022,11 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
       if (aSuperTypes == null)
         // return null;
         return computeMissingNameableList();
-      if (aSuperTypes.contains(name))
+      if (aSuperTypes.contains(name)) {
         // result.add(aNonSuperType);
         (result = nullToNewList(result)).add(aNonSuperType);
+        setMethodsOverridenBy(anSTType);
+      }
 
     }
     // result.remove(getShortName());

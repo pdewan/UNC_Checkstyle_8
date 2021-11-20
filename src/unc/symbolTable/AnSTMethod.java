@@ -59,6 +59,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 	protected Map<String, Set<DetailAST>> unknownAssigned;
 	protected Map<Integer, Integer> tokenTypeCounts;
 	protected TextBlock javaDocComment;
+	
 	@Override
   public TextBlock getJavaDocComment() {
     return javaDocComment;

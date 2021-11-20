@@ -64,7 +64,15 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 	  if ("static public  main:String[]->void".equals(anSTMethod.toString())) {
 	    return;
 	  }
-	  
+//	  // if abstract, let the overriding method calls be traced
+//	  if (anSTMethod.isAbstract()) {
+//	    return;
+//	  }
+//	 List<STMethod> anOverridingSTMethods = anSTMethod.getOverridingSubtypeMethods();
+//	 // same argument as abstract, maybe called only to be overriden in future
+//	 if (anOverridingSTMethods != null &&  anOverridingSTMethods.size() > 0) {
+//	   return;
+//	 }
 	
 
 		if (anSTMethod == null) {
@@ -74,12 +82,12 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 			return;
 		}
 		DetailAST methodDef = anSTMethod.getAST();
-		List<AccessModifierUsage> aUsages = anSTMethod.getAccessModifiersUsed();
+//		List<AccessModifierUsage> aUsages = anSTMethod.getAccessModifiersUsed();
+    List<AccessModifierUsage> aUsages = anSTMethod.getInheritedAccessModifiersUsed();
+
 		if (aUsages == null || aUsages.size() == 0) {
 			
-				if (!isInfo()) {
-					
-		
+				if (!isInfo()) {		
 				
 				log (anSTMethod.getAST(), anSTMethod.getSimpleChecksSignature(), anSTMethod.getAccessModifier().toString(), "None", "" + (AccessModifier.PRIVATE.ordinal() + 1 - anSTMethod.getAccessModifier().ordinal()),
 						"No Referencing Method", "No Access Modifiers" );
