@@ -459,7 +459,7 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
     boolean aNewFile = !aFile.exists();
     if (aNewFile) {
       boolean retVal = aFile.getParentFile().mkdirs();
-      int i = 0;
+//      int i = 0;
     }
 	}
 	

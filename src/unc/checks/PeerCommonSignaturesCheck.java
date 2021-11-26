@@ -233,6 +233,11 @@ public class PeerCommonSignaturesCheck extends ExpectedSignaturesCheck {
       // Boolean aHasSignature = AnSTType.containsMethod(aCommonSuperTypes, aMethod);
       // Boolean aHasSignature = AnSTType.containsDeclaredMethod(aCommonSuperTypes, aMethod);
       STType aHasSignature = AnSTType.containsDeclaredMethod(aCommonSuperTypes, aMethod);
+      
+      if (aHasSignature == SymbolTableFactory.getOrCreateSymbolTable().getAndMaybePutObjectType()) {
+        continue;
+      }
+
       if (aHasSignature == null) {
         aDuplicatedMethods.add(aMethod);
         if (!isInfo()) {

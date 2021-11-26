@@ -108,6 +108,7 @@ public interface STType extends STNameable{
 	STNameable[] getConfiguredTags();
 	STNameable[] getDerivedTags();
 	boolean isExternal();
+	boolean isUnknownExternal();
 	void setExternal(boolean external);
 	int getNumberOfAsserts();
 	int getNumberOfTernaryConditionals();

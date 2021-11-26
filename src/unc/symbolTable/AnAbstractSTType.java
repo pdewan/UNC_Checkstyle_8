@@ -2717,25 +2717,35 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     }
     return retVal;
   }
+  
+  
 
   public static STType containsDeclaredMethod(List<String> aList, STMethod aMethod) {
     // Boolean retVal = false;
     STType retVal = null;
-
+    boolean foundUnknownExternal = false;
     for (String aType : aList) {
       STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByShortName(aType);
       if (anSTType == null) {
         // retVal = null;
         continue;
-      }
+      }      
+      
+     
       if (anSTType == SymbolTableFactory.getOrCreateSymbolTable().getAndMaybePutObjectType()) {
         continue;
+      }
+      if (anSTType.isUnknownExternal()) {
+        foundUnknownExternal = true; 
       }
       retVal = containsDeclaredMethod(aType, aMethod);
       if (retVal != null) {
         return retVal;
       }
 
+    }
+    if (retVal == null && foundUnknownExternal) {
+      return SymbolTableFactory.getOrCreateSymbolTable().getAndMaybePutObjectType();
     }
     return retVal;
   }
@@ -2826,6 +2836,10 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   @Override
   public boolean isExternal() {
     return external;
+  }
+  @Override
+  public boolean isUnknownExternal() {
+    return false;
   }
 
   @Override

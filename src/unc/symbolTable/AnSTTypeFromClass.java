@@ -451,6 +451,10 @@ public class AnSTTypeFromClass extends AnAbstractSTType implements STType {
 	public boolean isExternal() {
 		return true;
 	}
+	 @Override
+	  public boolean isUnknownExternal() {
+	    return reflectedClass == null ;
+	  }
 //	@Override
 //	public Map<String, PropertyInfo> getDeclaredPropertyInfos() {
 //		return null;
