@@ -694,6 +694,7 @@ maybeProcessConfigurationFileName();
       // boolean hasSetUp = anSTMethod.hasAnnotation("Setup");
     }
     currentMethodName = null;
+   
 
   }
 

@@ -73,6 +73,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 
 	@Override
   public void addOverridingSubtypeMethod(STMethod anSTMethod) {
+	  initializedOverrides = true;
      if (overridingSubtypeMethods == null) {
        overridingSubtypeMethods = new ArrayList<>();
        overridingSubtypes = new ArrayList();
@@ -86,6 +87,7 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 	
   @Override
   public void addOverridenSupertypeMethod(STMethod anSTMethod) {
+    initializedOverriddens = true;
      if (overridenSupertypeMethods == null) {
        overridenSupertypeMethods = new ArrayList<>();
        overridenSupertypes = new ArrayList();
@@ -140,22 +142,46 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 	  
 	  
 	}
+	protected boolean initializedOverrides = false;
 	
-	
+	protected void initializeOverrides() {
+	  if (initializedOverrides)
+	    return;
+	  initializedOverrides = true;
+	  STType aDeclaringSTType = getDeclaringSTType();
+    if (aDeclaringSTType != null) {
+      aDeclaringSTType.initializeOverrides();
+    }
+	}
+	 protected boolean initializedOverriddens = false;
+
+	 protected void initializeOverriddens() {
+	    if (initializedOverriddens)
+	      return;
+	    initializedOverriddens = true;
+	    STType aDeclaringSTType = getDeclaringSTType();
+	    aDeclaringSTType.getSubSTTypes();
+	  }
+
   @Override
   public List<STType> getOverridingSubtypes() {
+    initializeOverrides();
     return overridingSubtypes;
   }
   @Override
   public List<STMethod> getOverridingSubtypeMethods() {
+    initializeOverrides();
     return overridingSubtypeMethods;
   }  
   @Override
   public List<STType> getOverridenSupertypes() {
+    initializeOverriddens();
+    
     return overridenSupertypes;
   }
   @Override
   public List<STMethod> getOverridenSupertypeMethods() {
+    initializeOverriddens();
     return overridenSupertypeMethods;
   }
 	public AnAbstractSTMethod(DetailAST ast, String name) {
@@ -550,10 +576,14 @@ private static final String NAME_PARAMETER_SEPARATOR = ":";
 //      if (STBuilderCheck.isFirstPass()) {
 //        return null;
 //      }
-		  if ((overridingSubtypeMethods == null || overridingSubtypeMethods.size() == 0) &&
-		       (overridenSupertypeMethods == null || overridenSupertypeMethods.size() == 0)) {
-		    return getAccessModifiersUsed();
-		  }		
+//		  if ((overridingSubtypeMethods == null || overridingSubtypeMethods.size() == 0) &&
+//		       (overridenSupertypeMethods == null || overridenSupertypeMethods.size() == 0)) {
+//		    return getAccessModifiersUsed();
+//		  }	
+		  if ((getOverridingSubtypeMethods() == null || getOverridingSubtypeMethods().size() == 0) &&
+		           (getOverridenSupertypeMethods() == null || getOverridenSupertypeMethods().size() == 0)) {
+		        return getAccessModifiersUsed();
+		      }
       if (inheritedAccessModifierUsage == null) {
         inheritedAccessModifierUsage = new ArrayList();
         amplifyCallsToMe(inheritedAccessModifierUsage);

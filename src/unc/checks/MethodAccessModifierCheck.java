@@ -64,6 +64,9 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
 	  if ("static public  main:String[]->void".equals(anSTMethod.toString())) {
 	    return;
 	  }
+//	  if (anSTMethod.toString().contains("afe")) {
+//	    int i = 0;
+//	  }
 //	  // if abstract, let the overriding method calls be traced
 //	  if (anSTMethod.isAbstract()) {
 //	    return;
@@ -141,6 +144,9 @@ public class MethodAccessModifierCheck extends ComprehensiveVisitCheck {
       return;
       
     }
+//    if (aTypeName.contains("eka")) {
+//      System.out.println();
+//    }
     STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aTypeName);
     if (anSTType == null) {
       System.err.println("Null STType :" + currentFullFileName);

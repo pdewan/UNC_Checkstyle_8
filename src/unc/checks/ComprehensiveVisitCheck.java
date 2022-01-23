@@ -2252,8 +2252,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
 
   // protected DetailAST lastFullIdentAST = null; /// hack hack !!!
   protected void visitIdent(DetailAST anIdentAST) {
-    // if (!checkIncludeExcludeTagsOfCurrentType())
-    // return;
+    
     // if (currentMethodIsConstructor) {
     // System.out.println("constructor");
     // }
@@ -2262,22 +2261,52 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     }
     if (getFullTypeName() == null)
       return;
+    
     // if (currentMethodName == null)
     // return;
+    
+    String anIdentName = anIdentAST.getText();
+    STNameable aGlobal = null;
+    STVariable aLocalVariable = null;
+    STVariable aParameter = null;
+
+    if (anIdentName != null) {
+       aGlobal =     getGlobalDeclaredVariable(anIdentName);
+    }
+    boolean isGlobal = aGlobal != null;
+    if (!isGlobal) {
+            
+         aLocalVariable =   getLocalVariable(anIdentName);
+    }
+
+    if (aLocalVariable == null && !isGlobal) {
+      aParameter = getParameterVariable(anIdentName);
+    }
+    boolean isVariable = isGlobal || aLocalVariable != null || aParameter != null;
+
     DetailAST aFullIdentAST = toFullIdentAST(anIdentAST);
     DetailAST aNextSibling = anIdentAST.getNextSibling();
-    if (aFullIdentAST != anIdentAST && aNextSibling != null
-            && aNextSibling.getType() == TokenTypes.IDENT) {
+    DetailAST aPreviousSibling = anIdentAST.getPreviousSibling();
+    if (!isVariable &&
+            aFullIdentAST != anIdentAST && 
+            aNextSibling != null
+            && aNextSibling.getType() == TokenTypes.IDENT ) {
       return;
     }
-    if (isMethodDefOrCall(aFullIdentAST) || isType(anIdentAST) || isAnnotation(anIdentAST)
-            || isInstantiation(anIdentAST)) {
+    
+    if (!isVariable && (
+            isMethodDefOrCall(aFullIdentAST) || 
+            isType(anIdentAST) || 
+            isAnnotation(anIdentAST)
+            || isInstantiation(anIdentAST))) {
       return;
     }
-    String anIdentName = anIdentAST.getText();
+//    String anIdentName = anIdentAST.getText();
     // if (fullTypeName.equals(anIdentName) || fullTypeName.endsWith("." + anIdentName )) {
     // return;
     // }
+    
+    
     Map<String, String> anOpenMethodScope = currentOpenScope();
 
     if (anOpenMethodScope != null) {
@@ -2286,21 +2315,27 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       }
     }
     FullIdent aFullIdent = FullIdent.createFullIdent(aFullIdentAST);
+    
+//    if (currentMethodName != null && currentMethodName.contains("eductionQueue")) {
+//      int i = 0;
+//    }
 
     String aFullIdentName = aFullIdent.getText();
+    
 
     boolean isLHSOfAssignment = isLHSOfAssignment(anIdentAST);
-    // STVariable aLocalVariable = getLocalVariable(anIdentName);
-    STVariable aLocalVariable = getLocalVariable(anIdentName);
-
-    STVariable aParameter = null;
-    if (aLocalVariable == null) {
-      aParameter = getParameterVariable(anIdentName);
-    }
-    if (anIdentAST.getParent().getType() == TokenTypes.DOT) {
-      aLocalVariable = null;
-      aParameter = null;
-    }
+//    STVariable aLocalVariable = getLocalVariable(anIdentName);
+//
+//    STVariable aParameter = null;
+//    if (aLocalVariable == null) {
+//      aParameter = getParameterVariable(anIdentName);
+//    }
+    
+    // why?
+//    if (anIdentAST.getParent().getType() == TokenTypes.DOT) {
+//      aLocalVariable = null;
+//      aParameter = null;
+//    }
     if (isLHSOfAssignment) {
       // STVariable aVariable = getLocalVariable(anIdentName);
       if (aLocalVariable != null) {
@@ -2318,42 +2353,19 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     if (aLocalVariable != null || aParameter != null) {
       return; // not interested in accesses
     }
-    // if (!isGlobal(anIdentName))
-    // return;
-    // if (isLHSOfAssignment(anIdentAST)) {
-    // if (isLHSOfAssignment) {
-    // List<DetailAST> aLHSs = globalIdentToLHS.get(anIdentName);
-    // if (aLHSs == null) {
-    // aLHSs = new ArrayList();
-    // globalIdentToLHS.put(anIdentName, aLHSs);
-    // }
-    // aLHSs.add(anIdentAST);
-    // } else {
-    // List<DetailAST> aRHSs = globalIdentToRHS.get(anIdentName);
-    // if (aRHSs == null) {
-    // aRHSs = new ArrayList();
-    // globalIdentToRHS.put(anIdentName, aRHSs);
-    // }
-    // aRHSs.add(anIdentAST);
-    // }
-    STNameable aGlobal = getGlobalDeclaredVariable(anIdentName);
-    boolean isGlobal = aGlobal != null;
+    if (!inMethodOrConstructor) {
+      return; // a declaration
+    }
+//  
+//    STNameable aGlobal = getGlobalDeclaredVariable(anIdentName);
+//    boolean isGlobal = aGlobal != null;
     // boolean isGlobal = isGlobalDeclaredVariable(anIdentName);
     if (!isGlobal) {
       // unknownVariablesAccessedByCurrentMethod.add(aFullIdentName);
       addToUnknownsAccessed(aFullIdentName, anIdentAST);
     } else {
       addToGlobalsAccessed(anIdentName, anIdentAST);
-      // Set<DetailAST> anAccesses = globalsAccessedByCurrentMethod.get(anIdentName);
-      // if (anAccesses == null) {
-      // anAccesses = new HashSet();
-      // globalsAccessedByCurrentMethod.put(anIdentName, anAccesses);
-      // }
-      // anAccesses.add(anIdentAST);
-      // if (!globalsAccessedByCurrentMethod.contains(anIdentName)) {
-      //// globalsAccessedByCurrentMethod.add(anIdentName);
-      // globalsAccessedByCurrentMethod.add(fullTypeName + "." + anIdentName);
-      // }
+      
 
     }
 
@@ -2362,16 +2374,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       if (isGlobal) {
         currentMethodAssignsToGlobalVariable = true; // this now redundant
         addToGlobalsAssigned(anIdentName, anIdentAST);
-        // Set<DetailAST> anAssignments = globalsAssignedByCurrentMethod.get(anIdentName);
-        // if (anAssignments == null) {
-        // anAssignments = new HashSet();
-        // globalsAssignedByCurrentMethod.put(anIdentName, anAssignments);
-        // }
-        // anAssignments.add(anIdentAST);
-        // if (!globalsAssignedByCurrentMethod.contains(anIdentName)) {
-        //
-        // globalsAssignedByCurrentMethod.add(fullTypeName + "." + anIdentName);
-        // }
+        
         List<DetailAST> aLHSs = globalIdentToLHS.get(anIdentName);
         if (aLHSs == null) {
           aLHSs = new ArrayList();
@@ -2379,7 +2382,6 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
         }
         aLHSs.add(anIdentAST);
       } else {
-        // unknownVariablesAssignedByCurrentMethod.add(anIdentName);
         addToUnknownsAssigned(aFullIdentName, anIdentAST);
       }
 
@@ -2391,28 +2393,7 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
       }
       aRHSs.add(anIdentAST);
     }
-    // if (isGlobalAssignedVariable) {
-    // currentMethodAssignsToGlobalVariable = true; // this now redundant
-    // if (!globalsAssignedByCurrentMethod.contains(anIdentName)) {
-    //
-    // globalsAssignedByCurrentMethod.add(anIdentName);
-    // }
-    // List<DetailAST> aLHSs = globalIdentToLHS.get(anIdentName);
-    // if (aLHSs == null) {
-    // aLHSs = new ArrayList();
-    // globalIdentToLHS.put(anIdentName, aLHSs);
-    // }
-    // aLHSs.add(anIdentAST);
-    //
-    // } else {
-    // List<DetailAST> aRHSs = globalIdentToRHS.get(anIdentName);
-    // if (aRHSs == null) {
-    // aRHSs = new ArrayList();
-    // globalIdentToRHS.put(anIdentName, aRHSs);
-    // }
-    // aRHSs.add(anIdentAST);
-    // }
-    //
+    
 
   }
 

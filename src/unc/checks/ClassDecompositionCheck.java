@@ -129,8 +129,10 @@ public  class ClassDecompositionCheck extends ComprehensiveVisitCheck {
 		return false;
 	}
 	protected boolean ignoredMethod(STMethod anSTMethod) {
-		return anSTMethod == null || anSTMethod.getGlobalsAccessed() == null || anSTMethod.getGlobalsAccessed().isEmpty() ||
-				!checkIncludeExcludeTagsOfMethod(Arrays.asList(anSTMethod.getComputedTags()));
+//		return anSTMethod == null || anSTMethod.getGlobalsAccessed() == null || anSTMethod.getGlobalsAccessed().isEmpty() ||
+//				!checkIncludeExcludeTagsOfMethod(Arrays.asList(anSTMethod.getComputedTags()));
+    return anSTMethod == null || anSTMethod.getGlobalVariablesAccessed() == null || anSTMethod.getGlobalVariablesAccessed().isEmpty() ||
+            !checkIncludeExcludeTagsOfMethod(Arrays.asList(anSTMethod.getComputedTags()));
 	}
 	
 	
@@ -156,13 +158,23 @@ public  class ClassDecompositionCheck extends ComprehensiveVisitCheck {
 	
 	public static boolean acessesCommonVariables (STMethod anSTMethod1, STMethod anSTMethod2) {
 		
-		return !intersection (
-				anSTMethod1.getGlobalsAccessed(),
-				anSTMethod2.getGlobalsAccessed()).isEmpty();
+//		boolean anOriginalRetVal = !intersection (
+//				anSTMethod1.getGlobalsAccessed(),
+//				anSTMethod2.getGlobalsAccessed()).isEmpty();
+		
+		
 //		Set<String> aSet1 = new HashSet(aVariables1);
 //		Set<String> aSet2 = new HashSet(aVariables2);
 //		boolean retVal = aSet1.retainAll(aSet2);
 		
+		boolean aNewRetVal = !intersection (
+		        anSTMethod1.getGlobalVariablesAccessed(),
+		        anSTMethod2.getGlobalVariablesAccessed()).isEmpty();
+//		if (anOriginalRetVal != aNewRetVal ) {
+//		  System.out.println ("globalsAccessed !=globalVariablesAccessed");
+//		}
+		
+		return aNewRetVal;
 		
 	}
 		

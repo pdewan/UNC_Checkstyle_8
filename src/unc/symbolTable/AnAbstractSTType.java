@@ -1970,6 +1970,33 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   protected void maybeAddOverridingMethods(STType anSTType) {
     
   }
+  public STType getSuperClassSTType() {
+    if (stSuperClass == null) {
+    
+    STNameable aSuperClassName = getSuperClass();
+    if (aSuperClassName == null) {
+      return null;
+    }
+    stSuperClass = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aSuperClassName.getName());
+    }
+    return stSuperClass;
+  }
+  protected boolean initializedOverrides = false;
+  @Override
+  public void initializeOverrides() {
+    if (initializedOverrides)
+      return;
+    initializedOverrides = true;
+    if (!isClass()) {
+      return;
+    }
+    STType aSuperClass = getSuperClassSTType();
+    if (aSuperClass == null) {
+      return;
+    }
+    aSuperClass.getSubSTTypes();
+    
+  }
   
   protected void setMethodOverridenBy(STMethod anSTMethod, STType aSubSTType) {
     STMethod[] aSubSTMethods = aSubSTType.getDeclaredMethods();
@@ -1984,7 +2011,8 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
    
   }
   
-  protected void setMethodsOverridenBy(STType aSubSTType) {
+  @Override
+  public void setMethodsOverridenBy(STType aSubSTType) {
     STMethod[] anSTMethods = getDeclaredMethods();
     for (STMethod anSTMethod:anSTMethods) {
         setMethodOverridenBy(anSTMethod, aSubSTType);       

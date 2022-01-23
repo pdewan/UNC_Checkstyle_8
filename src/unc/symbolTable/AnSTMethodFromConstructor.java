@@ -290,6 +290,11 @@ public class AnSTMethodFromConstructor extends AnAbstractSTMethod implements STM
     // TODO Auto-generated method stub
     
   }
+  @Override
+  public Set<String> getGlobalVariablesAccessed() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 	
 	
 

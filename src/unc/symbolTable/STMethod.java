@@ -94,6 +94,7 @@ public interface STMethod extends STNameable{
   List<STType> getOverridenSupertypes();
   List<STMethod> getOverridenSupertypeMethods();
   List<AccessModifierUsage> getInheritedAccessModifiersUsed();
+  Set<String> getGlobalVariablesAccessed();
 
 
 }

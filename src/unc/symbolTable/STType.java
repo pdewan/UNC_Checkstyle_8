@@ -190,4 +190,6 @@ public interface STType extends STNameable{
   void setAllTags(STNameable[] newVal);
   void setAllTagsSet(Set<STNameable> newVal);
   Set<STNameable> getAllTagsSet();
+  void setMethodsOverridenBy(STType aSubSTType);
+  void initializeOverrides();
 }

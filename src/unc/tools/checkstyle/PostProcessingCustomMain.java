@@ -62,6 +62,13 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 //C:\Users\dewan\Downloads\RxJava-3.x\src\main\java\io\reactivex\rxjava3\internal\schedulers\SchedulerPoolFactory.java (null st method)
 
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/301-ss21/unc_checks_301_A1.xml";
+static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533_s22/unc_checks_533_A1.xml";
+//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src/Assignment1/MapperFactory.java";
+static final String SOURCE = "G:/My Drive/533/s22/Andrew's A2/Andrew's A2/src/comp533/MVC/ModelAssignment2.java";
+
+
+//static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src";
+
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/grail13/Logs/LocalChecks/unc_checks_301_A1.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/grail13/Logs/LocalChecks/unc_checks_301_A2.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/Assignment12Daniel/Logs/LocalChecks/unc_checks_301_A1_1.xml";
@@ -70,10 +77,10 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 //static final String SOURCE = "D:/dewan_backup/Java/Assignment12Daniel/src/mp/scanner/ScanningIterator.java";
 //static final String SOURCE = "D:/dewan_backup/Java/Assignment12Daniel/src";
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A2.xml";
-static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A5.xml";
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A5.xml";
 
 //static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src";
-static final String SOURCE = "D:/dewan_backup/Java/lisp-interpreter-devel/src";
+//static final String SOURCE = "D:/dewan_backup/Java/lisp-interpreter-devel/src";
 //static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/safeSocialization/util/SafeSocializationUtil.java";
 //static final String SOURCE = "D:/dewan_backup/Java/grail13/src";
 //static final String SOURCE = "D:/dewan_backup/Java/grail13/src/main/Assignment1.java";

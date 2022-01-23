@@ -49,6 +49,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 //	protected List<String> globalsAccessed;
 	protected Map<String, Set<DetailAST>> globalsAssignedMap;
 	protected Map<String, Set<DetailAST>> globalsAccessedMap;
+	protected Set<String> globalVariablesAccessed = new HashSet<>();
 	
 	protected Map<String, Set<DetailAST>> unknownAccessed;
 
@@ -152,7 +153,7 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 			Map<Integer, Integer> aTokenTypeCounts,
 			TextBlock aJavaDocComment) {
 		super(ast, name);
-//		if ( name != null && name.contains("setConnectedToSimulation")) {
+//		if ( name != null && name.contains("getReductionQueueList")) {
 //			System.err.println("found preobleantic method");
 //		}
 		this.declaringClass = declaringClass;
@@ -707,6 +708,12 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 	public Set<String> getGlobalsAccessed() {
 		return globalsAccessedMap.keySet();
 	}
+	
+	@Override
+  public Set<String> getGlobalVariablesAccessed() {
+//    return globalsAccessedMap.keySet();
+    return globalVariablesAccessed;
+  }
 
 	@Override
 	public Integer getAccessToken() {
@@ -854,6 +861,12 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 			}
 		}
 	}
+	
+	protected boolean isConstant(STVariable aVariable) {
+	  return aVariable.isFinal() && 
+	          !aVariable.isInstance() && 
+	          aVariable.getName().toUpperCase().equals(aVariable.getName());
+	}
 	/*
 	 * Duplicated code in method below, should remove duplication
 	 */
@@ -867,6 +880,11 @@ public class AnSTMethod extends AnAbstractSTMethod implements STMethod {
 			STType anSTType = getDeclaringSTType();
 			if (anSTType != null) {
 				STVariable anSTVariable = anSTType.getDeclaredGlobalSTVariable(aLongName);
+//				if (!anSTVariable.isFinal() ) {
+	      if (!isConstant(anSTVariable)) {
+
+				  globalVariablesAccessed.add(aLongName);
+				} 
 				if (anSTVariable != null) {
 					Set<DetailAST> aReferences = globalsAccessedMap.get(aLongName);
 					Set<DetailAST> anAssignments = globalsAssignedMap.get(aLongName);
