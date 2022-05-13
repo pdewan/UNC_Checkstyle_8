@@ -2585,14 +2585,31 @@ public abstract class ComprehensiveVisitCheck extends TagBasedCheck
     // first?
   }
 
+//  public boolean isGlobalAssignedVariable(DetailAST anIdentAST) {
+//    String aName = anIdentAST.getText();
+//    DetailAST aPreviousSibling = anIdentAST.getPreviousSibling();
+//    return (lookupLocal(aName) == null || 
+//            (anIdentAST.getPreviousSibling() != null
+//            && (anIdentAST.getPreviousSibling().getType() == TokenTypes.LITERAL_THIS)
+//            || anIdentAST.getPreviousSibling().getText().equals(shortTypeName)
+//
+//            )) && isLHSOfAssignment(anIdentAST);
+//
+//  }
   public boolean isGlobalAssignedVariable(DetailAST anIdentAST) {
     String aName = anIdentAST.getText();
+    DetailAST aPreviousSibling = anIdentAST.getPreviousSibling();
+    return (lookupLocal(aName) == null || 
+              (
+                      aPreviousSibling != null
+                    && (
+                            (aPreviousSibling.getType() == TokenTypes.LITERAL_THIS)
+                            || aPreviousSibling.getText().equals(shortTypeName)
+                       )
 
-    return (lookupLocal(aName) == null || (anIdentAST.getPreviousSibling() != null
-            && (anIdentAST.getPreviousSibling().getType() == TokenTypes.LITERAL_THIS)
-            || anIdentAST.getPreviousSibling().getText().equals(shortTypeName)
-
-    )) && isLHSOfAssignment(anIdentAST);
+               )
+           ) && 
+            isLHSOfAssignment(anIdentAST);
 
   }
 

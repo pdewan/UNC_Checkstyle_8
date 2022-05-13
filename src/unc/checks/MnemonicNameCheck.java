@@ -426,6 +426,11 @@ public class MnemonicNameCheck extends STTypeVisited {
 //		if (!typeCheck(anSTClass))
 //    		super.logType(ast);
 	}
+	static boolean excludeNumbers = false;
+	static public boolean inDictionary(String aComponentLowerCase) {
+	  return (DictionarySet.getDictionary().contains(aComponentLowerCase) &&
+            (!excludeNumbers || !DictionarySet.getNumbers().contains(aComponentLowerCase)));
+	}
 //	static List emptyList = new ArrayList();
 	public static List<String> getDictonaryComponents(String aName) {
 	  String[] aComponents = ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName);
@@ -436,7 +441,11 @@ public class MnemonicNameCheck extends STTypeVisited {
 	  for (String aComponent:aComponents) {
 	    if (aComponent.isEmpty()) continue;
 	    String aComponentLowerCase = aComponent.toLowerCase();
-	    if (DictionarySet.getDictionary().contains(aComponentLowerCase)) {
+//	    if (DictionarySet.getDictionary().contains(aComponentLowerCase)) {
+//	    if (DictionarySet.getDictionary().contains(aComponentLowerCase) &&
+//	          (excludeNumbers && !DictionarySet.getNumbers().contains(aComponentLowerCase))) {
+	    if (inDictionary(aComponentLowerCase)) {
+
 	      (result = AnSTNameable.nullToNewList(result)).add(aComponentLowerCase);
 	    }
 	  }

@@ -7,6 +7,7 @@ public class NameComponentMetrics {
 	public int numLetters;
 	public int numVowels;
 	public int numDigits;
+	public Boolean hasNumberWords;
 	public Boolean isDictionaryWord;
 
 public static boolean isVowel(char c) {
@@ -29,8 +30,14 @@ public static NameComponentMetrics computeComponentMetrics(String aName) {
 	if (retVal.numDigits > 0) {
 	  retVal.isDictionaryWord = null;
 	  
-	} else
-	retVal.isDictionaryWord = DictionarySet.getDictionary().contains(aName.toLowerCase());
+	} else {
+//	retVal.isDictionaryWord = DictionarySet.getDictionary().contains(aName.toLowerCase());
+	  String aNameLowerCase = aName.toLowerCase();
+//	 retVal.isDictionaryWord = MnemonicNameCheck.inDictionary(aName.toLowerCase());
+	  retVal.isDictionaryWord = MnemonicNameCheck.inDictionary(aNameLowerCase);
+	  retVal.hasNumberWords = DictionarySet.getNumbers().contains(aNameLowerCase);
+	}
+
 //	retVal.isDictionaryWord = retVal.numDigits > 0 || DictionarySet.getDictionary().contains(aName);
 
 	retVal.numChars = aName.length();

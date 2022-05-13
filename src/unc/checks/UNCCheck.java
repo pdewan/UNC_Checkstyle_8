@@ -562,7 +562,11 @@ public abstract class UNCCheck extends AbstractCheck {
 	}
 	// file set check gets all files
 	protected boolean fileNameCheck(String aFileName) {
-		return aFileName.endsWith(".java");
+	  
+	  return true;
+	   // why do we need this, Treewalker etc already check this
+
+//		return aFileName.endsWith(".java") || aFileName.endsWith(".pj");
 	}
 
 	public void visitToken(DetailAST ast) {

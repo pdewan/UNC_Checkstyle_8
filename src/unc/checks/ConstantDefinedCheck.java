@@ -59,7 +59,11 @@ public class ConstantDefinedCheck
 //    public ConstantDefinedCheck() {
 //        super("^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$");
 //    }
-	public static final String MSG_KEY = "constantDefined";
+	public static final String MSG_KEY_INFO = "constantDefined";
+	 public static final String MSG_KEY_WARNING = "constantDefinedWithNumberSpelledOut";
+//   public static final String MSG_KEY_WARNING = LiberalMagicNumberCheck.MSG_KEY;
+
+
 
 //    @Override
 //    public int[] getDefaultTokens() {
@@ -70,15 +74,39 @@ public class ConstantDefinedCheck
 //    public int[] getAcceptableTokens() {
 //        return new int[] {TokenTypes.VARIABLE_DEF};
 //    }
+	  boolean isInfo() {
+	   return UNCCheck.INFO.equals(getSeverity());
+	 }
     @Override
     public void visitToken(DetailAST ast) {
         if (mustCheckName(ast)) {
             final DetailAST nameAST = ast.findFirstToken(TokenTypes.IDENT);
+            String aName = nameAST.getText();
+            String[] aComponents = ComprehensiveVisitCheck.splitCamelCaseHyphenDash(aName);
+            for (String aComponent:aComponents) {
+              NameComponentMetrics aMetrics = NameComponentMetrics.computeComponentMetrics(aComponent);
+              if (aMetrics.hasNumberWords != null && aMetrics.hasNumberWords  ) {
+                if (!isInfo()) {
+                log(nameAST.getLineNo(),
+                        nameAST.getColumnNo(),
+                        MSG_KEY_WARNING,
+//                        nameAST.getText());
+                    aName, aName);
+                } //if info just return in this case
+                return;
+              }
+            }
+            
+            if (!isInfo()) {
+              return;
+            }
+            // ths should be reached only
 //            if (!getRegexp().matcher(nameAST.getText()).find()) {
                 log(nameAST.getLineNo(),
                     nameAST.getColumnNo(),
-                    MSG_KEY,
-                    nameAST.getText());
+                    MSG_KEY_INFO,
+//                    nameAST.getText());
+                aName);
 //            }
         }
     }

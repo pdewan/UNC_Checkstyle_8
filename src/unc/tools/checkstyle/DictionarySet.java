@@ -34,6 +34,41 @@ import unc.tools.checkstyle.dictionary.DictionaryZ;
 
 public class DictionarySet {
   static Set<String> dictionarySet;
+  static String[] numbers = {
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen",
+      "nineteen",
+      "twenty",
+      "thirty",
+      "forty",
+      "fifty",
+      "sixty",
+      "seventy",
+      "eighty",
+      "ninety",
+      "hundred",
+      "thousand",
+      "million",
+      "billion"
+  };
+  static Set<String> numberSet;
+
   static String[] extraWords = {
       "io", 
       "cpu",
@@ -53,6 +88,13 @@ public class DictionarySet {
     }
     return aMixedCaseArray;
     
+  }
+  public static Set<String> getNumbers() {
+    if (numberSet == null) {
+      numberSet = new HashSet();
+      numberSet.addAll(Arrays.asList(numbers));
+    }
+    return numberSet;
   }
   public static Set<String> getDictionary() {
 	  if (dictionarySet == null) {

@@ -203,7 +203,7 @@ public class LiberalMagicNumberCheck extends ComprehensiveVisitCheck{
 	        log (ast, text, aTopMostText);
 	    }
 	    
-	    protected DetailAST getTopMostExpression(DetailAST anAST) {
+	    public static DetailAST getTopMostExpression(DetailAST anAST) {
 	    	DetailAST aParent = anAST.getParent();
 	    	if (aParent == null || !(aParent.getType() == TokenTypes.EXPR || aParent.getType() == TokenTypes.ELIST)) {
 	    		return anAST;
