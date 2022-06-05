@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +74,9 @@ public class PostProcessingMain {
   static String[] externalMethodRegularExpressions;
   static String[] externalClassRegularExpressions;
 //  static Collection<STType> sTTypes;
-  static Collection<STType> sTTypes = new ArrayList();
+//  static Collection<STType> sTTypes = new ArrayList();
+  static List<STType> sTTypes = new ArrayList();
+
   static final String DEFAULT_GENERATED_CHECKS_FILE_NAME = "generated_checks.xml";
   static final String DUMMY_FILE_NAME = "firstpassresults.text";
   static final String EXTERNALS_FILE_NAME = "externals.csv";
@@ -245,8 +248,8 @@ public class PostProcessingMain {
   }
 
   public static void generateChecks(Collection<STType> anSTTypes) {
-    Set<String> aTags = new HashSet();
-    Set<String> anAndedTagsList = new HashSet();
+    Set<String> aTags = new HashSet(); // this does not seem to be used
+    Set<String> anAndedTagsSet = new HashSet();
     for (STType anSTType : anSTTypes) {
 //      if (anSTType.getName().contains("lient")) {
 //        System.out.println("found type");
@@ -256,8 +259,9 @@ public class PostProcessingMain {
       String anAndedTags = toTaggedType(anSTType);
       if (anAndedTags != null) {
 //        System.err.println ("An anded string:" + anAndedTags);
-        anAndedTagsList.add(anAndedTags);
+        anAndedTagsSet.add(anAndedTags);
       }
+      // what is the point of the two loops as tags are no longer used
       for (STNameable aNameable : anExplicitTags) {
         aTags.add(TagBasedCheck.TAG_CHAR + aNameable.getName());
       }
@@ -268,11 +272,14 @@ public class PostProcessingMain {
 
 //    printSingleProperty("expectedTypes", aTags.toArray(emptyStrings));
 //    printModuleSingleProperty(aModule, aSeverity, aScopingType, aProperty, aPropertyValues);("expectedTypes", aTags.toArray(emptyStrings));
-
+    List<String> anAndedTagsList = new ArrayList(anAndedTagsSet);
+    Collections.sort(anAndedTagsList);
     printModuleSingleProperty("ClassDefined", "info", null,
             "expectedTypes", 
 //            aTags.toArray(emptyStrings)
+//            anAndedTagsSet.toArray(emptyStrings)
             anAndedTagsList.toArray(emptyStrings)
+
             );
     for (STType anSTType : anSTTypes) {
       generateCheckData(anSTType);
@@ -735,6 +742,7 @@ public class PostProcessingMain {
     if (anInterfaces == null) {
       anInterfaces = Arrays.asList(anSTType.getDeclaredInterfaces());
     }
+    Collections.sort(anInterfaces);
     List<String> aRequiredInterfaces = new ArrayList();
     for (STNameable anInterface : anInterfaces) {
       String aFullName = anInterface.getName();
@@ -787,6 +795,7 @@ public class PostProcessingMain {
     if (aSuperClasses == null) {
       aSuperClasses = Arrays.asList(anSTType.getSuperClass());
     }
+    Collections.sort(aSuperClasses);
     List<String> aRequiredClasses = new ArrayList();
     for (STNameable aSuperClass : aSuperClasses) {
       String aFullName = aSuperClass.getName();
@@ -1805,7 +1814,10 @@ public class PostProcessingMain {
 
         System.err.println("Generating checks:" + new Date(System.currentTimeMillis()));
 
-        generateChecks(sTTypes);
+//        generateChecks(sTTypes);
+        Collections.sort(sTTypes);
+      generateChecks(sTTypes);
+
         System.err.println("Finished Generating checks:" + new Date(System.currentTimeMillis()));
 
       }

@@ -200,7 +200,9 @@
 		 
 
 	</module>
-	<module name="TreeWalker">		
+	<module name="TreeWalker">	
+		<property name="fileExtensions" value="pj, java" />
+		
 		<module name="EqualsAvoidNull" />
 		<module name="EmptyStatement" />
 		<module name="SimplifyBooleanExpression" />

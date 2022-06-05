@@ -87,7 +87,7 @@ public  class AnExtendibleTreeWalker extends AbstractFileSetCheck implements Ext
      * Creates a new {@code TreeWalker} instance.
      */
     public AnExtendibleTreeWalker() {
-        setFileExtensions("java, pj");
+        setFileExtensions("java", "pj");
     }
 
     /**

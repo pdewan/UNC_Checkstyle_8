@@ -216,6 +216,10 @@ public  class AnSTNameable implements STNameable {
   public boolean hasAnnotation(List<String> anAnnotationNames) {
     return AnnotationUtil.containsAnnotation(ast, anAnnotationNames );
   }
+  @Override
+  public int compareTo(Object o) {
+    return toString().compareTo(o.toString());
+  }
 	
 //	public static void main (String[] args) {
 //		String[] aSplit = ComprehensiveVisitCheck.splitCamelCase("hel_loABC23Goo-dbye");

@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 	public static final String SUBMISSION_FOLDER_NAME = "Submission attachment(s)";
 	protected  PrintWriter out = null;
@@ -427,9 +426,16 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 			 if (aParts.length < ARGS_INDEX) {
 				 continue; // perhaps a blank line
 			 }
-			 int aSequenceNumber = Integer.parseInt(aParts[SEQUENCE_NUMBER_INDEX]);
+			 int aSequenceNumber = 0;
+			 Boolean anIsAddition = false;
+//			 try {
+			  aSequenceNumber = Integer.parseInt(aParts[SEQUENCE_NUMBER_INDEX]);
 			 Date aDate = new Date( aParts[DATE_INDEX]);
-			 Boolean anIsAddition = Boolean.parseBoolean(aParts[IS_ADDITION_INDEX]);
+			  anIsAddition = Boolean.parseBoolean(aParts[IS_ADDITION_INDEX]);
+//			 } catch (Exception e) {
+//			   System.err.println("Parsing problem:" + e);
+//			   return;
+//			 }
 			 String aFileName = aParts[FILE_NAME_INDEX];
 			 String aKey = aParts[KEY_INDEX];
 			 String[] anArgs = new String[aParts.length - ARGS_INDEX];
