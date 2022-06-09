@@ -228,17 +228,17 @@ public abstract class TypeVisitedCheck extends UNCCheck {
 //	    	isGeneric =  (typeNameAST.getNextSibling().getType() == TokenTypes.TYPE_PARAMETERS);
 			 
 			 shortTypeName = myPop(shortTypeNameStack);
-			 if (shortTypeName == null) {
-			   System.err.println ("null short type name");
-			 }
+//			 if (shortTypeName == null) {
+//			   System.err.println ("null short type name");
+//			 }
 //			 shortTypeNameStack.pop();
 //			 shortTypeName = shortTypeNameStack.peek();
 //			fullTypeName = myPop(fullTypeNameStack);
 			 
 			 String aFullTypeName = myPop(fullTypeNameStack);
-			 if (aFullTypeName == null) {
-			   System.err.println("Null full type name:" + currentFullFileName);
-			 }
+//			 if (aFullTypeName == null) {
+//			   System.err.println("Null full type name:" + currentFullFileName);
+//			 }
 			 setFullTypeName(aFullTypeName);
 //			setFullTypeName(myPop(fullTypeNameStack));
 //			fullTypeNameStack.pop();
