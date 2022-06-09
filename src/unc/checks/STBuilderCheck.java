@@ -19,6 +19,7 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 
 import unc.symbolTable.ACallInfo;
 import unc.symbolTable.AnSTMethod;
@@ -1476,6 +1477,22 @@ maybeProcessConfigurationFileName();
     // PostProcessingMain.doSecondPass(anExistingEntry);
     return true; // do not add entry again
   }
+  public void maybeVisitTypeTags(DetailAST ast) { 
+    if (typeTagsInitialized) return;
+    super.maybeVisitTypeTags(ast);
+    if (typeTags.isEmpty()) {
+      for (STNameable aComputedTag:computedTypeTags) {
+        if (expectedTypes.contains(aComputedTag.getName())) {
+          typeTags = new ArrayList();
+          typeTags.add(aComputedTag); // do we really need all
+          break;
+        }
+      }
+    }
+//    
+  }
+  
+  
 
   protected void createNewEntry() {
     processImports();
