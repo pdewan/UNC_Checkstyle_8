@@ -463,6 +463,41 @@ maybeProcessConfigurationFileName();
       return;
     }
   }
+  public static Map<String, List<String>> processConfigurationFileName(String aConfigurationFileFullName) {
+  
+    Map<String, List<String>> aClassToConfiguredTags = new HashMap();
+    Scanner aScanner;
+    try {
+      aScanner = new Scanner(new File(aConfigurationFileFullName));
+      
+      while (aScanner.hasNext()) {
+        String aLine = aScanner.nextLine();
+        String[] aLineTokens = aLine.split(",");
+        if (aLineTokens.length != 2) {
+          return null;
+        }
+        String aClass = aLineTokens[0];
+        String aTag = aLineTokens[1];
+        List<String> aTags = aClassToConfiguredTags.get(aClass);
+        if (aTags == null) {
+          aTags = new ArrayList();
+          aClassToConfiguredTags.put(aClass, aTags);
+        }
+        if (!aTags.contains(aTag)) {
+        aTags.add(aTag);
+        }
+      
+        
+//        if (aClass.contains("lient")) {
+//          System.err.println("found class");
+//        }
+
+      }
+    } catch (FileNotFoundException e) {
+      return null;
+    }
+    return aClassToConfiguredTags;
+  }
 
   protected void maybeProcessExistingClasses() {
     if (existingClassesFilled) {
@@ -1069,6 +1104,7 @@ maybeProcessConfigurationFileName();
       addSTType(anSTClass);
 
       upateCurrentSTTType(anSTClass);
+      checkTags(ast); // this is done somewhere else also, do it now
     }
     leaveType(ast);
 
@@ -1538,8 +1574,11 @@ maybeProcessConfigurationFileName();
     // anSTClass.findDelegateTypes();
     // SymbolTableFactory.getOrCreateSymbolTable().getTypeNameToSTClass().put(
     // fullTypeName, anSTClass);
+//    checkTags(typeAST); // a third call to it
     addSTType(anSTClass);
     upateCurrentSTTType(anSTClass);
+    checkTags(typeAST); // a third call to it
+
     // log (typeNameAST.getLineNo(), msgKey(), fullTypeName);
     // if (!defined) {
     // // log(ast.getLineNo(), MSG_KEY);
@@ -1841,12 +1880,23 @@ maybeProcessConfigurationFileName();
   }
 
   public void checkTags(DetailAST ast) {
+    if (currentSTType == null || currentSTType.getMatchedTags() != null) {
+      return; // we have already done this, when the sttype was created
+    }
     List<String> checkTags = new ArrayList(overlappingTags ? expectedTypes : unmatchedTypes);
     // System.err.println("Checking full type name: " + fullTypeName);
-    if (tagMatches.containsKey(getFullTypeName())) {
-      tagMatches.remove(getFullTypeName());
+    String aFullName = getFullTypeName();
+    if (aFullName == null) {// no idea why that may happen, probbaly related to inner classes
+      if (currentSTType != null ) {
+        aFullName = currentSTType.getName();
+      }
+    }
+    if (tagMatches.containsKey(aFullName)) {
+
+//    if (tagMatches.containsKey(getFullTypeName())) {
+      tagMatches.remove(aFullName);
       if (!overlappingTags) {
-        unmatchedTypes.remove(tagMatches.get(getFullTypeName()));
+        unmatchedTypes.remove(tagMatches.get(aFullName));
       }
     }
 
@@ -1858,8 +1908,16 @@ maybeProcessConfigurationFileName();
     StringBuffer aTags = null;
 
     for (String anExpectedClassOrTag : checkTags) {
-      if (matchesMyType(maybeStripComment(anExpectedClassOrTag))) {
-        tagMatches.put(getFullTypeName(), anExpectedClassOrTag);
+      boolean aMatch = matchesMyType(maybeStripComment(anExpectedClassOrTag), aFullName);
+      if (aMatch) {
+
+//      if (matchesMyType(maybeStripComment(anExpectedClassOrTag), aFullName)) {
+//        String aName = getFullTypeName();
+        if (aFullName != null) {
+//        tagMatches.put(getFullTypeName(), anExpectedClassOrTag);
+        tagMatches.put(aFullName, anExpectedClassOrTag);
+
+        }
         // matchedTypes.add(fullTypeName);
         unmatchedTypes.remove(anExpectedClassOrTag);
         // if (shownMissingClasses) {

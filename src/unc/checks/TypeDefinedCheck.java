@@ -69,7 +69,7 @@ public class TypeDefinedCheck extends ComprehensiveVisitCheck{
     	
     	boolean aFoundMatch = false;
     	for (String anExpectedClassOrTag:checkTags) {
-    		if ( matchesMyType(maybeStripComment(anExpectedClassOrTag))) {
+    		if ( matchesMyType(maybeStripComment(anExpectedClassOrTag), getFullTypeName())) {
     			tagMatches.put(getFullTypeName(), anExpectedClassOrTag);
 //    			matchedTypes.add(fullTypeName);
     			unmatchedTypes.remove(anExpectedClassOrTag);

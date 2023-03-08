@@ -813,12 +813,15 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
  static STNameable[] nameables = {};
 
 //for some reason this is not supposed to call matchedMyType with clas name
-	public Boolean matchesMyType(String aDescriptor) {
+	public Boolean matchesMyType(String aDescriptor, String aFullName) {
 //		String aClassName = shortTypeName;
+	  
 		if (aDescriptor == null || aDescriptor.length() == 0 || aDescriptor.equals(MATCH_ANYTHING))
 			return true;
 		if (aDescriptor.startsWith(TAG_STRING)) {
-			STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(getFullTypeName());
+//			STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(getFullTypeName());
+	    STType anSTType = SymbolTableFactory.getOrCreateSymbolTable().getSTClassByFullName(aFullName);
+
 			if (anSTType == null) {
 				return false;
 			}
@@ -833,9 +836,15 @@ public abstract class TagBasedCheck extends TypeVisitedCheck{
 				return null;
 			}
 
-			return containsEfficient(Arrays.asList(checkTags), aDescriptor, shortTypeName);
+//			return containsEfficient(Arrays.asList(checkTags), aDescriptor, shortTypeName);
+	     return containsEfficient(Arrays.asList(checkTags), aDescriptor, aFullName);
+
 		} else {
-			return unifyingMatchesNameVariableOrTag(aDescriptor, shortTypeName, null) ||  unifyingMatchesNameVariableOrTag(aDescriptor, getFullTypeName(), null);
+//			return unifyingMatchesNameVariableOrTag(aDescriptor, shortTypeName, null) ||  unifyingMatchesNameVariableOrTag(aDescriptor, getFullTypeName(), null);
+      return unifyingMatchesNameVariableOrTag(aDescriptor, aFullName, null); 
+               
+//              unifyingMatchesNameVariableOrTag(aDescriptor, toShortTypeName(aFullName), null);
+
 		}
 			
 //		} else if (aDescriptor.startsWith("$")) {
@@ -2325,7 +2334,10 @@ protected  Boolean processStrings(DetailAST anAST, DetailAST aTree, STType anSTT
 }
  public static String toTypeOrTag(STType anSTType) {
    String aMatchedTags = anSTType.getMatchedTags();
-   String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+   String aTypeName = anSTType.getName();
+//   String aTypeOrTag = aMatchedTags == null ?anSTType.getName():aMatchedTags;
+   String aTypeOrTag = aMatchedTags == null ?aTypeName:aTypeName + "["+ aMatchedTags + "]";
+
    return aTypeOrTag;
  }
 

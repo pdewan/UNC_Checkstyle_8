@@ -63,11 +63,18 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/301-ss21/unc_checks_301_A1.xml";
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/UNC_Checkstyle_8/checks/533_s22/unc_checks_533_A1.xml";
-static final String CHECKSTYLE_CONFIGURATION = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\Logs\\LocalChecks\\unc_checks_concurrency.xml";
+//static final String CHECKSTYLE_CONFIGURATION = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\Logs\\LocalChecks\\unc_checks_concurrency.xml";
 
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment2/src/";
 //static final String SOURCE = "D:/dewan_backup/Java/eclipse-neon/HelloWorld/src/HelloWorld.pj";
-static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src\\Hello.java";
+//static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src\\ConcurrentOddNumbers.java";
+
+static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/eclipse/Comp301A0/Logs/LocalChecks/unc_checks_style.xml";
+static final String SOURCE = "D:/dewan_backup/Java/eclipse/Comp301A0";
+
+
+
+//static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src";
 
 //static final String SOURCE = "D:/dewan_backup/Java/eclipse-neon/HelloWorld/src/HelloWorld.java";
 

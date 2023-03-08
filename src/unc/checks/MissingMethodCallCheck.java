@@ -246,7 +246,7 @@ public class MissingMethodCallCheck extends MethodCallCheck {
     boolean returnNull = false;
     // int i = 0;
     for (String aSpecification : aSpecifications) {
-//       if (aSpecification.contains("draw")) {
+//       if (aSpecification.contains("parse")) {
 //         int i = 0;
 //         i++;
 //       }
@@ -375,7 +375,8 @@ public class MissingMethodCallCheck extends MethodCallCheck {
     
     String aSpecifiedCallingMethodSignature = getCallingMethod();
     String anActualCallingMethodSignature = aCallingMethod == null?null:aCallingMethod.getSimpleChecksSignature();
-    String aCallingMethodOutput =  aSpecifiedCallingMethodSignature != null?"Method:" + aSpecifiedCallingMethodSignature:
+    String aCallingMethodOutput =  aSpecifiedCallingMethodSignature != null?
+            "Method:" + aSpecifiedCallingMethodSignature:
           anActualCallingMethodSignature != null? "Some method (" + anActualCallingMethodSignature + ")" :  "No method";
     
     

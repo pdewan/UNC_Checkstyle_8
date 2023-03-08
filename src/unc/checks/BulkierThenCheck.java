@@ -105,13 +105,17 @@ public class BulkierThenCheck extends ComprehensiveVisitCheck{
 //
 //		   }
 		   double aThenElseRatio = numStatementsInThenPart/numStatementsInElsePart ;
+	      double anElseThenRatio = 1.0/aThenElseRatio;
+
 			   
-		   if (!isInfo() && aThenElseRatio > maxThenElseRatio) {
+		   if (!isInfo() && 
+		           aThenElseRatio > maxThenElseRatio) {
 //		         logBulkierThen(aThenPart);
 //		        log(aThenPart, "Then#:" + numStatementsInThenPart + " Else#: " +numStatementsInElsePart );
 		        log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
 
-		    } else if (isInfo() && aThenElseRatio < minThenElseRatio ) {
+		    } else if (isInfo() && 
+		            aThenElseRatio < minThenElseRatio ) {
 		        log(aThenPart, "" + numStatementsInThenPart,  "" +numStatementsInElsePart, "" + numStatementsInThenPart/numStatementsInElsePart );
 
 		       }

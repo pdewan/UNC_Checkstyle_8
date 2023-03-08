@@ -289,7 +289,10 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 	}
 	protected  Boolean matches (STType aCallingType, String aSpecifier, STMethod aCallingMethod, STMethod aCalledMethod ) {
 //		String aCallingType = toShortTypeOrVariableName(aCallingSTType.getName());
-		String[] aCallerAndRest = aSpecifier.split(CALLER_TYPE_SEPARATOR);
+//	  if (aCalledMethod.toString().contains("parse") && (aSpecifier.contains("parse"))) {
+//	    int ii = 0;
+//	  }
+ 		String[] aCallerAndRest = aSpecifier.split(CALLER_TYPE_SEPARATOR);
 		String aCaller = MATCH_ANYTHING_REGULAR_EXPERSSION;
 //		if (aSpecifier.contains("get.*") && aCalledMethod.getName().contains("get")) {
 //		  System.err.println("Found offendin match");
@@ -306,7 +309,7 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 			return false;
 		}
 		
-		String[] aTypeAndSignature = aNonTargetPart.split(TYPE_SIGNATURE_SEPARATOR);
+		String[] aTypeAndSignature = aNonTargetPart.split(TYPE_SIGNATURE_SEPARATOR);// type does not see to be used
 		String aSignature = aNonTargetPart;
 		if (aTypeAndSignature.length == 2) {
 			aSignature = aTypeAndSignature[1];
@@ -320,6 +323,9 @@ public abstract  class MethodCallCheck extends MethodCallVisitedCheck {
 		if (aMatch == null) {
 			return null;
 		}
+//  if (aCalledMethod.toString().contains("parse") && (aSpecifier.contains("parse")) && !aMatch) {
+//  int ii = 0;
+//}
 		return aMatch;
 //		if (aMatch) // check if there is a direct call by the specified method
 //		// if (retVal)
