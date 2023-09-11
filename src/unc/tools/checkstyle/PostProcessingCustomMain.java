@@ -69,10 +69,11 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 //static final String SOURCE = "D:/dewan_backup/Java/eclipse-neon/HelloWorld/src/HelloWorld.pj";
 //static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src\\ConcurrentOddNumbers.java";
 
-static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/eclipse/Comp301A0/Logs/LocalChecks/unc_checks_style.xml";
-static final String SOURCE = "D:/dewan_backup/Java/eclipse/Comp301A0";
+//static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/eclipse/Comp301A0/Logs/LocalChecks/unc_checks_style.xml";
+//static final String SOURCE = "D:/dewan_backup/Java/eclipse/Comp301A0";
 
-
+  static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLTeaching/PL_Java/Logs/LocalChecks/unc_checks_byteman_test.xml";
+  static final String SOURCE = "D:/dewan_backup/Java/PLTeaching/PL_Java/src/byteman/examples";
 
 //static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src";
 

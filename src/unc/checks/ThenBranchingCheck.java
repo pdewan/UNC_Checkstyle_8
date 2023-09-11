@@ -3,6 +3,8 @@ package unc.checks;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import unc.tools.checkstyle.UNCAstTreeStringPrinter;
+
 public class ThenBranchingCheck extends ComprehensiveVisitCheck{
 	public static final String MSG_KEY = "thenBranching";
 
@@ -43,8 +45,12 @@ public class ThenBranchingCheck extends ComprehensiveVisitCheck{
 //		   String aType = getEnclosingShortClassName(currentTree);
 		 
 		   DetailAST aThenPart = getThenPart(anIfAST);
+//		   String aThenPartText =    UNCAstTreeStringPrinter.printConcreteTree(aThenPart);
+
 		   // se if there is an if there
 		   DetailAST aThenIf = findFirstInOrderMatchingNode(aThenPart,TokenTypes.LITERAL_IF);
+//	      String aThenIfText =    UNCAstTreeStringPrinter.printConcreteTree(aThenIf);
+
 		   if (aThenIf == null)
 			   return;
 		   DetailAST anElsePart = getElsePart(anIfAST);

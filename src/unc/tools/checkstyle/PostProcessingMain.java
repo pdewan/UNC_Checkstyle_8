@@ -69,6 +69,8 @@ public class PostProcessingMain {
   
 
   static SymbolTable symbolTable;
+
+
   static STBuilderCheck sTBuilderCheck;
   static String[] externalPackagePrefixes;
   static String[] externalMethodRegularExpressions;
@@ -1732,6 +1734,22 @@ public class PostProcessingMain {
       }
     }
   }
+  public static SymbolTable getSymbolTable() {
+    return symbolTable;
+  }
+
+  public static List<STType> getsTTypes() {
+    return sTTypes;
+  }
+
+  public static XMLLogger getXmlLogger() {
+    return xmlLogger;
+  }
+  
+  public static STBuilderCheck getsTBuilderCheck() {
+    return sTBuilderCheck;
+  }
+
   public static void main(String[] args) {
 //    UNCCheck.setManualProjectDirectory(true);
 //    if (isRedirectSecondPassOutput()) {

@@ -1,0 +1,1531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This configuration file was written by the eclipse-cs plugin configuration 
+	editor -->
+<!-- Checkstyle-Configuration: Test Description: none -->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+
+<module name="unc.tools.checkstyle.AnExtendibleChecker">
+
+
+	<property name="severity" value="warning" />
+
+
+	<module name="unc.tools.checkstyle.AnExtendibleTreeWalker">
+		<property name="severity" value="info" />
+
+		<module name="STBuilder">
+			<property name="checksName" value="301_ss21_A1" />
+			<property name="expectedTypes"
+				value="
+				main.Assignment1,
+			@Comp301Tags.ROTATING_LINE,
+			@Comp301Tags.ANGLE,
+			@Comp301Tags.AVATAR,
+			@Comp301Tags.BRIDGE_SCENE,
+			main.Assignment2,
+			@Comp301Tags.LOCATABLE,
+			@Comp301Tags.BOUNDED_SHAPE,
+			@Comp301Tags.FACTORY_CLASS,
+			@Comp301Tags.CONSOLE_SCENE_VIEW,
+			main.Assignment3,
+			@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER,
+			@Comp301Tags.PAINT_LISTENER,
+			@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER,
+			@Comp301Tags.BRIDGE_SCENE_CONTROLLER,
+			@Comp301Tags.TABLE,
+			@Comp301Tags.PROGRESS_BAR_CREATOR,			
+			BroadcastingClearanceManager
+			
+		" />
+
+			<property name="includeTypeTags" value="*" />
+			<property name="severity" value="info" />
+			<property name="logNoMatches" value="true" />
+			<property name="importsAsExistingClasses" value="true" />
+			<property name="logAggregateStatistics" value="true" />
+
+			<property name="logMethodsDeclared" value="true" />
+			<property name="logVariablesDeclared" value="true" />
+			<property name="logPropertiesDeclared" value="true" />
+			<property name="logAccessModifiersUsed" value="true" />
+			<property name="logSuperTypes" value="true" />
+			<property name="logInnerTypes" value="true" />
+			<property name="logInterfaces" value="true" />
+			<property name="trackTokenTypesUsedInMethods" value="true" />
+
+
+
+			<property name="excludeClassRegularExpressions"
+				value="
+				checkstyle.*,
+				test.simulation.*
+			" />
+			<property name="projectPackagePrefixes"
+				value="test,lectures, main, mp, grail" />
+			<property name="existingClasses"
+				value="java.util.List, java.util.ArrayList, java.util.Vector, java.util.HashMap" />
+
+			<property name="externalPackagePrefixes"
+				value="								
+								assignments.util,
+								java.io
+							" />
+
+		</module>
+
+
+	</module>
+
+
+	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
+		<property name="severity" value="warning" />
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+		</module>
+
+		<module name="ExpectedSetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+
+		</module>
+
+		<module name="ExpectedSetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,
+			Radius:double,
+			Angle:double
+		" />
+
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedSignatures"
+				value="
+			rotate:int->void,
+			move:int;int->void
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.ROTATING_LINE" />
+			<property name="expectedSignatures"
+				value="
+			rotate:int->void,
+			move:int;int->void,
+			" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedProperties"
+				value="
+			LeftLine:@Comp301Tags.ROTATING_LINE,
+			RightLine:@Comp301Tags.ROTATING_LINE
+		" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedProperties"
+				value="
+			LeftLine:@Comp301Tags.ROTATING_LINE,
+			RightLine:@Comp301Tags.ROTATING_LINE
+		" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+			" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedProperties"
+				value="
+			StringShape:@STRING_PATTERN, 
+			Head:@IMAGE_PATTERN, 
+			Arms:@Comp301Tags.ANGLE,
+			Legs:@Comp301Tags.ANGLE
+		" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedProperties"
+				value="
+			StringShape:@STRING_PATTERN, 
+			Head:@IMAGE_PATTERN, 
+			Arms:@Comp301Tags.ANGLE,
+			Legs:@Comp301Tags.ANGLE
+		" />
+		</module>
+
+
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+				scale:double->void//EC
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="expectedSignatures"
+				value="
+				move:int;int->void,
+				scale:double->void//EC
+			" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@legsFactoryMethod:*->@Comp301Tags.ANGLE,
+			
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@legsFactoryMethod:*->@Comp301Tags.ANGLE,
+			
+			" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedProperties"
+				value="
+			Arthur:@Comp301Tags.AVATAR,			
+			Galahad:@Comp301Tags.AVATAR,
+			Lancelot:@Comp301Tags.AVATAR,
+			Robin:@Comp301Tags.AVATAR,
+		    Guard:@Comp301Tags.AVATAR,
+		" />
+		</module>
+
+
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedProperties"
+				value="
+			Arthur:@Comp301Tags.AVATAR,			
+			Galahad:@Comp301Tags.AVATAR,
+			Lancelot:@Comp301Tags.AVATAR,
+			Robin:@Comp301Tags.AVATAR,
+		    Guard:@Comp301Tags.AVATAR,
+		" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedSignatures"
+				value="
+						approach:@Comp301Tags.AVATAR->void,
+						approach:String->void,
+						say:String->void,
+						passed:->void,
+						failed:->void,
+						@scroll:int;int->void//EC,
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="expectedSignatures"
+				value="
+						approach:@Comp301Tags.AVATAR->void,
+						approach:String->void,
+						say:String->void,
+						passed:->void,
+						failed:->void,
+						@scroll:int;int->void//EC,
+			" />
+		</module>
+
+
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.AVATAR,
+						
+				" />
+		</module>
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.AVATAR,
+						
+				" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@avatarTableFactoryMethod:->@Comp301Tags.TABLE,
+			approach:.*->void,
+			
+		" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.BRIDGE_SCENE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@avatarTableFactoryMethod:->@Comp301Tags.TABLE,
+		    approach:.*->void,
+		" />
+		</module>
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.AVATAR" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.ANGLE,
+						
+				" />
+		</module>
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.ANGLE" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.ROTATING_LINE,
+						
+				" />
+		</module>
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.BRIDGE_SCENE,
+						
+				" />
+		</module>
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.BRIDGE_SCENE,
+						
+				" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!sleep:long->void,
+		" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!sleep:long->void,
+		" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.FACTORY_CLASS" />
+			<property name="expectedSignatures"
+				value="
+					@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+					@consoleSceneViewFactoryMethod:->.*,					
+					@legsFactoryMethod:*->@Comp301Tags.ANGLE,
+					@inheritingBridgeScenePainterFactoryMethod:->@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER,
+					@observableBridgeScenePainterFactoryMethod:->@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER,
+					@delegatingBridgeSceneViewFactoryMethod:->@Comp301Tags.DELEGATING_BRIDGE_SCENE_VIEW//EC,
+					@bridgeSceneControllerFactoryMethod:->@Comp301Tags.BRIDGE_SCENE_CONTROLLER,
+					@avatarTableFactoryMethod:->@Comp301Tags.TABLE,
+					@broadcastingClearanceManagerFactoryMethod:->BroadcastingClearanceManager	
+					
+					
+					
+			" />
+		</module>
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.FACTORY_CLASS" />
+			<property name="expectedSignatures"
+				value="
+					@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+					@consoleSceneViewFactoryMethod:->.*,					
+					@legsFactoryMethod:*->@Comp301Tags.ANGLE,
+					@inheritingBridgeScenePainterFactoryMethod:->@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER,
+					@observableBridgeScenePainterFactoryMethod:->@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER,
+					@delegatingBridgeSceneViewFactoryMethod:->@Comp301Tags.DELEGATING_BRIDGE_SCENE_VIEW,
+					@bridgeSceneControllerFactoryMethod:->@Comp301Tags.BRIDGE_SCENE_CONTROLLER,
+					@avatarTableFactoryMethod:->@Comp301Tags.TABLE,
+					@broadcastingClearanceManagerFactoryMethod:->BroadcastingClearanceManager	
+					
+
+			" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment2" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			@Comp301Tags.FACTORY_CLASS!@consoleSceneViewFactoryMethod:->.*,
+			(.*)!sleep:long->void,
+			
+			" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment2" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			@Comp301Tags.FACTORY_CLASS!@consoleSceneViewFactoryMethod:->.*,			
+			(.*)!sleep:long->void,
+			
+			" />
+		</module>
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedInterfaces"
+				value="
+			util.models.PropertyListenerRegisterer," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedInterfaces"
+				value="
+			util.models.PropertyListenerRegisterer," />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,		
+			PropertyChangeListeners: List
+			" />
+		</module>
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,		
+			PropertyChangeListeners: List
+			" />
+
+		</module>
+		<module name="ExpectedSetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,		
+			" />
+		</module>
+		<module name="ExpectedSetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="expectedProperties"
+				value="
+			X: int, 
+			Y: int,		" />
+
+		</module>
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+
+			<property name="instantiations"
+				value="		
+				
+					java.beans.PropertyChangeEvent,
+						
+				" />
+		</module>
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+
+			<property name="instantiations"
+				value="		
+				
+					java.beans.PropertyChangeEvent,
+						
+				" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!(.*):java.beans.PropertyChangeEvent->(.*),
+			
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.LOCATABLE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!(.*):java.beans.PropertyChangeEvent->(.*),
+			
+			" />
+		</module>
+
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedProperties"
+				value="
+			Width: int, 
+			Height: int,		" />
+
+		</module>
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedProperties"
+				value="
+			Width: int, 
+			Height: int,		" />
+
+		</module>
+		<module name="ExpectedSetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedProperties"
+				value="
+			Width: int, 
+			Height: int,		" />
+
+		</module>
+		<module name="ExpectedSetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedProperties"
+				value="
+			Width: int, 
+			Height: int,		" />
+
+		</module>
+
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+
+			<property name="instantiations"
+				value="		
+				
+					java.beans.PropertyChangeEvent,
+						
+				" />
+		</module>
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+
+			<property name="instantiations"
+				value="		
+				
+					java.beans.PropertyChangeEvent,
+						
+				" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!(.*):java.beans.PropertyChangeEvent->(.*),
+			
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			(.*)!(.*):java.beans.PropertyChangeEvent->(.*),
+			
+			" />
+		</module>
+
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@LINE_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@LINE_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@STRING_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@STRING_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@IMAGE_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.BOUNDED_SHAPE," />
+		</module>
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@IMAGE_PATTERN" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.BOUNDED_SHAPE," />
+		</module>
+
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BOUNDED_SHAPE" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.LOCATABLE," />
+		</module>
+
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment3" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			@Comp301Tags.FACTORY_CLASS!@inheritingBridgeScenePainterFactoryMethod:->@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER,
+			@Comp301Tags.FACTORY_CLASS!@delegatingBridgeSceneViewFactoryMethod:->@Comp301Tags.DELEGATING_BRIDGE_SCENE_VIEW,
+			@Comp301Tags.FACTORY_CLASS!@observableBridgeScenePainterFactoryMethod:->@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER,
+			(.*)!sleep:long->void,
+			(.*)!setVisible:boolean->void,
+			@Comp301Tags.TABLE!get:.*->.*,
+			@Comp301Tags.TABLE!put:.*;.*->.*,
+			
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment3" />
+			<property name="processCalledMethods" value="true" />
+			<property name="callingMethod" value="main:String[]->void" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			@Comp301Tags.FACTORY_CLASS!@inheritingBridgeScenePainterFactoryMethod:->@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER,
+			@Comp301Tags.FACTORY_CLASS!@delegatingBridgeSceneViewFactoryMethod:->@Comp301Tags.DELEGATING_BRIDGE_SCENE_VIEW,
+			@Comp301Tags.FACTORY_CLASS!@observableBridgeScenePainterFactoryMethod:->@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER,
+			(.*)!sleep:long->void,
+			(.*)!setVisible:boolean->void,			
+			@Comp301Tags.TABLE!get:.*->.*,
+			@Comp301Tags.TABLE!put:.*;.*->.*,
+			" />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.CONSOLE_SCENE_VIEW" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.CONSOLE_SCENE_VIEW" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.CONSOLE_SCENE_VIEW" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+			java.io.PrintStream!println:*->.*,
+			
+			" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.CONSOLE_SCENE_VIEW" />
+			<property name="processCalledMethods" value="true" />
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+			java.io.PrintStream!println:*->.*,	
+			
+			" />
+		</module>
+
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedSignatures"
+				value="
+			paint:Graphics(.*)->void,
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedSignatures"
+				value="
+					paint:Graphics(.*)->void,
+			" />
+		</module>
+
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+			(.*)!draw(.*):*->(.*),
+			(.*)!repaint:->void,
+			(.*)!getArms:-> @Comp301Tags.ANGLE,
+			(.*)!getLegs:-> @Comp301Tags.ANGLE,
+			(.*)!getLeftLine:-> @LINE_PATTERN,
+			(.*)!getRightLine:-> @LINE_PATTERN,
+			(.*)!getStringShape:->@STRING_PATTERN
+			
+			" />
+		</module>
+
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.FACTORY_CLASS!@bridgeSceneFactoryMethod:->@Comp301Tags.BRIDGE_SCENE,
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+			(.*)!draw(.*):*->(.*),
+			(.*)!repaint:->void,
+			(.*)!getArms:-> @Comp301Tags.ANGLE,
+			(.*)!getLegs:-> @Comp301Tags.ANGLE,
+			(.*)!getLeftLine:-> @LINE_PATTERN,
+			(.*)!getRightLine:-> @LINE_PATTERN,
+			(.*)!getStringShape:->@STRING_PATTERN		
+			
+			" />
+		</module>
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="expectedInterfaces"
+				value="
+				java.beans.PropertyChangeListener," />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="expectedSignatures"
+				value="
+					paint:Graphics(.*)->void,
+			" />
+		</module>
+
+
+		
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="expectedSignatures"
+				value="
+			paint:Graphics(.*)->void,
+			" />
+		</module>
+
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="expectedSignatures"
+				value="
+			paint:Graphics(.*)->void,
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+			(.*)!repaint:->void,	
+			
+			" />
+		</module>
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PAINT_LISTENER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+			(.*)!repaint:->void,	
+			
+			" />
+		</module>
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="expectedInterfaces"
+				value="
+				java.awt.event.MouseListener,
+				java.awt.event.KeyListener,
+				java.awt.event.ActionListener,
+				java.beans.PropertyChangeListener,
+				" />
+		</module>
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="expectedInterfaces"
+				value="
+				java.awt.event.MouseListener,
+				java.awt.event.KeyListener,
+				java.awt.event.ActionListener,
+				java.beans.PropertyChangeListener
+				" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+			(.*)!addMouseListener:java.awt.event.MouseListener->void,
+			(.*)!addKeyListener:java.awt.event.KeyListener->void,
+			(.*)!addActionListener:java.awt.event.ActionListener->void,
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+ 			(.*)!getArthur:-> @Comp301Tags.AVATAR, 
+ 			(.*)!getGalahad:-> @Comp301Tags.AVATAR,
+ 			(.*)!getLancelot:-> @Comp301Tags.AVATAR,	
+ 			(.*)!getRobin:-> @Comp301Tags.AVATAR,
+ 			(.*)!approach:.*-> void,
+ 			(.*)!say:String-> void,	
+			(.*)!passed:-> void,
+			(.*)!failed:-> void,
+			(.*)!setEnabled:boolean-> void,	
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+			(.*)!addMouseListener:java.awt.event.MouseListener->void,
+			(.*)!addKeyListener:java.awt.event.KeyListener->void,
+			(.*)!addActionListener:java.awt.event.ActionListener->void,	
+			(.*)!addPropertyChangeListener:PropertyChangeListener->void,
+ 			(.*)!getArthur:-> @Comp301Tags.AVATAR, 
+ 			(.*)!getGalahad:-> @Comp301Tags.AVATAR,
+ 			(.*)!getLancelot:-> @Comp301Tags.AVATAR,	
+ 			(.*)!getRobin:-> @Comp301Tags.AVATAR,	
+ 			(.*)!approach:.*-> void,
+ 			(.*)!say:String-> void,	
+			(.*)!passed:-> void,
+			(.*)!failed:-> void,
+			(.*)!setEnabled:boolean-> void,
+			" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="expectedProperties"
+				value="
+					Say: javax.swing.JButton,
+					Approach: javax.swing.JButton,
+					Passed: javax.swing.JButton,
+					Failed: javax.swing.JButton,
+			" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.BRIDGE_SCENE_CONTROLLER" />
+			<property name="expectedProperties"
+				value="
+					Say: javax.swing.JButton,
+					Approach: javax.swing.JButton,
+					Passed: javax.swing.JButton,
+					Failed: javax.swing.JButton,
+			" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedProperties"
+				value="
+			PaintListeners: java.util.List, 
+			" />
+		</module>
+		
+		<module name="ExpectedGetters">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER" />
+			<property name="expectedProperties"
+				value="
+			PaintListeners: java.util.List, 
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+				
+			(.*)!setFocusable:boolean->void,
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.OBSERVABLE_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+				
+			(.*)!setFocusable:boolean->void,
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+				
+			(.*)!setFocusable:boolean->void,
+			
+			" />
+		</module>
+		<module name="IllegalMethodCall">		
+			<property name="severity" value="warning" />
+			<property name="disallowedCalls" value="Map, HashMap, Hashtable" />
+			
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.INHERITING_BRIDGE_SCENE_PAINTER" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			
+				
+			(.*)!setFocusable:boolean->void,
+			
+			" />
+		</module>
+		
+		 <module name="ClassIsGeneric">
+		   <property name="severity" value="warning" />	
+			<property name="includeTypeTags" value="@Comp301Tags.TABLE" />
+		</module>
+		
+		
+		 <module name="ClassIsGeneric">
+		   <property name="severity" value="info" />	
+			<property name="includeTypeTags" value="@Comp301Tags.TABLE" />
+		</module>
+
+		<module name="DuplicateShortTypeName">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="*" />
+		</module>
+
+
+
+		<module name="FunctionAssignsGlobal">
+			<property name="severity" value="warning" />
+			<property name="excludeMethodTags"
+				value="
+					next(.*), 
+					pop(.*), 
+					delete(.*), 
+					remove(.*), 
+					read(.*), 					
+					set(.*), 
+					process(.*), 
+					scan(.*), 
+					(.*)create(.*), 					 
+					parse(.*),
+					(.*)actory(.*),
+					fetch(.*),
+					run(.*),
+					update(.*),
+					add(.*),
+					
+					" />
+
+		</module>
+		<module name="SetterAssignsGlobal">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="BulkierThen">
+			<property name="severity" value="warning" />
+			<property name="minThenElseRatio" value="1" />
+			<property name="maxElsePartSize" value="1" />
+		</module>
+		<module name="ThenBranching">
+			<property name="severity" value="warning" />
+
+		</module>
+
+		<module name="LiberalMagicNumber">
+			<property name="severity" value="warning" />
+			<property name="allowedSiblings" value="Math.(.*)" />
+
+		</module>
+		<module name="MethodAccessModifier">
+			<property name="severity" value="info" />
+		</module>
+		<module name="MethodAccessModifier">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="info" />
+		</module>
+		<module name="ClassHasOneInterface">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="VariableHasClassType">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="VariableHasClassType">
+			<property name="severity" value="info" />
+		</module>
+
+
+
+		<module name="PeerCommonProperties">
+			<property name="severity" value="warning" />
+
+		</module>
+		<module name="PeerCommonProperties">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="PeerCommonSignatures">
+			<property name="severity" value="warning" />
+
+		</module>
+		<module name="PeerCommonSignatures">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="ConstantDefined">
+			<property name="severity" value="info" />
+		</module>
+
+
+
+
+		<module name="BulkierElse">
+			<property name="severity" value="info" />
+			<property name="minElseThenRatio" value="1" />
+		</module>
+		<module name="ElseBranching">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="warning" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					
+					nio,
+					xml,
+					mp,
+					oe,
+					ss
+			" />
+
+		</module>
+
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="info" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					
+					nio,
+					xml,
+					mp,
+					oe
+			" />
+
+		</module>
+
+		<module name="FinalParameterDefined">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="MethodBlockLimit">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedBlockDepth">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="info" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="ClassDecomposition">
+			<property name="severity" value="warning" />
+		</module>
+
+
+
+
+
+
+
+
+
+
+
+
+	</module>
+	<module name="TreeWalker">
+		<module name="EqualsAvoidNull" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="NestedForDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedIfDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="PackageDeclaration" />
+		<module name="HiddenField" />
+
+
+		<module name="VisibilityModifier">
+			<property name="packageAllowed" value="true" />
+			<property name="protectedAllowed" value="true" />
+		</module>
+		<module name="ConstantName" />
+		<module name="TypeName" />
+		<module name="MethodName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="StaticVariableName" />
+		<module name="NeedBraces" />
+		<module name="MultipleStringLiterals" />
+		<module name="OuterTypeFilename" />
+
+
+		<module name="OneTopLevelClass" />
+		<module name="EmptyBlock">
+			<property name="option" value="TEXT" />
+			<property name="tokens"
+				value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH" />
+		</module>
+		<module name="NeedBraces" />
+		<module name="ArrayTypeStyle" />
+		<module name="MissingSwitchDefault" />
+		<module name="FallThrough" />
+
+
+		<module name="TypeName">
+
+		</module>
+		<module name="MemberName">
+
+		</module>
+		<module name="ParameterName">
+		</module>
+		<module name="LambdaParameterName" />
+
+
+		<module name="LocalVariableName">
+
+		</module>
+		<module name="ClassTypeParameterName">
+
+		</module>
+		<module name="MethodTypeParameterName">
+
+		</module>
+		<module name="InterfaceTypeParameterName" />
+
+
+		<module name="AbbreviationAsWordInName">
+			<property name="ignoreFinal" value="false" />
+			<property name="allowedAbbreviationLength" value="1" />
+		</module>
+		<module name="AvoidStarImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
+
+		<module name="MethodName">
+
+		</module>
+
+		<module name="EmptyCatchBlock">
+			<property name="exceptionVariableName" value="expected" />
+		</module>
+
+		<module name="BooleanExpressionComplexity">
+			<property name="max" value="3" />
+		</module>
+		<module name="ClassDataAbstractionCoupling">
+			<property name="max" value="7" />
+		</module>
+		<module name="ClassFanOutComplexity">
+			<property name="max" value="20" />
+		</module>
+		<module name="CyclomaticComplexity">
+			<property name="max" value="10" />
+		</module>
+		<module name="JavaNCSS">
+			<property name="methodMaximum" value="50" />
+			<property name="classMaximum" value="1500" />
+			<property name="fileMaximum" value="2000" />
+		</module>
+
+		<module name="MissingOverride" />
+		<module name="AvoidNestedBlocks" />
+
+		<module name="InterfaceIsType" />
+		<module name="ThrowsCount">
+			<property name="max" value="4" />
+		</module>
+		<module name="CovariantEquals" />
+		<module name="FinalLocalVariable" />
+		<module name="IllegalThrows" />
+		<module name="IllegalType" />
+		<module name="InnerAssignment" />
+		<module name="ModifiedControlVariable" />
+		<module name="NestedTryDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="ParameterAssignment" />
+
+		<module name="FinalParameters" />
+
+
+	</module>
+</module>
+
+

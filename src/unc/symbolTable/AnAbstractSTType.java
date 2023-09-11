@@ -419,7 +419,9 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
   // }
 
   public STNameable[] computeAllComputedTags() {
-    List<STNameable> retVal = null;
+//    List<STNameable> retVal = null;
+    List<STNameable> retVal = new ArrayList();
+
     addToList(retVal, getComputedTags());
     STNameable aSuperType = getSuperClass();
     if (aSuperType != null && !TagBasedCheck.isExternalClass(aSuperType.getName())) {

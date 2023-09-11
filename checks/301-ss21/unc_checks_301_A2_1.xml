@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This configuration file was written by the eclipse-cs plugin configuration 
+	editor -->
+<!-- Checkstyle-Configuration: Test Description: none -->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+
+<module name="unc.tools.checkstyle.AnExtendibleChecker">
+
+
+	<property name="severity" value="warning" />
+
+
+	<module name="unc.tools.checkstyle.AnExtendibleTreeWalker">
+		<property name="severity" value="info" />
+
+		<module name="STBuilder">
+			<property name="includeTypeTags" value="*" />
+			<property name="severity" value="info" />
+			<property name="projectPackagePrefixes"
+				value="test,lectures, main, mp, grail" />
+			<property name="existingClasses"
+				value="java.util.List, java.util.ArrayList, java.util.Vector, java.util.HashMap" />
+			<property name="importsAsExistingClasses" value="true" />
+			<property name="checksName" value="301_A1_1" />
+			<property name="expectedTypes"
+				value="
+				main.Assignment1_1_Part1,
+				main.Assignment1_1_Part2,
+				main.Assignment1_1_Part3,
+				@Comp301Tags.SCANNER_BEAN,
+				@Comp301Tags.NUMBER,
+				@Comp301Tags.WORD,
+				@Comp301Tags.QUOTE,
+				@Comp301Tags.START,
+				@Comp301Tags.END,
+				@Comp301Tags.PLUS,
+				@Comp301Tags.MINUS,
+				@Comp301Tags.SCANNING_ITERATOR,
+				@Comp301Tags.APPROACH,
+				@Comp301Tags.MOVE,
+				@Comp301Tags.PASSED,
+				@Comp301Tags.FAILED,
+				@Comp301Tags.SAY,
+				@Comp301Tags.ROTATE_LEFT_ARM,
+				@Comp301Tags.ROTATE_RIGHT_ARM,
+				@Comp301Tags.REPEAT,
+				@Comp301Tag.DEFINE,
+				@Comp301Tags.CALL,
+				@Comp301Tags.THREAD,
+				@Comp301Tags.WAIT,
+				@Comp301Tags.PROCEED_ALL,
+				@Comp301Tags.SLEEP,
+				@Comp301Tags.UNDO,
+				@Comp301Tags.REDO,
+				@Comp301Tags.TOKEN,
+				ScanningIterator,	
+				
+				" />
+
+		</module>
+
+
+	</module>
+
+
+	<module name="unc.tools.checkstyle.ANonCachingTreeWalker">
+		<property name="severity" value="warning" />
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="main.Assignment1_1_Part1" />
+			<property name="expectedSignatures"
+				value="
+			processInput:->*,
+			" />
+		</module>
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="main.Assignment1_1_Part1" />
+			<property name="expectedSignatures"
+				value="
+			processInput:->*,
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1_1_Part1" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			processInput:->void,
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1_1_Part1" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			processInput:->void,
+			
+			" />
+		</module>
+		
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="main.Assignment1_1_Part3" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.SCANNER_BEAN,
+						
+				" />
+		</module>
+		
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="main.Assignment1_1_Part3" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.SCANNER_BEAN,
+						
+				" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="main.Assignment1_1_Part3" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.SCANNER_BEAN!setScannedString:String->void,
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="main.Assignment1_1_Part3" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			@Comp301Tags.SCANNER_BEAN!setScannedString:String->void,
+			
+			" />
+		</module>
+		
+		
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SCANNER_BEAN" />
+			<property name="expectedSignatures"
+				value="
+			scanString:String->*,
+			indexOf:String;char;int->int,
+			indexOfNot:String;char;int->int
+			" />
+		</module>
+		
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SCANNER_BEAN" />
+			<property name="expectedSignatures"
+				value="
+			scanString:String->*,
+			indexOf:String;char;int->int,
+			indexOfNot:String;char;int->int
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.SCANNER_BEAN" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+					scanString:String->void,
+					indexOf:String;char;int->int,
+					indexOfNot:String;char;int->int,
+					(.*)!hasNext:->boolean,
+					(.*)!next:->String,
+					(.*)!getInput:->String, 
+					@Comp301Tags.NUMBER!getValue:->String,
+					@Comp301Tags.WORD!getValue:->String		
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.SCANNER_BEAN" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+					scanString:String->void,
+					indexOf:String;char;int->int,
+					indexOfNot:String;char;int->int,
+					(.*)!hasNext:->boolean,
+					(.*)!next:->String,
+					(.*)!getInput:->String, 
+					@Comp301Tags.NUMBER!getValue:->String,
+					@Comp301Tags.WORD!getValue:->String		
+			
+			" />
+		</module>
+		
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SCANNER_BEAN" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.NUMBER,
+					@Comp301Tags.WORD,
+					@Comp301Tags.QUOTE,
+					@Comp301Tags.START, 
+					@Comp301Tags.END,
+				    @Comp301Tags.PLUS,
+					@Comp301Tags.MINUS,
+					@Comp301Tags.MOVE, 
+					@Comp301Tags.APPROACH,
+					@Comp301Tags.FAILED,
+					@Comp301Tags.SAY
+					@Comp301Tags.ROTATE_LEFT_ARM,
+					@Comp301Tags.ROTATE_RIGHT_ARM,
+					@Comp301Tags.REPEAT,
+					@Comp301Tags.DEFINE,
+					@Comp301Tags.CALL,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.THREAD,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.PROCEED_ALL,
+					@Comp301Tags.SLEEP,
+					@Comp301Tags.UNDO,
+					@Comp301Tags.REDO,
+					
+						
+				" />
+		</module>
+		
+		<module name="ExpectedClassInstantiations">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SCANNER_BEAN" />
+
+			<property name="instantiations"
+				value="		
+				
+					@Comp301Tags.NUMBER,
+					@Comp301Tags.WORD,
+					@Comp301Tags.QUOTE,
+					@Comp301Tags.START, 
+					@Comp301Tags.END,
+				    @Comp301Tags.PLUS,
+					@Comp301Tags.MINUS,
+					@Comp301Tags.MOVE, 
+					@Comp301Tags.APPROACH,
+					@Comp301Tags.FAILED,
+					@Comp301Tags.SAY
+					@Comp301Tags.ROTATE_LEFT_ARM,
+					@Comp301Tags.ROTATE_RIGHT_ARM,
+					@Comp301Tags.REPEAT,
+					@Comp301Tags.DEFINE,
+					@Comp301Tags.CALL,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.THREAD,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.PROCEED_ALL,
+					@Comp301Tags.SLEEP,
+					@Comp301Tags.UNDO,
+					@Comp301Tags.REDO,	
+						
+				" />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="ScanningIterator" />
+			<property name="expectedInterfaces"
+				value="
+			java.util.Iterator," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="ScanningIterator" />
+			<property name="expectedInterfaces"
+				value="
+			java.util.Iterator," />
+		</module>
+		
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="ScanningIterator" />
+			<property name="expectedSignatures"
+				value="
+			indexOf:String;char;int->int,
+			indexOfNot:String;char;int->int
+			" />
+		</module>
+		
+		
+		
+		
+		<module name="ExpectedSignatures">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="ScanningIterator" />
+			<property name="expectedSignatures"
+				value="
+			indexOf:String;char;int->int,
+			indexOfNot:String;char;int->int
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="ScanningIterator" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			next#indexOf:String;char;int->int,
+			next#indexOfNot:String;char;int->int,
+			
+			" />
+		</module>
+		
+		<module name="MissingMethodCall">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="ScanningIterator" />
+			<property name="processCalledMethods" value="true" />
+
+			<property name="expectedCalls"
+				value="
+			next#indexOf:String;char;int->int,
+			next#indexOfNot:String;char;int->int,
+			
+			" />
+		</module>
+
+		
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.WORD" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.WORD" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.WORD" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.WORD" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.NUMBER" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.NUMBER" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+			<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.NUMBER" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.NUMBER" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.QUOTE" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.QUOTE" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+			<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.QUOTE" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.QUOTE" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.START" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.START" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+			<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.START" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.START" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.END" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.END" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+			<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.END" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.END" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PLUS" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.PLUS" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.MINUS" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.MINUS" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.APPROACH" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.APPROACH" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+			<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.APPROACH" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.WORD," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.APPROACH" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.WORD," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SAY" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+
+		<module name="ExpectedInterfaces">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags"
+				value="@Comp301Tags.SAY" />
+			<property name="expectedInterfaces"
+				value="
+			@Comp301Tags.TOKEN," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="@Comp301Tags.SAY" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.WORD," />
+		</module>
+		
+		<module name="ExpectedSuperTypes">
+			<property name="severity" value="info" />
+			<property name="includeTypeTags" value="@Comp301Tags.SAY" />
+			<property name="expectedSuperTypes"
+				value="
+			@Comp301Tags.WORD," />
+		</module>
+
+	
+		<module name="ExpectedGetters">
+			<property name="severity" value="warning" />
+			<property name="expectedProperties"
+				value="
+				@ScannerBean= ScannedString:String,
+				@Word= Input:String AND Value:String, 
+				@Number= Input:String AND Value:int, 
+				@Quote= Input:String, 
+				@Start= Input:String, 
+				@End= Input:String, 
+				@Plus= Input:String, 
+				@Minus= Input:String
+			" />
+		</module>
+		<module name="ExpectedSetters">
+			<property name="severity" value="warning" />
+			<property name="expectedProperties"
+				value="
+				@ScannerBean= ScannedString:String,
+				@Word= Input:String , 
+				@Number= Input:String, 
+				@Quote= Input:String, 
+				@Start= Input:String, 
+				@End= Input:String, 
+				@Plus= Input:String, 
+				@Minus= Input:String
+			
+			" />
+		</module>
+
+	
+
+		<module name="IllegalMethodCall">
+			<property name="severity" value="warning" />
+			<property name="disallowedCalls" value="Scanner, String" />
+			<property name="exceptionCalls"
+				value="
+				String.substring, 
+				String.charAt, 
+				String.length, 
+				String.equals, 
+				Scanner.nextLine, 
+				Scanner.hasNext, 
+				String.toLowerCase,
+				String.equals,
+				String.isEmpty,
+				Scanner.close
+				" />
+		</module>
+
+		<module name="UnnecessaryMethodCall">
+			<property name="severity" value="warning" />
+			<property name="disallowedCalls" value="Scanner, String" />
+			<property name="exceptionCalls"
+				value="
+				String.substring, 
+				String.charAt, 
+				String.length, 
+				Scanner.nextLine, 
+				Scanner.hasNext, 				
+				String.toLowerCase,
+				String.equals,
+				String.isEmpty,
+				Scanner.close
+				" />
+		</module>
+
+
+		<module name="IllegalTypeImported">
+			<property name="severity" value="warning" />
+			<property name="illegalPrefixes" value="*" />
+			<property name="legalPrefixes"
+				value="
+					bus.uigen, 
+					util, 
+					shapes, 
+					java.beans, 
+					java.util.Scanner, 					
+					java.util.Iterator, 
+					java.util.NoSuchElementException,
+					gradingTools
+					" />
+		</module>
+
+		<module name="IllegalTypeDefined">
+			<property name="severity" value="warning" />
+			<property name="illegalTypeNames"
+				value="PropertyChangeEvent, PropertyChangeListener, PropertyListenerRegisterer" />
+		</module>
+
+		<module name="DuplicateShortTypeName">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="*" />
+		</module>
+
+
+
+		<module name="FunctionAssignsGlobal">
+			<property name="severity" value="warning" />
+			<property name="excludeMethodTags"
+				value="
+					next(.*), 
+					pop(.*), 
+					delete(.*), 
+					remove(.*), 
+					read(.*), 					
+					set(.*), 
+					process(.*), 
+					scan(.*), 
+					(.*)create(.*), 					 
+					parse(.*),
+					(.*)actory(.*),
+					fetch(.*),
+					run(.*),
+					update(.*),
+					add(.*),
+					
+					" />
+
+		</module>
+		<module name="SetterAssignsGlobal">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="BulkierThen">
+			<property name="severity" value="warning" />
+			<property name="minThenElseRatio" value="1" />
+			<property name="maxElsePartSize" value="1" />
+		</module>
+		<module name="ThenBranching">
+			<property name="severity" value="warning" />
+
+		</module>
+
+		<module name="LiberalMagicNumber">
+			<property name="severity" value="warning" />
+			<property name="allowedSiblings" value="Math.(.*)" />
+
+		</module>
+		<module name="MethodAccessModifier">
+			<property name="severity" value="info" />
+		</module>
+		<module name="MethodAccessModifier">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="PublicMethodsOverride">
+			<property name="severity" value="info" />
+		</module>
+		<module name="ClassHasOneInterface">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="VariableHasClassType">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="VariableHasClassType">
+			<property name="severity" value="info" />
+		</module>
+
+
+
+		<module name="PeerCommonProperties">
+			<property name="severity" value="warning" />
+			<property name="includeTypeTags" value="
+				@Comp301Tags.NUMBER,
+					@Comp301Tags.WORD,
+					@Comp301Tags.QUOTE,
+					@Comp301Tags.START, 
+					@Comp301Tags.END,
+				    @Comp301Tags.PLUS,
+					@Comp301Tags.MINUS,
+					@Comp301Tags.MOVE, 
+					@Comp301Tags.APPROACH,
+					@Comp301Tags.FAILED,
+					@Comp301Tags.SAY
+					@Comp301Tags.ROTATE_LEFT_ARM,
+					@Comp301Tags.ROTATE_RIGHT_ARM,
+					@Comp301Tags.REPEAT,
+					@Comp301Tags.DEFINE,
+					@Comp301Tags.CALL,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.THREAD,
+					@Comp301Tags.WAIT,
+					@Comp301Tags.PROCEED_ALL,
+					@Comp301Tags.SLEEP,
+					@Comp301Tags.UNDO,
+					@Comp301Tags.REDO,
+				" />	
+
+		</module>
+		<module name="PeerCommonProperties">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="PeerCommonSignatures">
+			<property name="severity" value="warning" />
+
+		</module>
+		<module name="PeerCommonSignatures">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="ConstantDefined">
+			<property name="severity" value="info" />
+		</module>
+
+
+
+
+		<module name="BulkierElse">
+			<property name="severity" value="info" />
+			<property name="minElseThenRatio" value="1" />
+		</module>
+		<module name="ElseBranching">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="warning" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					
+					nio,
+					xml,
+					mp,
+					oe,
+					ss
+			" />
+
+		</module>
+
+		<module name="MnemonicNameCheck">
+			<property name="severity" value="info" />
+			<property name="processType" value="false" />
+			<property name="processLocals" value="true" />
+			<property name="processParameters" value="true" />
+			<property name="processGlobals" value="true" />
+			<property name="processPublicMethods" value="false" />
+			<property name="processNonPublicMethods" value="true" />
+			<property name="minimumLettersInNameComponent" value="2" />
+			<property name="minimumVowelsInNameComponent" value="1" />
+			<property name="checkNumVowels" value="true" />
+			<property name="checkNumLetters" value="true" />
+			<property name="checkInDictionary" value="true" />
+			<property name="allowedComponents"
+				value="
+					
+					nio,
+					xml,
+					mp,
+					oe
+			" />
+
+		</module>
+
+		<module name="FinalParameterDefined">
+			<property name="severity" value="info" />
+		</module>
+
+		<module name="MethodBlockLimit">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedBlockDepth">
+			<property name="severity" value="warning" />
+			<property name="max" value="1" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="info" />
+		</module>
+		<module name="EqualsAvoidedNullCheck">
+			<property name="severity" value="warning" />
+		</module>
+		<module name="ClassDecomposition">
+			<property name="severity" value="warning" />
+		</module>
+
+
+	</module>
+	<module name="TreeWalker">
+		<module name="EqualsAvoidNull" />
+		<module name="EmptyStatement" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="NestedForDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="NestedIfDepth">
+			<property name="max" value="1" />
+		</module>
+		<module name="PackageDeclaration" />
+		<module name="AvoidStarImport" />
+		<module name="HiddenField" />
+
+
+		<module name="VisibilityModifier">
+			<property name="packageAllowed" value="true" />
+			<property name="protectedAllowed" value="true" />
+		</module>
+		<module name="ConstantName" />
+		<module name="TypeName" />
+		<module name="MethodName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="StaticVariableName" />
+		<module name="NeedBraces" />
+		<module name="MultipleStringLiterals" />
+		<module name="InvalidPackageName" />
+
+
+	</module>
+</module>
+
