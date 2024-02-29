@@ -532,8 +532,19 @@ public class ACheckStyleLogFileManager implements CheckStyleLogManager {
 		if (aSubmisssionAttachmentIndex < 0) {
 			return aProjectDirectory;
 		}
-		return aProjectDirectory.substring(0, aSubmisssionAttachmentIndex + SUBMISSION_FOLDER_NAME.length() + 1); // get the last slash also
-	}
+		try {
+		  // why are we doing this?
+		  int anEndIndex = aSubmisssionAttachmentIndex + SUBMISSION_FOLDER_NAME.length() + 1;// get the last slash also
+		  if (anEndIndex > aProjectDirectory.length()) {
+		    anEndIndex = aProjectDirectory.length(); 
+		  }
+//		return aProjectDirectory.substring(0, aSubmisssionAttachmentIndex + SUBMISSION_FOLDER_NAME.length() + 1); // get the last slash also
+    return aProjectDirectory.substring(0, anEndIndex); // get the last slash also
+
+		} catch (Exception e) {
+		  return aProjectDirectory; // this should never hit
+		}
+		}
 	@Override
 	public void maybeNewProjectDirectory(String aProjectDirectory, String aChecksName) {
 		// This is where the null pointer exception occurs

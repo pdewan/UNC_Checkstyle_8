@@ -2465,7 +2465,7 @@ public static String[] dictionary =
 	 "hunched",
 	 "hunches",
 	 "hunching",
-	 "hundred",
+//	 "hundred",
 	 "hundredfold",
 	 "hundreds",
 	 "hundredth",

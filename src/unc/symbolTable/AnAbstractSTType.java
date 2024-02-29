@@ -1689,10 +1689,16 @@ public abstract class AnAbstractSTType extends AnSTNameable implements STType {
     return nullToEmptyList(result);
   }
   // List<STNameable> allTypes;
-
+  boolean inMiddleOfVisit = false;
   @Override
   public List<STNameable> getAllTypes() {
     if (allTypes == null) {
+      if (inMiddleOfVisit) {
+        allTypes = emptyList;
+        isRecursive = true;
+        return allTypes; // previousCall will set it again;
+      }
+      inMiddleOfVisit = true;
       // List<STNameable> result = new ArrayList();
       allTypes = getAllTypes(this);
     }

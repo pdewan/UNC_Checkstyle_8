@@ -2575,7 +2575,7 @@ public static String[] dictionary =
 	 "milliners",
 	 "millinery",
 	 "milling",
-	 "million",
+//	 "million",
 	 "millionaire",
 	 "millionaires",
 	 "millions",

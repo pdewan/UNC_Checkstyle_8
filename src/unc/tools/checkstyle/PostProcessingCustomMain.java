@@ -71,13 +71,19 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/eclipse/Comp301A0/Logs/LocalChecks/unc_checks_style.xml";
 //static final String SOURCE = "D:/dewan_backup/Java/eclipse/Comp301A0";
+//  static final String SOURCE = "D:/dewan_backup/Java/lisp-interpreter-devel/src/main";
 
-  static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLTeaching/PL_Java/Logs/LocalChecks/unc_checks_byteman_test.xml";
-  static final String SOURCE = "D:/dewan_backup/Java/PLTeaching/PL_Java/src/byteman/examples";
+//  static final String SOURCE = "D:/dewan_backup/Java/lisp-interpreter-devel/src/main/A1ClassRegistry.java";
+//  static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLProjs/PLProjsJava/Logs/LocalChecks/unc_checks_524_A5.xml";
+
+//  static final String CHECKSTYLE_CONFIGURATION = "D:/dewan_backup/Java/PLTeaching/PL_Java/Logs/LocalChecks/unc_checks_byteman_test.xml";
+//  static final String SOURCE = "D:/dewan_backup/Java/PLTeaching/PL_Java/src/byteman/examples";
 
 //static final String SOURCE = "D:\\dewan_backup\\C\\OpenMPTraining\\JavaThreadsTraining\\src";
 
 //static final String SOURCE = "D:/dewan_backup/Java/eclipse-neon/HelloWorld/src/HelloWorld.java";
+//static final String SOURCE = "D:/TestProject/src";
+static final String CHECKSTYLE_CONFIGURATION = "D:/TestProject/Logs/LocalChecks/unc_checks_533_A1.xml";
 
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src/Assignment1/MapperFactory.java";
 //static final String SOURCE = "G:/My Drive/533/s22/Andrew's A2/Andrew's A2/src/comp533/MVC/ModelAssignment2.java";
@@ -129,7 +135,7 @@ public class PostProcessingCustomMain extends PostProcessingMain {
 
 //static final String SOURCE = "D:/dewan_backup/Java/PLProjs/PLProjsJava/src/";
 //static final String SOURCE = "C:/Users/dewan/Downloads/Comp533Assignments/S20/Assignment 1/Wortas, Andrew(ajwortas)/Submission attachment(s)/Assignment1 - Andrew Wortas/Assignment1/src";
-//static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src";
+static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment1/src";
 //static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment3/src";
 //public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment4/src";
 //public static final String SOURCE = "D:/dewan_backup/Java/Comp533/Andrew533Assignment7/src";

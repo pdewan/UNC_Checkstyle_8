@@ -639,7 +639,7 @@ public static String[] dictionary =
 	 "once",
 	 "oncology",
 	 "oncoming",
-	 "one",
+//	 "one",
 	 "oneness",
 	 "onerous",
 	 "ones",

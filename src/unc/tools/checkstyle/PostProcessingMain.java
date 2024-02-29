@@ -58,6 +58,9 @@ public class PostProcessingMain {
   //// "C:\\Users\\dewan\\Downloads\\twitter-heron\\contrib\\bolts\\kafka\\src\\java\\org\\apache\\heron\\bolts\\kafka\\KafkaBolt.java";
   // static final String CHECKSTYLE_CONFIGURATION = "unc_checks.xml";
   // static final String[] ARGS = {"-c", CHECKSTYLE_CONFIGURATION, SOURCE};
+  static boolean traceSteps = false;
+  
+
   static boolean printOnlyTaggedClasses = false;
   
   static Set<String> ignoreExternalTypes = new HashSet<>(
@@ -143,6 +146,7 @@ public class PostProcessingMain {
   }
 
   public static void doSecondPass(Collection<STType> anOriginalSTTypes) {
+    if (isTraceSteps())
     System.err.println("Start O(n2) inter- and intra class method calls:"
             + new Date(System.currentTimeMillis()));
     List<STType> anSTTypes = new ArrayList(anOriginalSTTypes);
@@ -244,6 +248,7 @@ public class PostProcessingMain {
     // // }
     //
     // }
+    if (isTraceSteps())
     System.err.println("End O(n2) inter- and intra class method calls:"
             + new Date(System.currentTimeMillis()));
 
@@ -521,7 +526,8 @@ public class PostProcessingMain {
   public static void printExectedPairs(String aCheckName, String aPropertyName, String aScopingType,
           String[] aPairs) {
     if (aPairs.length % 2 != 0) {
-      System.err.println("odd array");
+      if (isTraceSteps())
+      System.err.println(">odd array");
       return;
     }
     StringBuilder aPropertiesAndTypesString = new StringBuilder();
@@ -609,6 +615,7 @@ public class PostProcessingMain {
   public static void printModuleAndProperties(String aModule, String aSeverity, String aScopingType,
           String[] aPropertyNamesAndValues) {
     if (aPropertyNamesAndValues.length % 2 != 0) {
+      if (isTraceSteps())
       System.err.println("mismatched property name and values ");
     }
     // checksPrintStream.println ("\t<module name=\"" + aModule + "\">");
@@ -1793,7 +1800,7 @@ public class PostProcessingMain {
     // Main.main(ARGS);
 
     try {
-
+      if (isTraceSteps())
       System.err.println("Building symbol table and running first pass checks:"
               + new Date(System.currentTimeMillis()));
       STBuilderCheck.setNonInteractive(true);
@@ -1808,12 +1815,13 @@ public class PostProcessingMain {
       }
   
       NonExitingMain.main(args);
+      if (isTraceSteps())
       System.err.println("Symbol table size:" + SymbolTableFactory.getOrCreateSymbolTable().size());
       UNCCheck.setDoNotVisit(false);
       if (isRedirectFirstPassOutput()) {
       restoreOut();
       }
-     
+      if (isTraceSteps())
       System.err.println("Running second pass checks " + new Date(System.currentTimeMillis()));
       if (!STBuilderCheck.isDoAutoPassChange()) {
         STBuilderCheck.setFirstPass(false);
@@ -1821,7 +1829,7 @@ public class PostProcessingMain {
                 .doSecondPass(SymbolTableFactory.getOrCreateSymbolTable().getAllSTTypes());
       }
       NonExitingMain.main(args);
-      
+      if (isTraceSteps())
       System.err.println("Finished second pass checks:" + new Date(System.currentTimeMillis()));
       if (isRedirectSecondPassOutput()) {
         restoreInitialOut();
@@ -1829,13 +1837,13 @@ public class PostProcessingMain {
       }
       if (isGenerateChecks()) {
         initGlobals();
-
+        if (isTraceSteps())
         System.err.println("Generating checks:" + new Date(System.currentTimeMillis()));
 
 //        generateChecks(sTTypes);
         Collections.sort(sTTypes);
       generateChecks(sTTypes);
-
+      if (isTraceSteps())
         System.err.println("Finished Generating checks:" + new Date(System.currentTimeMillis()));
 
       }
@@ -1846,11 +1854,13 @@ public class PostProcessingMain {
       e.printStackTrace();
     }
     if (isGenerateExternals()) {
+      if (isTraceSteps())
       System.err.println("Generating externals:" + new Date(System.currentTimeMillis()));
 
       initGlobals();
       // outputExternalReferences(sTTypes);
       outputExternalOrTaggedCallInfos(sTTypes);
+      if (isTraceSteps())
       System.err.println("Finished Generating externals:" + new Date(System.currentTimeMillis()));
 
     }
@@ -1866,6 +1876,13 @@ public class PostProcessingMain {
     }
     // testXMLLogger();
 
+  }
+  public static boolean isTraceSteps() {
+    return traceSteps;
+  }
+
+  public static void setTraceSteps(boolean traceSteps) {
+    PostProcessingMain.traceSteps = traceSteps;
   }
 
 }
